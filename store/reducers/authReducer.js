@@ -6,6 +6,7 @@ import {
   REGISTER_REQUEST,
   LOGIN_FAIL,
   LOGOUT,
+  RESET_AUTH_NOTIFICATION,
 } from "../constants";
 
 const getLocalStorage = (item) => {
@@ -20,11 +21,13 @@ const user = getLocalStorage('user')
 export const initialState = user ? {
   isLoggedIn: true,
   user,
-  isLoading: false
+  isLoading: false,
+  status: null
 } : {
   isLoggedIn: false,
   user: null,
-  isLoading: false
+  isLoading: false,
+  status: null
 };
 
 export default function authReducer(state = initialState, action) {
@@ -43,12 +46,20 @@ export default function authReducer(state = initialState, action) {
       return {
         ...state,
         isLoading: false,
+          status: {
+            message: "User added successfully",
+            type: 'success'
+          }
       };
     case REGISTER_FAIL:
       return {
         ...state,
         isLoggedIn: false,
           isLoading: false,
+          status: {
+            message: payload.message,
+            type: 'error'
+          }
       };
     case LOGIN_REQUEST:
       return {
@@ -61,6 +72,9 @@ export default function authReducer(state = initialState, action) {
         isLoggedIn: true,
           isLoading: false,
           user: payload.user,
+          status: {
+            type: 'success'
+          }
       };
     case LOGIN_FAIL:
       return {
@@ -68,12 +82,21 @@ export default function authReducer(state = initialState, action) {
         isLoading: false,
           isLoggedIn: false,
           user: null,
+          status: {
+            message: payload.message,
+            type: 'error'
+          }
       };
     case LOGOUT:
       return {
         ...state,
         isLoggedIn: false,
           user: null,
+      };
+    case RESET_AUTH_NOTIFICATION:
+      return {
+        ...state,
+        status: null,
       };
     default:
       return state;

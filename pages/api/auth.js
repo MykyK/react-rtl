@@ -14,8 +14,9 @@ class AuthService {
     localStorage.removeItem("user");
   }
 
-  register(data) {
-    return axios.post(API_AUTH_URL + "signup", data);
+  async register(data) {
+    const response = await axios.post(API_AUTH_URL + "signup", data);
+    return response
   }
 }
 

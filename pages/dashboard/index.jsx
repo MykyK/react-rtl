@@ -12,7 +12,6 @@ import { useRouter } from 'next/router'
 
 const Dashboard = (props) => {
 	const { users, getUsers, isLoading, onLogOut } = props
-
 	useEffect(() => {
 		getUsers()
 	}, [])
@@ -44,7 +43,7 @@ const Dashboard = (props) => {
 						Header: 'Action',
 						accessor: 'action',
 						disableSortBy: true,
-						Cell: ({ row }) => <ActionCell key={row.original.id} row={row} />,
+						Cell: ({ row }) => <ActionCell row={row} />,
 					},
 				],
 			},
