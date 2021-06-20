@@ -11,141 +11,191 @@ import TextField from '@material-ui/core/TextField'
 import Tooltip from '@material-ui/core/Tooltip'
 import { connect } from 'react-redux'
 import { closeDialog } from '../../store/actions/userActions'
-import { openDialog, updateUser, getUsers } from '../../store/actions/userActions';
-import { register } from '../../store/actions/authActions'
+import {
+	openDialog,
+	updateUser,
+	getUsers,
+} from '../../store/actions/userActions'
+import {
+	register,
+	resetAuthNotification,
+} from '../../store/actions/authActions'
 import { useSetForm } from '../../utils/customHooks'
+import ErrorNotification from './../ErrorNotification/index'
 
 const initialUser = {
-  username: '',
-  email: '',
-  password: ''
+	username: '',
+	email: '',
+	password: '',
 }
 
-const ActionUserDialog = props => {
-  const {
-    contextUser,
-    isDialogOpen,
-    onDialogClose,
-    onDialogOpen,
-    onUserUpdate,
-    addNewUser
-  } = props;
-  const { form, setFormValue, setNewForm } = useSetForm(initialUser)
+const ActionUserDialog = (props) => {
+	const {
+		contextUser,
+		isDialogOpen,
+		onDialogClose,
+		onDialogOpen,
+		onUserUpdate,
+		onGetUsers,
+		addNewUser,
+		onResetAuthStatus,
+		status,
+	} = props
 
-  const [open,
-    setOpen] = useState(isDialogOpen)
+	const { form, setFormValue, setNewForm } = useSetForm(initialUser)
 
-  const handleOpen = () => {
-    onDialogOpen()
-  }
+	const [open, setOpen] = useState(isDialogOpen)
 
-  const handleClose = () => {
-    onDialogClose()
-  }
+	const handleOpen = () => {
+		onDialogOpen()
+	}
 
-  const handleAdd = () => {
-    addNewUser(form)
-  }
+	const handleClose = () => {
+		onDialogClose()
+		onResetAuthStatus()
+	}
 
-  const handleUpdate = () => {
-    onUserUpdate(form.id, { username: form.username, email: form.email })
-  }
+	const handleCloseNotification = () => {
+		onResetAuthStatus()
+	}
 
-  useEffect(() => {
-    setOpen(isDialogOpen)
-  }, [isDialogOpen])
+	const handleAdd = async () => {
+		await addNewUser(form)
+	}
 
-  useEffect(() => {
-    if (contextUser) {
-      setNewForm(contextUser)
-    } else {
-      setNewForm(form)
-    }
-  }, [contextUser])
+	const handleUpdate = () => {
+		onUserUpdate(form.id, { username: form.username, email: form.email })
+	}
 
-  return (
-    <div data-testid="dialog-wrapper">
-      <Tooltip title="Add">
-        <IconButton data-testid="open-dialog-button" aria-label="add" onClick={handleOpen}>
-          <AddIcon />
-        </IconButton>
-      </Tooltip>
-      <Dialog open={open} data-testid="dialog-component" onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Add User</DialogTitle>
-        <DialogContent>
-          <TextField
-            autoFocus
-            margin="dense"
-            label="UserName"
-            type="text"
-            fullWidth
-            value={form.username}
-            onChange={setFormValue('username')} />
-          <TextField
-            margin="dense"
-            label="Email"
-            type="text"
-            fullWidth
-            value={form.email}
-            onChange={setFormValue('email')} />
-          {!contextUser && <TextField
-            data-testid="password-input"
-            margin="dense"
-            label="Password"
-            type="password"
-            value={form.password}
-            fullWidth
-            onChange={setFormValue('password')} />}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} data-testid="close-dialog-button" color="primary">
-            Cancel
-          </Button>
-          <Button
-            data-testid="action-type-button"
-            onClick={contextUser
-              ? handleUpdate
-              : handleAdd}
-            color="primary">
-            {contextUser
-              ? 'Save'
-              : 'Add'}
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
-  )
+	useEffect(() => {
+		setOpen(isDialogOpen)
+	}, [isDialogOpen])
+
+	useEffect(() => {
+		if (status && status.type === 'success') {
+			setTimeout(() => {
+				onGetUsers()
+				handleClose()
+			}, 400)
+		}
+	}, [status])
+
+	useEffect(() => {
+		if (contextUser) {
+			setNewForm(contextUser)
+		} else {
+			setNewForm(form)
+		}
+	}, [contextUser])
+
+	return (
+		<div data-testid="dialog-wrapper">
+			<Tooltip title="Add">
+				<IconButton
+					data-testid="open-dialog-button"
+					aria-label="add"
+					onClick={handleOpen}
+				>
+					<AddIcon />
+				</IconButton>
+			</Tooltip>
+			<Dialog
+				open={open}
+				data-testid="dialog-component"
+				onClose={handleClose}
+				aria-labelledby="form-dialog-title"
+			>
+				<DialogTitle id="form-dialog-title">Add User</DialogTitle>
+				<DialogContent>
+					<TextField
+						autoFocus
+						margin="dense"
+						label="UserName"
+						type="text"
+						fullWidth
+						value={form.username}
+						onChange={setFormValue('username')}
+					/>
+					<TextField
+						margin="dense"
+						label="Email"
+						type="text"
+						fullWidth
+						value={form.email}
+						onChange={setFormValue('email')}
+					/>
+					{!contextUser && (
+						<TextField
+							data-testid="password-input"
+							margin="dense"
+							label="Password"
+							type="password"
+							value={form.password}
+							fullWidth
+							onChange={setFormValue('password')}
+						/>
+					)}
+					{!!status && (
+						<ErrorNotification
+							open={!!status}
+							severity={status.type}
+							onClose={handleCloseNotification}
+						>
+							{status.message}
+						</ErrorNotification>
+					)}
+				</DialogContent>
+				<DialogActions>
+					<Button
+						onClick={handleClose}
+						data-testid="close-dialog-button"
+						color="primary"
+					>
+						Cancel
+					</Button>
+					<Button
+						data-testid="action-type-button"
+						onClick={contextUser ? handleUpdate : handleAdd}
+						color="primary"
+					>
+						{contextUser ? 'Save' : 'Add'}
+					</Button>
+				</DialogActions>
+			</Dialog>
+		</div>
+	)
 }
 
 ActionUserDialog.propTypes = {
-  onDialogClose: PropTypes.func.isRequired,
-  onDialogOpen: PropTypes.func.isRequired,
-  onUserUpdate: PropTypes.func.isRequired,
-  addNewUser: PropTypes.func.isRequired,
-  contextUser: PropTypes.object,
-  isDialogOpen: PropTypes.bool.isRequired,
+	onDialogClose: PropTypes.func.isRequired,
+	onDialogOpen: PropTypes.func.isRequired,
+	onUserUpdate: PropTypes.func.isRequired,
+	addNewUser: PropTypes.func.isRequired,
+	contextUser: PropTypes.object,
+	isDialogOpen: PropTypes.bool.isRequired,
 }
 
 const mapStateToProps = (state) => {
-  const { contextUser, isDialogOpen } = state.user
-  return { contextUser, isDialogOpen }
+	const { contextUser, isDialogOpen } = state.user
+	const { status } = state.auth
+	return { contextUser, isDialogOpen, status }
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    onDialogClose: () => dispatch(closeDialog()),
-    onDialogOpen: () => dispatch(openDialog()),
-    onUserUpdate: async (userId, data) => {
-      await dispatch(updateUser(userId, data))
-      dispatch(closeDialog())
-      dispatch(getUsers())
-    },
-    addNewUser: async (data) => {
-      await dispatch(register(data))
-      dispatch(closeDialog())
-      dispatch(getUsers())
-    }
-  }
+	return {
+		onDialogClose: () => dispatch(closeDialog()),
+		onDialogOpen: () => dispatch(openDialog()),
+		onGetUsers: () => dispatch(getUsers()),
+		onUserUpdate: (userId, data) => {
+			dispatch(updateUser(userId, data))
+		},
+		addNewUser: (data) => {
+			dispatch(register(data))
+		},
+		onResetAuthStatus: () => {
+			dispatch(resetAuthNotification())
+		},
+	}
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ActionUserDialog)

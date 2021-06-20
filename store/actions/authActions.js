@@ -6,6 +6,7 @@ import {
   LOGIN_FAIL,
   LOGOUT,
   REGISTER_REQUEST,
+  RESET_AUTH_NOTIFICATION,
 } from "../constants";
 
 import AuthService from "../../pages/api/auth";
@@ -23,9 +24,10 @@ export const register = (data) => async (dispatch) => {
     return response
   } catch (error) {
     dispatch({
-      type: REGISTER_FAIL
+      type: REGISTER_FAIL,
+      payload: error.response.data
     });
-    return error
+    return error.response.data
   }
 };
 
@@ -44,7 +46,8 @@ export const login = (data) => async (dispatch) => {
     return response
   } catch (error) {
     dispatch({
-      type: LOGIN_FAIL
+      type: LOGIN_FAIL,
+      payload: error.response.data
     });
     return error
   }
@@ -55,5 +58,11 @@ export const logout = () => (dispatch) => {
 
   dispatch({
     type: LOGOUT
+  });
+};
+
+export const resetAuthNotification = () => (dispatch) => {
+  dispatch({
+    type: RESET_AUTH_NOTIFICATION
   });
 };

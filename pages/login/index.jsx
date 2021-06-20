@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import CssBaseline from '@material-ui/core/CssBaseline'
@@ -8,9 +8,14 @@ import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
 import { connect } from 'react-redux'
-import { login, register } from '../../store/actions/authActions'
+import {
+	login,
+	register,
+	resetAuthNotification,
+} from '../../store/actions/authActions'
 import { useSetForm } from '../../utils/customHooks'
 import { useRouter } from 'next/router'
+import ErrorNotification from './../../components/ErrorNotification/index'
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -38,7 +43,8 @@ const initialUser = {
 	password: '',
 }
 
-const Login = ({ onLogin, onSingUp }) => {
+const Login = (props) => {
+	const { onLogin, onSingUp, status, onResetAuthStatus } = props
 	const router = useRouter()
 	const classes = useStyles()
 
@@ -50,16 +56,26 @@ const Login = ({ onLogin, onSingUp }) => {
 		e.preventDefault(e)
 		if (!authType) {
 			await onLogin({ username: form.username, password: form.password })
-			router.push('/dashboard')
 		} else {
 			await onSingUp(form)
 			await onLogin({ username: form.username, password: form.password })
-			router.push('/dashboard')
 		}
 	}
 	const changeAuthType = () => {
 		authType ? setAuthType(false) : setAuthType(true)
 	}
+
+	const handleCloseNotification = () => {
+		onResetAuthStatus()
+	}
+
+	useEffect(() => {
+		if (status && status.type === 'success') {
+			setTimeout(() => {
+				router.push('/dashboard')
+			}, 400)
+		}
+	}, [status])
 
 	return (
 		<Container component="main" maxWidth="xs">
@@ -135,13 +151,22 @@ const Login = ({ onLogin, onSingUp }) => {
 					</Button>
 				</form>
 			</div>
+			{!!status && status.message && (
+				<ErrorNotification
+					open={!!status}
+					severity={status.type}
+					onClose={handleCloseNotification}
+				>
+					{status.message}
+				</ErrorNotification>
+			)}
 		</Container>
 	)
 }
 
 function mapStateToProps(state) {
-	const { isLoggedIn } = state.auth
-	return { isLoggedIn }
+	const { isLoggedIn, status } = state.auth
+	return { isLoggedIn, status }
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -151,6 +176,9 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		onSingUp: async (data) => {
 			await dispatch(register(data))
+		},
+		onResetAuthStatus: () => {
+			dispatch(resetAuthNotification())
 		},
 	}
 }
