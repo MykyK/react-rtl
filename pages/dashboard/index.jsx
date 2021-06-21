@@ -50,13 +50,16 @@ const Dashboard = (props) => {
 		],
 		[]
 	)
-	return (
-		<div data-testid="dashboard-container">
-			{isLoading ? (
-				<div className={styles.centered} data-testid="dashboard-loader">
-					<CircularProgress />
-				</div>
-			) : (
+
+	if (isLoading) {
+		return (
+			<div className={styles.loader} data-testid="dashboard-loader">
+				<CircularProgress />
+			</div>
+		)
+	} else {
+		return (
+			<div data-testid="dashboard-container">
 				<React.Fragment>
 					<div className={styles.spaceBetween}>
 						<ActionUserDialog />
@@ -72,9 +75,9 @@ const Dashboard = (props) => {
 						</div>
 					)}
 				</React.Fragment>
-			)}
-		</div>
-	)
+			</div>
+		)
+	}
 }
 
 function mapStateToProps(state) {

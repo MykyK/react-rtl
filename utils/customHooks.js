@@ -60,7 +60,5 @@ export const useFieldValidation = (form) => {
     }
   })
 
-
-
   return errors
 }
