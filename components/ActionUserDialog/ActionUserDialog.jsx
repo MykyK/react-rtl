@@ -115,7 +115,7 @@ const ActionUserDialog = (props) => {
 				<DialogContent>
 					<InputField
 						margin="dense"
-						inputError={userNameError}
+						error={userNameError}
 						name="username"
 						label="UserName"
 						type="text"
@@ -125,7 +125,7 @@ const ActionUserDialog = (props) => {
 					/>
 					<InputField
 						margin="dense"
-						inputError={emailError}
+						error={emailError}
 						name="email"
 						label="Email"
 						type="text"
@@ -136,7 +136,7 @@ const ActionUserDialog = (props) => {
 					{!contextUser && (
 						<InputField
 							data-testid="password-input"
-							inputError={passwordError}
+							error={passwordError}
 							name="password"
 							margin="dense"
 							label="Password"
@@ -146,9 +146,10 @@ const ActionUserDialog = (props) => {
 							onChange={setFormValue('password')}
 						/>
 					)}
-					{!!status && (
+					{Boolean(status) && (
 						<ErrorNotification
-							open={!!status}
+							data-testid="error-notification"
+							open={Boolean(status)}
 							severity={status.type}
 							onClose={handleCloseNotification}
 						>

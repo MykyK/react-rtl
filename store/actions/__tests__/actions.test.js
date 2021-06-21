@@ -196,7 +196,10 @@ describe('Actions', () => {
         it('register should create REGISTER_FAIL', async () => {
           const error = {
             code: 'id',
-            replacements: []
+            replacements: [],
+            response: {
+              data: {}
+            }
           };
           mockAuthService.register.mockRejectedValueOnce(error)
           const data = {}
@@ -204,13 +207,17 @@ describe('Actions', () => {
           await authActions.register(data)(dispatch);
           expect(dispatch).toHaveBeenNthCalledWith(2, {
             type: constants.REGISTER_FAIL,
+            payload: error.response.data
           });
         })
 
         it('login should create LOGIN_FAIL', async () => {
           const error = {
             code: 'id',
-            replacements: []
+            replacements: [],
+            response: {
+              data: {}
+            }
           };
           mockAuthService.login.mockRejectedValueOnce(error)
           const data = {}
@@ -218,6 +225,7 @@ describe('Actions', () => {
           await authActions.login(data)(dispatch);
           expect(dispatch).toHaveBeenCalledWith({
             type: constants.LOGIN_FAIL,
+            payload: error.response.data
           });
         })
       })
