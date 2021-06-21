@@ -13,7 +13,7 @@ export const initialState = {
   users: [],
   contextUser: null,
   isDialogOpen: false,
-  isLoading: false
+  isLoading: true
 }
 
 export default function userReducer(state = initialState, action) {
