@@ -7,7 +7,6 @@ import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import IconButton from '@material-ui/core/IconButton'
 import PropTypes from 'prop-types'
-import TextField from '@material-ui/core/TextField'
 import Tooltip from '@material-ui/core/Tooltip'
 import { connect } from 'react-redux'
 import { closeDialog } from '../../store/actions/userActions'
@@ -20,8 +19,9 @@ import {
 	register,
 	resetAuthNotification,
 } from '../../store/actions/authActions'
-import { useSetForm } from '../../utils/customHooks'
+import { useFieldValidation, useSetForm } from '../../utils/customHooks'
 import ErrorNotification from './../ErrorNotification/index'
+import InputField from './../InputField/index'
 
 const initialUser = {
 	username: '',
@@ -43,6 +43,12 @@ const ActionUserDialog = (props) => {
 	} = props
 
 	const { form, setFormValue, setNewForm } = useSetForm(initialUser)
+
+	const [userNameError, emailError, passwordError] = useFieldValidation(form)
+
+	const isError = contextUser
+		? userNameError || emailError || passwordError
+		: userNameError || emailError
 
 	const [open, setOpen] = useState(isDialogOpen)
 
@@ -107,17 +113,20 @@ const ActionUserDialog = (props) => {
 			>
 				<DialogTitle id="form-dialog-title">Add User</DialogTitle>
 				<DialogContent>
-					<TextField
-						autoFocus
+					<InputField
 						margin="dense"
+						inputError={userNameError}
+						name="username"
 						label="UserName"
 						type="text"
 						fullWidth
 						value={form.username}
 						onChange={setFormValue('username')}
 					/>
-					<TextField
+					<InputField
 						margin="dense"
+						inputError={emailError}
+						name="email"
 						label="Email"
 						type="text"
 						fullWidth
@@ -125,8 +134,10 @@ const ActionUserDialog = (props) => {
 						onChange={setFormValue('email')}
 					/>
 					{!contextUser && (
-						<TextField
+						<InputField
 							data-testid="password-input"
+							inputError={passwordError}
+							name="password"
 							margin="dense"
 							label="Password"
 							type="password"
@@ -157,6 +168,7 @@ const ActionUserDialog = (props) => {
 						data-testid="action-type-button"
 						onClick={contextUser ? handleUpdate : handleAdd}
 						color="primary"
+						disabled={Boolean(isError)}
 					>
 						{contextUser ? 'Save' : 'Add'}
 					</Button>
