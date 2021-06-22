@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import TextField from '@material-ui/core/TextField'
+import PropTypes from 'prop-types'
 export const InputField = (props) => {
 	const [touched, setTouched] = useState(false)
 	const handleTouched = () => {
@@ -15,4 +16,16 @@ export const InputField = (props) => {
 			/>
 		</React.Fragment>
 	)
+}
+
+InputField.propTypes = {
+	'input-error': PropTypes.string,
+	'data-testid': PropTypes.string,
+	fullWidth: PropTypes.bool,
+	label: PropTypes.string,
+	margin: PropTypes.string,
+	name: PropTypes.string,
+	onChange: PropTypes.func,
+	value: PropTypes.string,
+	type: PropTypes.string,
 }

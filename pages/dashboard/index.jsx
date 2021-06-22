@@ -9,6 +9,7 @@ import { getUsers } from '../../store/actions/userActions'
 import { logout } from '../../store/actions/authActions'
 import styles from '../../styles/Dashboard.module.scss'
 import { useRouter } from 'next/router'
+import PropTypes from 'prop-types'
 
 const Dashboard = (props) => {
 	const { users, getUsers, isLoading, onLogOut } = props
@@ -78,6 +79,13 @@ const Dashboard = (props) => {
 			</div>
 		)
 	}
+}
+
+Dashboard.propsTypes = {
+	users: PropTypes.array.isRequired,
+	getUsers: PropTypes.func.isRequired,
+	isLoading: PropTypes.bool.isRequired,
+	onLogOut: PropTypes.func.isRequired,
 }
 
 function mapStateToProps(state) {

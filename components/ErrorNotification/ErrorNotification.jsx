@@ -1,6 +1,6 @@
 import React from 'react'
 import MuiAlert from '@material-ui/lab/Alert'
-import { PropTypes } from 'prop-types'
+import PropTypes from 'prop-types'
 import Snackbar from '@material-ui/core/Snackbar'
 
 export const ErrorNotification = (props) => {
@@ -15,7 +15,7 @@ export const ErrorNotification = (props) => {
 }
 
 ErrorNotification.propTypes = {
-	handleClose: PropTypes.func,
+	handleCloseNotification: PropTypes.func,
 	severity: PropTypes.string.isRequired,
 	open: PropTypes.bool.isRequired,
 }
