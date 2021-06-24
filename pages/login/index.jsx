@@ -16,6 +16,7 @@ import { useFieldValidation, useSetForm } from '../../utils/customHooks'
 import { useRouter } from 'next/router'
 import ErrorNotification from './../../components/ErrorNotification/index'
 import InputField from './../../components/InputField/index'
+import PropTypes from 'prop-types'
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -67,7 +68,7 @@ const Login = (props) => {
 			await onLogin({ username: form.username, password: form.password })
 		}
 	}
-	const changeAuthType = () => {
+	const onChangeAuthType = () => {
 		authType ? setAuthType(false) : setAuthType(true)
 	}
 
@@ -91,7 +92,7 @@ const Login = (props) => {
 					<LockOutlinedIcon />
 				</Avatar>
 				<Typography component="h1" variant="h5">
-					Sign in
+					{authType ? 'Sing up' : 'Sing in'}
 				</Typography>
 				<form
 					data-testid="login-form"
@@ -101,7 +102,7 @@ const Login = (props) => {
 				>
 					<InputField
 						margin="dense"
-						inputError={userNameError}
+						input-error={userNameError}
 						name="username"
 						label="UserName"
 						type="text"
@@ -111,8 +112,9 @@ const Login = (props) => {
 					/>
 					{authType && (
 						<InputField
+							data-testid="email-input"
 							margin="dense"
-							inputError={emailError}
+							input-error={emailError}
 							name="email"
 							label="Email"
 							type="text"
@@ -122,8 +124,7 @@ const Login = (props) => {
 						/>
 					)}
 					<InputField
-						data-testid="password-input"
-						inputError={passwordError}
+						input-error={passwordError}
 						name="password"
 						margin="dense"
 						label="Password"
@@ -149,16 +150,17 @@ const Login = (props) => {
 						data-testid="auth-type-button"
 						variant="contained"
 						color="primary"
-						onClick={changeAuthType}
+						onClick={onChangeAuthType}
 						className={classes.submit}
 					>
 						{authType ? 'Login' : 'Sing up'}
 					</Button>
 				</form>
 			</div>
-			{!!status && status.message && (
+			{Boolean(status) && status.message && (
 				<ErrorNotification
-					open={!!status}
+					data-testid="error-notification"
+					open={Boolean(status)}
 					severity={status.type}
 					onClose={handleCloseNotification}
 				>
@@ -167,6 +169,14 @@ const Login = (props) => {
 			)}
 		</Container>
 	)
+}
+
+Login.propTypes = {
+	isLoggedIn: PropTypes.bool.isRequired,
+	status: PropTypes.object,
+	onLogin: PropTypes.func.isRequired,
+	onSingUp: PropTypes.func.isRequired,
+	onResetAuthStatus: PropTypes.func.isRequired,
 }
 
 function mapStateToProps(state) {

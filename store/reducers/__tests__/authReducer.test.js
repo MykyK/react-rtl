@@ -1,5 +1,5 @@
 import authReducer, {
-  initialState as authInitialState
+  initialState as authInitialState,
 } from '../authReducer';
 import * as constants from '../../constants'
 
@@ -16,7 +16,7 @@ describe('authReducer', () => {
     };
     expect(authReducer(authInitialState, action)).toEqual({
       ...authInitialState,
-      isLoading: true
+      isLoading: true,
     })
   })
 
@@ -26,18 +26,29 @@ describe('authReducer', () => {
     };
     expect(authReducer(authInitialState, action)).toEqual({
       ...authInitialState,
-      isLoading: false
+      isLoading: false,
+      status: {
+        type: 'success',
+        message: 'User added successfully',
+      }
     })
   })
 
   it('should return the correct structure for REGISTER_FAIL', () => {
     const action = {
-      type: constants.REGISTER_FAIL
+      type: constants.REGISTER_FAIL,
+      payload: {
+        message: 'test'
+      }
     };
     expect(authReducer(authInitialState, action)).toEqual({
       ...authInitialState,
       isLoading: false,
-      isLoggedIn: false
+      isLoggedIn: false,
+      status: {
+        type: 'error',
+        message: 'test'
+      }
     })
   })
 
@@ -63,19 +74,29 @@ describe('authReducer', () => {
       ...authInitialState,
       isLoggedIn: true,
       isLoading: false,
+      status: {
+        type: 'success'
+      },
       user: user
     })
   })
 
   it('should return the correct structure for LOGIN_FAIL', () => {
     const action = {
-      type: constants.LOGIN_FAIL
+      type: constants.LOGIN_FAIL,
+      payload: {
+        message: 'test'
+      }
     };
     expect(authReducer(authInitialState, action)).toEqual({
       ...authInitialState,
       isLoggedIn: false,
       isLoading: false,
-      user: null
+      user: null,
+      status: {
+        type: 'error',
+        message: 'test'
+      }
     })
   })
 
@@ -89,4 +110,12 @@ describe('authReducer', () => {
       user: null
     })
   })
+
+  it('should return the correct structure for RESET_AUTH_NOTIFICATION', () => {
+    const action = {
+      type: constants.RESET_AUTH_NOTIFICATION
+    };
+    expect(authReducer(authInitialState, action)).toEqual(authInitialState)
+  })
+
 })

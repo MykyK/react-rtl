@@ -13,28 +13,26 @@ const error = {
 
 
 const methods = [
-  // ['register',
-  //   {
-  //     method: UserService.register,
-  //     mockResolve: {data:{} },
-  //     mockReject: error,
-  //     response: {},
-  //     apiArgs: Object.values({
-  //       url: API_USERS_URL + 'singup',
-  //       data: {
-  //         username: 'test',
-  //         email: 'test@test.com',
-  //         password: 'test123'
-  //       }
-  //     }),
-  //     callArgs: {
-  //       username: 'test',
-  //       email: 'test@test.com',
-  //       password: 'test123'
-  //     },
-  //     apiMethod: 'post'
-  //   }
-  // ]
+  ['updateUser',
+    {
+      method: UserService.updateUser,
+      mockResolve: {},
+      mockReject: error,
+      response: {},
+      apiArgs: Object.values({
+        url: API_USERS_URL + 'update/' + 1,
+        data: {
+          username: 'test',
+          email: 'test@test.com',
+          userId: 1
+        }
+      }),
+      callArgs: {
+        userId: 1
+      },
+      apiMethod: 'put'
+    }
+  ],
   [
     'getUsers',
     {

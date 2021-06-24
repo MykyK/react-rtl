@@ -1,4 +1,10 @@
 import {
+  EMAIL_ERROR,
+  REQUIRE_ERROR,
+  EMAIL_REGEXP,
+  MIN_LENGTH_ERROR
+} from "../store/constants";
+import {
   useState,
 } from 'react';
 
@@ -28,22 +34,15 @@ export const useSetForm = (formValues) => {
 
 
 export const useFieldValidation = (form) => {
-
-  const emailError = 'invalid format.Email should be: test@test.com';
-  const minLength = 'Username must be longer than 5 characters'
-  const requireError = 'field is require'
-  const emailRegex = new RegExp(/\S+@\S+\.\S+/)
-
   const formKeys = Object.keys(form)
-
   const errors = formKeys.map(name => {
     if (name == 'email') {
       const value = form[name]
-      const emailInvalid = emailRegex.test(form[name])
+      const emailInvalid = EMAIL_REGEXP.test(form[name])
       if (value.length < 1) {
-        return requireError
+        return REQUIRE_ERROR
       } else if (!emailInvalid) {
-        return emailError;
+        return EMAIL_ERROR;
       } else {
         return null
       }
@@ -51,9 +50,9 @@ export const useFieldValidation = (form) => {
     if (name == 'username' || name == 'password') {
       const value = form[name]
       if (value.length < 1) {
-        return requireError
+        return REQUIRE_ERROR
       } else if (value.length < 6) {
-        return minLength;
+        return MIN_LENGTH_ERROR;
       } else {
         return null
       }
