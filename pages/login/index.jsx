@@ -112,6 +112,7 @@ const Login = (props) => {
 					/>
 					{authType && (
 						<InputField
+							data-testid="email-input"
 							margin="dense"
 							input-error={emailError}
 							name="email"
@@ -123,7 +124,6 @@ const Login = (props) => {
 						/>
 					)}
 					<InputField
-						data-testid="password-input"
 						input-error={passwordError}
 						name="password"
 						margin="dense"
@@ -159,6 +159,7 @@ const Login = (props) => {
 			</div>
 			{Boolean(status) && status.message && (
 				<ErrorNotification
+					data-testid="error-notification"
 					open={Boolean(status)}
 					severity={status.type}
 					onClose={handleCloseNotification}

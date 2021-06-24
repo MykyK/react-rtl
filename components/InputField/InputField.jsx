@@ -9,17 +9,18 @@ export const InputField = (props) => {
 	return (
 		<React.Fragment>
 			<TextField
+				data-testid="input-field"
 				{...props}
-				helperText={touched && props.inputError}
-				error={touched && !!props.inputError}
-				onFocus={handleTouched}
+				helperText={touched && props.error}
+				error={touched && Boolean(props.error)}
+				onClick={handleTouched}
 			/>
 		</React.Fragment>
 	)
 }
 
 InputField.propTypes = {
-	'input-error': PropTypes.string,
+	error: PropTypes.string,
 	'data-testid': PropTypes.string,
 	fullWidth: PropTypes.bool,
 	label: PropTypes.string,

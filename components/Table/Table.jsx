@@ -32,8 +32,9 @@ export const Table = (props) => {
 		usePagination
 	)
 
-	const handleChangePage = (newPage) => {
+	const handleChangePage = (event, newPage) => {
 		gotoPage(newPage)
+		console.log(gotoPage(newPage))
 	}
 
 	const handleChangeRowsPerPage = (event) => {

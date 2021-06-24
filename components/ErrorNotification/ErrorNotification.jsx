@@ -6,7 +6,11 @@ import Snackbar from '@material-ui/core/Snackbar'
 export const ErrorNotification = (props) => {
 	const { open, handleCloseNotification, ...rest } = props
 	return (
-		<Snackbar open={open} onClose={handleCloseNotification}>
+		<Snackbar
+			data-testid="error-notification-wrapper"
+			open={open}
+			onClose={handleCloseNotification}
+		>
 			<MuiAlert elevation={6} variant="filled" {...rest}>
 				{props.children}
 			</MuiAlert>

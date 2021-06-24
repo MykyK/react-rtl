@@ -9,7 +9,7 @@ import {
   RESET_AUTH_NOTIFICATION,
 } from "../constants";
 
-const getLocalStorage = (item) => {
+export const getLocalStorage = (item) => {
   if (typeof localStorage !== 'undefined') {
     return localStorage.getItem(item);
   }

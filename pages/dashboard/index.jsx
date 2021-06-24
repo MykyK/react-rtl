@@ -11,6 +11,31 @@ import styles from '../../styles/Dashboard.module.scss'
 import { useRouter } from 'next/router'
 import PropTypes from 'prop-types'
 
+export const tableColumns = [
+	{
+		Header: 'USERS LIST',
+		columns: [
+			{
+				Header: 'ID',
+				accessor: 'id',
+			},
+			{
+				Header: 'Username',
+				accessor: 'username',
+			},
+			{
+				Header: 'Email',
+				accessor: 'email',
+			},
+			{
+				Header: 'Action',
+				accessor: 'action',
+				disableSortBy: true,
+				Cell: ({ row }) => <ActionCell row={row} />,
+			},
+		],
+	},
+]
 const Dashboard = (props) => {
 	const { users, getUsers, isLoading, onLogOut } = props
 	useEffect(() => {
@@ -23,34 +48,7 @@ const Dashboard = (props) => {
 		await onLogOut()
 		router.push('/login')
 	}
-	const columns = useMemo(
-		() => [
-			{
-				Header: 'USERS LIST',
-				columns: [
-					{
-						Header: 'ID',
-						accessor: 'id',
-					},
-					{
-						Header: 'Username',
-						accessor: 'username',
-					},
-					{
-						Header: 'Email',
-						accessor: 'email',
-					},
-					{
-						Header: 'Action',
-						accessor: 'action',
-						disableSortBy: true,
-						Cell: ({ row }) => <ActionCell row={row} />,
-					},
-				],
-			},
-		],
-		[]
-	)
+	const columns = useMemo(() => tableColumns, [])
 
 	if (isLoading) {
 		return (

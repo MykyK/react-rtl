@@ -29,50 +29,62 @@ export const TablePaginationActions = (props) => {
 	}
 
 	const handleNextButtonClick = (event) => {
+		console.log('test')
 		onChangePage(event, page + 1)
 	}
 
 	const handleLastPageButtonClick = (event) => {
 		onChangePage(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1))
 	}
-
 	return (
-		<div className={classes.root}>
+		<div className={classes.root} data-testid="pagination-wrapper">
 			<IconButton
+				data-testid="first-page-button"
 				onClick={handleFirstPageButtonClick}
 				disabled={page === 0}
 				aria-label="first page"
 			>
-				{theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
+				{theme.direction === 'rtl' ? (
+					<LastPageIcon data-testid="last-page-icon" />
+				) : (
+					<FirstPageIcon data-testid="first-page-icon" />
+				)}
 			</IconButton>
 			<IconButton
+				data-testid="previous-page-button"
 				onClick={handleBackButtonClick}
 				disabled={page === 0}
 				aria-label="previous page"
 			>
 				{theme.direction === 'rtl' ? (
-					<KeyboardArrowRight />
+					<KeyboardArrowRight data-testid="arrow-right" />
 				) : (
-					<KeyboardArrowLeft />
+					<KeyboardArrowLeft data-testid="arrow-left" />
 				)}
 			</IconButton>
 			<IconButton
+				data-testid="next-page-button"
 				onClick={handleNextButtonClick}
 				disabled={page >= Math.ceil(count / rowsPerPage) - 1}
 				aria-label="next page"
 			>
 				{theme.direction === 'rtl' ? (
-					<KeyboardArrowLeft />
+					<KeyboardArrowLeft data-testid="arrow-left" />
 				) : (
-					<KeyboardArrowRight />
+					<KeyboardArrowRight data-testid="arrow-right" />
 				)}
 			</IconButton>
 			<IconButton
+				data-testid="last-page-button"
 				onClick={handleLastPageButtonClick}
 				disabled={page >= Math.ceil(count / rowsPerPage) - 1}
 				aria-label="last page"
 			>
-				{theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
+				{theme.direction === 'rtl' ? (
+					<FirstPageIcon data-testid="first-page-icon" />
+				) : (
+					<LastPageIcon data-testid="last-page-icon" />
+				)}
 			</IconButton>
 		</div>
 	)
