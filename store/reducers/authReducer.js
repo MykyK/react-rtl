@@ -22,12 +22,12 @@ export const initialState = user ? {
   isLoggedIn: true,
   user,
   isLoading: false,
-  status: null
+  notification: null
 } : {
   isLoggedIn: false,
   user: null,
   isLoading: false,
-  status: null
+  notification: null
 };
 
 export default function authReducer(state = initialState, action) {
@@ -46,7 +46,7 @@ export default function authReducer(state = initialState, action) {
       return {
         ...state,
         isLoading: false,
-          status: {
+          notification: {
             message: "User added successfully",
             type: 'success'
           }
@@ -56,7 +56,7 @@ export default function authReducer(state = initialState, action) {
         ...state,
         isLoggedIn: false,
           isLoading: false,
-          status: {
+          notification: {
             message: payload.message,
             type: 'error'
           }
@@ -72,7 +72,7 @@ export default function authReducer(state = initialState, action) {
         isLoggedIn: true,
           isLoading: false,
           user: payload.user,
-          status: {
+          notification: {
             type: 'success'
           }
       };
@@ -82,7 +82,7 @@ export default function authReducer(state = initialState, action) {
         isLoading: false,
           isLoggedIn: false,
           user: null,
-          status: {
+          notification: {
             message: payload.message,
             type: 'error'
           }
@@ -96,7 +96,7 @@ export default function authReducer(state = initialState, action) {
     case RESET_AUTH_NOTIFICATION:
       return {
         ...state,
-        status: null,
+        notification: null,
       };
     default:
       return state;

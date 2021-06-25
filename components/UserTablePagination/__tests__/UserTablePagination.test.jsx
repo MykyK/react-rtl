@@ -2,7 +2,7 @@ import React from 'react'
 import { fireEvent, cleanup, getByTestId } from '@testing-library/react'
 import { renderWithState } from '../../../utils/renderWithState'
 import { useTheme } from '@material-ui/core/styles'
-import TablePaginationActions from '..'
+import UserTablePagination from '..'
 
 jest.mock('@material-ui/core/styles', () => ({
 	...jest.requireActual('@material-ui/core/styles'),
@@ -17,7 +17,7 @@ jest.mock('@material-ui/core/styles', () => ({
 
 const mockUseTheme = useTheme
 
-describe('<TablePaginationActions />', () => {
+describe('<UserTablePagination />', () => {
 	describe('with default props', () => {
 		const testIdsForRtl = [
 			['last-page-icon', 'first-page-button'],
@@ -47,7 +47,7 @@ describe('<TablePaginationActions />', () => {
 					mockUseTheme.mockReturnValueOnce({
 						direction: 'ltl',
 					})
-					container = renderWithState(<TablePaginationActions {...props} />)
+					container = renderWithState(<UserTablePagination {...props} />)
 				})
 
 				afterAll(() => {
@@ -84,7 +84,7 @@ describe('<TablePaginationActions />', () => {
 					mockUseTheme.mockReturnValueOnce({
 						direction: 'rtl',
 					})
-					container = renderWithState(<TablePaginationActions {...props} />)
+					container = renderWithState(<UserTablePagination {...props} />)
 				})
 
 				afterAll(() => {

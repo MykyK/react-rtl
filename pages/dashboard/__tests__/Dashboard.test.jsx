@@ -73,7 +73,7 @@ describe('<Dashboard/> ', () => {
 			},
 			auth: mockAuthStore,
 		}
-		it('should render Table ', () => {
+		it('should render UserTable ', () => {
 			const container = renderWithState(<Dashboard />, { initialState })
 			const dashboardTable = container.render.getByTestId('dashboard-table')
 			expect(dashboardTable).toBeInTheDocument()
@@ -89,7 +89,7 @@ describe('<Dashboard/> ', () => {
 			},
 			auth: mockAuthStore,
 		}
-		it('should render Table ', () => {
+		it('should render UserTable ', () => {
 			const container = renderWithState(<Dashboard />, { initialState })
 			const dashboardLoader = container.render.getByTestId('dashboard-loader')
 			expect(dashboardLoader).toBeInTheDocument()

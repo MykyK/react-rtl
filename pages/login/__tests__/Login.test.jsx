@@ -21,11 +21,14 @@ jest.mock('next/router', () => ({
 }))
 
 describe('<Login/>', () => {
-	describe('if status prop with exists', () => {
+	describe('if notification prop with exists', () => {
 		let container
 
 		const initialState = {
-			auth: { ...mockAuthStore, status: { message: 'test', type: 'success' } },
+			auth: {
+				...mockAuthStore,
+				notification: { message: 'test', type: 'success' },
+			},
 		}
 
 		const push = jest.fn()

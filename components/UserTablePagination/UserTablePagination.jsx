@@ -1,5 +1,4 @@
 import React from 'react'
-
 import FirstPageIcon from '@material-ui/icons/FirstPage'
 import IconButton from '@material-ui/core/IconButton'
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft'
@@ -15,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }))
 
-export const TablePaginationActions = (props) => {
+export const UserTablePagination = (props) => {
 	const classes = useStyles()
 	const theme = useTheme()
 	const { count, page, rowsPerPage, onChangePage } = props
@@ -90,7 +89,7 @@ export const TablePaginationActions = (props) => {
 	)
 }
 
-TablePaginationActions.propTypes = {
+UserTablePagination.propTypes = {
 	count: PropTypes.number.isRequired,
 	onChangePage: PropTypes.func.isRequired,
 	page: PropTypes.number.isRequired,
