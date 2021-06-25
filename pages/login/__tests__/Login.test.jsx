@@ -21,7 +21,7 @@ jest.mock('next/router', () => ({
 }))
 
 describe('<Login/>', () => {
-	describe('if notification prop with exists', () => {
+	describe('if notification prop exists', () => {
 		let container
 
 		const initialState = {

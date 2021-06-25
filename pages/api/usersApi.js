@@ -7,16 +7,16 @@ class UserService {
     return response.data;
   }
 
-  async getUser(userId) {
-    const response = await axios.get(API_USERS_URL + "user/" + userId);
-    return response.data;
-  }
   async deleteUser(userId) {
     const response = await axios.delete(API_USERS_URL + "delete/" + userId);
     return response.data;
   }
 
-  async updateUser(userId, data) {
+  async updateUser(data) {
+    const {
+      userId
+    } = data
+
     const response = await axios.put(API_USERS_URL + "update/" + userId, data);
     return response.data;
   }

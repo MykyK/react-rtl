@@ -1,9 +1,10 @@
 import axios from 'axios'
-import UserService, {
-  API_USERS_URL
-} from '../usersApi';
+import AuthService, {
+  API_AUTH_URL
+} from '../authApi';
 
 jest.mock('axios');
+
 
 const error = {
   code: 'error',
@@ -13,51 +14,56 @@ const error = {
 
 
 const methods = [
-  ['updateUser',
+  ['register',
     {
-      method: UserService.updateUser,
+      method: AuthService.register,
       mockResolve: {},
       mockReject: error,
-      response: {},
+      response: {
+        data: {}
+      },
       apiArgs: Object.values({
-        url: API_USERS_URL + 'update/' + 1,
+        url: API_AUTH_URL + 'signup',
         data: {
           username: 'test',
           email: 'test@test.com',
-          userId: 1
+          password: 'test1234'
         }
       }),
       callArgs: {
         username: 'test',
         email: 'test@test.com',
-        userId: 1
+        password: 'test1234'
       },
-      apiMethod: 'put'
+
+      apiMethod: 'post'
     }
   ],
   [
-    'deleteUser',
+    'login',
     {
-      method: UserService.deleteUser,
-      mockResolve: {},
-      response: {},
+      method: AuthService.login,
+      mockResolve: {
+        accessToken: 'test123'
+      },
+      response: {
+        accessToken: 'test123'
+      },
       mockReject: error,
-      apiArgs: [API_USERS_URL + 'delete/1'],
-      callArgs: 1,
-      apiMethod: 'delete'
+      apiArgs: Object.values({
+        url: API_AUTH_URL + 'signin',
+        data: {
+          username: 'test',
+          password: 'test1234'
+        }
+      }),
+      callArgs: {
+        username: 'test',
+        password: 'test1234'
+      },
+      apiMethod: 'post'
     }
   ],
-  [
-    'getUsers',
-    {
-      method: UserService.getUsers,
-      mockResolve: {},
-      response: {},
-      mockReject: error,
-      apiArgs: [API_USERS_URL + 'users'],
-      apiMethod: 'get'
-    }
-  ]
 ]
 
 
@@ -67,8 +73,14 @@ describe('UserService', () => {
   beforeEach(() => {
     mockAxios.get.mockClear()
     mockAxios.post.mockClear()
-    mockAxios.delete.mockClear()
     jest.clearAllMocks()
+  })
+
+  it('logout should call localStorage.removeItem', () => {
+    jest.spyOn(window.localStorage.__proto__, 'removeItem');
+    window.localStorage.__proto__.removeItem = jest.fn();
+    AuthService.logout()
+    expect(localStorage.removeItem).toHaveBeenCalled();
   })
 
   describe.each(methods)('%s', (methodName, methodArgs) => {

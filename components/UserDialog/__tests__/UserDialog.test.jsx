@@ -180,7 +180,7 @@ describe('<UserDialog />', () => {
 		})
 	})
 
-	describe('if notification prop with exists', () => {
+	describe('if notification prop exists', () => {
 		let container
 
 		const initialState = {
