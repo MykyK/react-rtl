@@ -180,7 +180,7 @@ describe('<ActionUserDialog />', () => {
 		})
 	})
 
-	describe('if status prop with exists', () => {
+	describe('if notification prop exists', () => {
 		let container
 
 		const initialState = {

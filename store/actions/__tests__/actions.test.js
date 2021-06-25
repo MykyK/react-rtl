@@ -4,7 +4,7 @@ import * as constants from '../../constants'
 import UserService from '../../../pages/api/users'
 import AuthService from '../../../pages/api/auth'
 
-jest.mock('../../../pages/api/users', () => {
+jest.mock('../../../pages/api/usersApi', () => {
   return {
     getUsers: jest.fn(),
     updateUser: jest.fn(),
@@ -12,7 +12,7 @@ jest.mock('../../../pages/api/users', () => {
   }
 });
 
-jest.mock('../../../pages/api/auth', () => {
+jest.mock('../../../pages/api/authApi', () => {
   return {
     login: jest.fn(),
     logout: jest.fn(),

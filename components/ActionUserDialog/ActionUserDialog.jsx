@@ -70,7 +70,11 @@ const ActionUserDialog = (props) => {
 	}
 
 	const handleUpdate = () => {
-		onUserUpdate(form.id, { username: form.username, email: form.email })
+		onUserUpdate({
+			username: form.username,
+			email: form.email,
+			userId: form.id,
+		})
 	}
 
 	useEffect(() => {
