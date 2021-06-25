@@ -1,11 +1,11 @@
 import React from 'react'
 import { fireEvent, cleanup } from '@testing-library/react'
 import { renderWithState } from '../../../utils/renderWithState'
-import ActionUserDialog from './../index'
+import UserDialog from '../index'
 import {
 	mockUserStore,
 	mockAuthStore,
-} from './../../../pages/dashboard/__mocks__/index'
+} from '../../../pages/dashboard/__mocks__/index'
 import {
 	REGISTER_SUCCESS,
 	UPDATE_USER_SUCCESS,
@@ -13,7 +13,7 @@ import {
 	SHOW_DIALOG,
 	GET_USERS_SUCCESS,
 	RESET_AUTH_NOTIFICATION,
-} from './../../../store/constants'
+} from '../../../store/constants'
 
 jest.mock('../../../utils/customHooks', () => {
 	return {
@@ -45,12 +45,12 @@ jest.mock('../../../store/actions/authActions.js', () => ({
 	resetAuthNotification: () => ({ type: 'RESET_AUTH_NOTIFICATION' }),
 }))
 
-describe('<ActionUserDialog />', () => {
+describe('<UserDialog />', () => {
 	describe('when default props are passed', () => {
 		describe('when dialog is closed', () => {
 			let container
 			beforeEach(() => {
-				container = renderWithState(<ActionUserDialog />)
+				container = renderWithState(<UserDialog />)
 			})
 
 			afterEach(() => {
@@ -88,7 +88,7 @@ describe('<ActionUserDialog />', () => {
 			}
 
 			beforeEach(() => {
-				container = renderWithState(<ActionUserDialog />, { initialState })
+				container = renderWithState(<UserDialog />, { initialState })
 			})
 
 			afterEach(() => {
@@ -150,7 +150,7 @@ describe('<ActionUserDialog />', () => {
 		}
 		let container
 		beforeEach(() => {
-			container = renderWithState(<ActionUserDialog />, { initialState })
+			container = renderWithState(<UserDialog />, { initialState })
 		})
 
 		afterEach(() => {
@@ -184,7 +184,10 @@ describe('<ActionUserDialog />', () => {
 		let container
 
 		const initialState = {
-			auth: { ...mockAuthStore, status: { message: 'test', type: 'success' } },
+			auth: {
+				...mockAuthStore,
+				notification: { message: 'test', type: 'success' },
+			},
 			user: {
 				...mockUserStore,
 				contextUser: {
@@ -198,7 +201,7 @@ describe('<ActionUserDialog />', () => {
 
 		beforeEach(() => {
 			jest.useFakeTimers()
-			container = renderWithState(<ActionUserDialog />, { initialState })
+			container = renderWithState(<UserDialog />, { initialState })
 		})
 
 		afterEach(() => {

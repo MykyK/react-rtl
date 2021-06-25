@@ -9,7 +9,7 @@ import {
   RESET_AUTH_NOTIFICATION,
 } from "../constants";
 
-import AuthService from "../../pages/api/auth";
+import AuthService from "../../pages/api/authApi";
 
 
 export const register = (data) => async (dispatch) => {

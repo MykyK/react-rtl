@@ -20,8 +20,8 @@ import {
 	resetAuthNotification,
 } from '../../store/actions/authActions'
 import { useFieldValidation, useSetForm } from '../../utils/customHooks'
-import ErrorNotification from './../ErrorNotification/index'
-import InputField from './../InputField/index'
+import ErrorNotification from '../ErrorNotification/index'
+import InputField from '../InputField/index'
 
 const initialUser = {
 	username: '',
@@ -29,7 +29,7 @@ const initialUser = {
 	password: '',
 }
 
-const ActionUserDialog = (props) => {
+const UserDialog = (props) => {
 	const {
 		contextUser,
 		isDialogOpen,
@@ -37,9 +37,9 @@ const ActionUserDialog = (props) => {
 		onDialogOpen,
 		onUserUpdate,
 		onGetUsers,
-		addNewUser,
+		onAddNewUser,
 		onResetAuthStatus,
-		status,
+		notification,
 	} = props
 
 	const { form, setFormValue, setNewForm } = useSetForm(initialUser)
@@ -61,12 +61,12 @@ const ActionUserDialog = (props) => {
 		onResetAuthStatus()
 	}
 
-	const handleCloseNotification = () => {
+	const onCloseNotification = () => {
 		onResetAuthStatus()
 	}
 
-	const handleAdd = async () => {
-		await addNewUser(form)
+	const handleAdd = () => {
+		onAddNewUser(form)
 	}
 
 	const handleUpdate = () => {
@@ -82,13 +82,13 @@ const ActionUserDialog = (props) => {
 	}, [isDialogOpen])
 
 	useEffect(() => {
-		if (status && status.type === 'success') {
+		if (notification && notification.type === 'success') {
 			setTimeout(() => {
 				onGetUsers()
 				handleClose()
 			}, 400)
 		}
-	}, [status])
+	}, [notification])
 
 	useEffect(() => {
 		if (contextUser) {
@@ -150,14 +150,14 @@ const ActionUserDialog = (props) => {
 							onChange={setFormValue('password')}
 						/>
 					)}
-					{Boolean(status) && (
+					{Boolean(notification) && (
 						<ErrorNotification
 							data-testid="error-notification"
-							open={Boolean(status)}
-							severity={status.type}
-							onClose={handleCloseNotification}
+							open={Boolean(notification)}
+							severity={notification.type}
+							onClose={onCloseNotification}
 						>
-							{status.message}
+							{notification.message}
 						</ErrorNotification>
 					)}
 				</DialogContent>
@@ -183,19 +183,19 @@ const ActionUserDialog = (props) => {
 	)
 }
 
-ActionUserDialog.propTypes = {
+UserDialog.propTypes = {
 	onDialogClose: PropTypes.func.isRequired,
 	onDialogOpen: PropTypes.func.isRequired,
 	onUserUpdate: PropTypes.func.isRequired,
-	addNewUser: PropTypes.func.isRequired,
+	onAddNewUser: PropTypes.func.isRequired,
 	contextUser: PropTypes.object,
 	isDialogOpen: PropTypes.bool.isRequired,
 }
 
 const mapStateToProps = (state) => {
 	const { contextUser, isDialogOpen } = state.user
-	const { status } = state.auth
-	return { contextUser, isDialogOpen, status }
+	const { notification } = state.auth
+	return { contextUser, isDialogOpen, notification }
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -206,7 +206,7 @@ const mapDispatchToProps = (dispatch) => {
 		onUserUpdate: (userId, data) => {
 			dispatch(updateUser(userId, data))
 		},
-		addNewUser: (data) => {
+		onAddNewUser: (data) => {
 			dispatch(register(data))
 		},
 		onResetAuthStatus: () => {
@@ -215,4 +215,4 @@ const mapDispatchToProps = (dispatch) => {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ActionUserDialog)
+export default connect(mapStateToProps, mapDispatchToProps)(UserDialog)

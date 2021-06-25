@@ -45,7 +45,8 @@ const initialUser = {
 }
 
 const Login = (props) => {
-	const { onLogin, onSingUp, status, onResetAuthStatus, isLoggedIn } = props
+	const { onLogin, onSingUp, notification, onResetAuthStatus, isLoggedIn } =
+		props
 	const router = useRouter()
 	const classes = useStyles()
 
@@ -68,21 +69,21 @@ const Login = (props) => {
 			await onLogin({ username: form.username, password: form.password })
 		}
 	}
-	const onChangeAuthType = () => {
+	const handleChangeAuthType = () => {
 		authType ? setAuthType(false) : setAuthType(true)
 	}
 
-	const handleCloseNotification = () => {
+	const onCloseNotification = () => {
 		onResetAuthStatus()
 	}
 
 	useEffect(() => {
-		if (status && status.type === 'success') {
+		if (notification && notification.type === 'success') {
 			setTimeout(() => {
 				router.push('/dashboard')
 			}, 400)
 		}
-	}, [status])
+	}, [notification])
 
 	return (
 		<Container component="main" maxWidth="xs">
@@ -150,21 +151,21 @@ const Login = (props) => {
 						data-testid="auth-type-button"
 						variant="contained"
 						color="primary"
-						onClick={onChangeAuthType}
+						onClick={handleChangeAuthType}
 						className={classes.submit}
 					>
 						{authType ? 'Login' : 'Sing up'}
 					</Button>
 				</form>
 			</div>
-			{Boolean(status) && status.message && (
+			{Boolean(notification) && notification.message && (
 				<ErrorNotification
 					data-testid="error-notification"
-					open={Boolean(status)}
-					severity={status.type}
-					onClose={handleCloseNotification}
+					open={Boolean(notification)}
+					severity={notification.type}
+					onClose={onCloseNotification}
 				>
-					{status.message}
+					{notification.message}
 				</ErrorNotification>
 			)}
 		</Container>
@@ -173,15 +174,15 @@ const Login = (props) => {
 
 Login.propTypes = {
 	isLoggedIn: PropTypes.bool.isRequired,
-	status: PropTypes.object,
+	notification: PropTypes.object,
 	onLogin: PropTypes.func.isRequired,
 	onSingUp: PropTypes.func.isRequired,
 	onResetAuthStatus: PropTypes.func.isRequired,
 }
 
 function mapStateToProps(state) {
-	const { isLoggedIn, status } = state.auth
-	return { isLoggedIn, status }
+	const { isLoggedIn, notification } = state.auth
+	return { isLoggedIn, notification }
 }
 
 const mapDispatchToProps = (dispatch) => {
