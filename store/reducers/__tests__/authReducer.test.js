@@ -27,7 +27,7 @@ describe('authReducer', () => {
     expect(authReducer(authInitialState, action)).toEqual({
       ...authInitialState,
       isLoading: false,
-      status: {
+      notification: {
         type: 'success',
         message: 'User added successfully',
       }
@@ -45,7 +45,7 @@ describe('authReducer', () => {
       ...authInitialState,
       isLoading: false,
       isLoggedIn: false,
-      status: {
+      notification: {
         type: 'error',
         message: 'test'
       }
@@ -74,7 +74,7 @@ describe('authReducer', () => {
       ...authInitialState,
       isLoggedIn: true,
       isLoading: false,
-      status: {
+      notification: {
         type: 'success'
       },
       user: user
@@ -93,7 +93,7 @@ describe('authReducer', () => {
       isLoggedIn: false,
       isLoading: false,
       user: null,
-      status: {
+      notification: {
         type: 'error',
         message: 'test'
       }

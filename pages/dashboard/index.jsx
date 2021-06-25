@@ -1,9 +1,9 @@
 import React, { useMemo, useEffect } from 'react'
-import Table from '../../components/Table'
+import UserTable from '../../components/UserTable'
 import ActionCell from '../../components/ActionCell'
 import Button from '@material-ui/core/Button'
 import CircularProgress from '@material-ui/core/CircularProgress'
-import ActionUserDialog from '../../components/ActionUserDialog/index'
+import ActionUserDialog from '../../components/UserDialog/index'
 import { connect } from 'react-redux'
 import { getUsers } from '../../store/actions/userActions'
 import { logout } from '../../store/actions/authActions'
@@ -67,7 +67,7 @@ const Dashboard = (props) => {
 						</Button>
 					</div>
 					{users.length ? (
-						<Table columns={columns} data={users} />
+						<UserTable columns={columns} data={users} />
 					) : (
 						<div className={styles.centered} data-testid="no-data">
 							<span>no data available</span>

@@ -1,8 +1,8 @@
 import * as userActions from '../userActions'
 import * as authActions from '../authActions'
 import * as constants from '../../constants'
-import UserService from '../../../pages/api/users'
-import AuthService from '../../../pages/api/auth'
+import UserService from '../../../pages/api/usersApi'
+import AuthService from '../../../pages/api/authApi'
 
 jest.mock('../../../pages/api/users', () => {
   return {

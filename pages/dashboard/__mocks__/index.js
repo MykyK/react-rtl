@@ -14,6 +14,6 @@ export const mockAuthStore = {
     roles: [],
     username: "test"
   },
-  status: null,
+  notification: null,
   isLoading: false
 }

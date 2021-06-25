@@ -7,13 +7,13 @@ import TableContainer from '@material-ui/core/TableContainer'
 import TableFooter from '@material-ui/core/TableFooter'
 import TableHead from '@material-ui/core/TableHead'
 import TablePagination from '@material-ui/core/TablePagination'
-import TablePaginationActions from '../TablePaginationActions'
+import UserTablePagination from '../UserTablePagination'
 import TableRow from '@material-ui/core/TableRow'
 import TableSortLabel from '@material-ui/core/TableSortLabel'
 
 import { usePagination, useSortBy, useTable } from 'react-table'
 
-export const Table = (props) => {
+export const UserTable = (props) => {
 	const { columns, data } = props
 	const {
 		getTableProps,
@@ -34,7 +34,6 @@ export const Table = (props) => {
 
 	const handleChangePage = (event, newPage) => {
 		gotoPage(newPage)
-		console.log(gotoPage(newPage))
 	}
 
 	const handleChangeRowsPerPage = (event) => {
@@ -103,7 +102,7 @@ export const Table = (props) => {
 							}}
 							onChangePage={handleChangePage}
 							onChangeRowsPerPage={handleChangeRowsPerPage}
-							ActionsComponent={TablePaginationActions}
+							ActionsComponent={UserTablePagination}
 						/>
 					</TableRow>
 				</TableFooter>
@@ -112,7 +111,7 @@ export const Table = (props) => {
 	)
 }
 
-Table.propTypes = {
+UserTable.propTypes = {
 	columns: PropTypes.array.isRequired,
 	data: PropTypes.array.isRequired,
 }

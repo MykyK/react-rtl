@@ -1,7 +1,6 @@
 import React from 'react'
-import { fireEvent, cleanup } from '@testing-library/react'
 import { renderWithState } from '../../../utils/renderWithState'
-import Table from '..'
+import UserTable from '..'
 import { tableColumns } from '../../../pages/dashboard'
 
 jest.mock('../../../styles/Dashboard.module.scss', () => {
@@ -10,7 +9,7 @@ jest.mock('../../../styles/Dashboard.module.scss', () => {
 	}
 })
 
-describe('test', () => {
+describe('<UserTable/>', () => {
 	let container
 	const props = {
 		data: [{ username: 'test' }, { username: 'test2' }],
@@ -18,10 +17,10 @@ describe('test', () => {
 	}
 
 	beforeEach(() => {
-		container = renderWithState(<Table {...props} />)
+		container = renderWithState(<UserTable {...props} />)
 	})
 
-	it('test', () => {
+	it('should render with props', () => {
 		const tableContainer = container.render.getByTestId('dashboard-table')
 		expect(tableContainer).toBeInTheDocument()
 	})

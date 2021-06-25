@@ -1,7 +1,7 @@
 import axios from 'axios'
 import UserService, {
   API_USERS_URL
-} from '../users';
+} from '../usersApi';
 
 jest.mock('axios');
 

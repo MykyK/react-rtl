@@ -12,7 +12,7 @@ import {
   SHOW_DIALOG
 } from "../constants";
 
-import UserService from "../../pages/api/users";
+import UserService from "../../pages/api/usersApi";
 
 export const getUsers = () => async (dispatch) => {
   try {
