@@ -7,7 +7,7 @@ import {
   LOGOUT,
   REGISTER_REQUEST,
   RESET_AUTH_NOTIFICATION,
-} from "../constants";
+} from "../actionTypes";
 
 import AuthService from "../../pages/api/authApi";
 

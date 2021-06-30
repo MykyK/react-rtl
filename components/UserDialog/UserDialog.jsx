@@ -11,208 +11,208 @@ import Tooltip from '@material-ui/core/Tooltip'
 import { connect } from 'react-redux'
 import { closeDialog } from '../../store/actions/userActions'
 import {
-	openDialog,
-	updateUser,
-	getUsers,
+  openDialog,
+  updateUser,
+  getUsers,
 } from '../../store/actions/userActions'
 import {
-	register,
-	resetAuthNotification,
+  register,
+  resetAuthNotification,
 } from '../../store/actions/authActions'
 import { useFieldValidation, useSetForm } from '../../utils/customHooks'
 import ErrorNotification from '../ErrorNotification/index'
 import InputField from '../InputField/index'
 
 const initialUser = {
-	username: '',
-	email: '',
-	password: '',
+  username: '',
+  email: '',
+  password: '',
 }
 
 const UserDialog = (props) => {
-	const {
-		contextUser,
-		isDialogOpen,
-		onDialogClose,
-		onDialogOpen,
-		onUserUpdate,
-		onGetUsers,
-		onAddNewUser,
-		onResetAuthStatus,
-		notification,
-	} = props
+  const {
+    contextUser,
+    isDialogOpen,
+    onDialogClose,
+    onDialogOpen,
+    onUserUpdate,
+    onGetUsers,
+    onAddNewUser,
+    onResetAuthStatus,
+    notification,
+  } = props
 
-	const { form, setFormValue, setNewForm } = useSetForm(initialUser)
+  const { form, setFormValue, setNewForm } = useSetForm(initialUser)
 
-	const [userNameError, emailError, passwordError] = useFieldValidation(form)
+  const [userNameError, emailError, passwordError] = useFieldValidation(form)
 
-	const isError = contextUser
-		? userNameError || emailError || passwordError
-		: userNameError || emailError
+  const isError = contextUser
+    ? userNameError || emailError || passwordError
+    : userNameError || emailError
 
-	const [open, setOpen] = useState(isDialogOpen)
+  const [open, setOpen] = useState(isDialogOpen)
 
-	const handleOpen = () => {
-		onDialogOpen()
-	}
+  const handleOpen = () => {
+    onDialogOpen()
+  }
 
-	const handleClose = () => {
-		onDialogClose()
-		onResetAuthStatus()
-	}
+  const handleClose = () => {
+    onDialogClose()
+    onResetAuthStatus()
+  }
 
-	const onCloseNotification = () => {
-		onResetAuthStatus()
-	}
+  const onCloseNotification = () => {
+    onResetAuthStatus()
+  }
 
-	const handleAdd = () => {
-		onAddNewUser(form)
-	}
+  const handleAdd = () => {
+    onAddNewUser(form)
+  }
 
-	const handleUpdate = () => {
-		onUserUpdate({
-			username: form.username,
-			email: form.email,
-			userId: form.id,
-		})
-	}
+  const handleUpdate = () => {
+    onUserUpdate({
+      username: form.username,
+      email: form.email,
+      userId: form.id,
+    })
+  }
 
-	useEffect(() => {
-		setOpen(isDialogOpen)
-	}, [isDialogOpen])
+  useEffect(() => {
+    setOpen(isDialogOpen)
+  }, [isDialogOpen])
 
-	useEffect(() => {
-		if (notification && notification.type === 'success') {
-			setTimeout(() => {
-				onGetUsers()
-				handleClose()
-			}, 400)
-		}
-	}, [notification])
+  useEffect(() => {
+    if (notification && notification.type === 'success') {
+      setTimeout(() => {
+        onGetUsers()
+        handleClose()
+      }, 400)
+    }
+  }, [notification])
 
-	useEffect(() => {
-		if (contextUser) {
-			setNewForm(contextUser)
-		} else {
-			setNewForm(form)
-		}
-	}, [contextUser])
+  useEffect(() => {
+    if (contextUser) {
+      setNewForm(contextUser)
+    } else {
+      setNewForm(form)
+    }
+  }, [contextUser])
 
-	return (
-		<div data-testid="dialog-wrapper">
-			<Tooltip title="Add">
-				<IconButton
-					data-testid="open-dialog-button"
-					aria-label="add"
-					onClick={handleOpen}
-				>
-					<AddIcon />
-				</IconButton>
-			</Tooltip>
-			<Dialog
-				open={open}
-				data-testid="dialog-component"
-				onClose={handleClose}
-				aria-labelledby="form-dialog-title"
-			>
-				<DialogTitle id="form-dialog-title">Add User</DialogTitle>
-				<DialogContent>
-					<InputField
-						margin="dense"
-						error={userNameError}
-						name="username"
-						label="UserName"
-						type="text"
-						fullWidth
-						value={form.username}
-						onChange={setFormValue('username')}
-					/>
-					<InputField
-						margin="dense"
-						error={emailError}
-						name="email"
-						label="Email"
-						type="text"
-						fullWidth
-						value={form.email}
-						onChange={setFormValue('email')}
-					/>
-					{!contextUser && (
-						<InputField
-							data-testid="password-input"
-							error={passwordError}
-							name="password"
-							margin="dense"
-							label="Password"
-							type="password"
-							value={form.password}
-							fullWidth
-							onChange={setFormValue('password')}
-						/>
-					)}
-					{Boolean(notification) && (
-						<ErrorNotification
-							data-testid="error-notification"
-							open={Boolean(notification)}
-							severity={notification.type}
-							onClose={onCloseNotification}
-						>
-							{notification.message}
-						</ErrorNotification>
-					)}
-				</DialogContent>
-				<DialogActions>
-					<Button
-						onClick={handleClose}
-						data-testid="close-dialog-button"
-						color="primary"
-					>
-						Cancel
-					</Button>
-					<Button
-						data-testid="action-type-button"
-						onClick={contextUser ? handleUpdate : handleAdd}
-						color="primary"
-						disabled={Boolean(isError)}
-					>
-						{contextUser ? 'Save' : 'Add'}
-					</Button>
-				</DialogActions>
-			</Dialog>
-		</div>
-	)
+  return (
+    <div data-testid="dialog-wrapper">
+      <Tooltip title="Add">
+        <IconButton
+          data-testid="open-dialog-button"
+          aria-label="add"
+          onClick={handleOpen}
+        >
+          <AddIcon />
+        </IconButton>
+      </Tooltip>
+      <Dialog
+        open={open}
+        data-testid="dialog-component"
+        onClose={handleClose}
+        aria-labelledby="form-dialog-title"
+      >
+        <DialogTitle id="form-dialog-title">Add User</DialogTitle>
+        <DialogContent>
+          <InputField
+            margin="dense"
+            error={userNameError}
+            name="username"
+            label="UserName"
+            type="text"
+            fullWidth
+            value={form.username}
+            onChange={setFormValue('username')}
+          />
+          <InputField
+            margin="dense"
+            error={emailError}
+            name="email"
+            label="Email"
+            type="text"
+            fullWidth
+            value={form.email}
+            onChange={setFormValue('email')}
+          />
+          {!contextUser && (
+            <InputField
+              data-testid="password-input"
+              error={passwordError}
+              name="password"
+              margin="dense"
+              label="Password"
+              type="password"
+              value={form.password}
+              fullWidth
+              onChange={setFormValue('password')}
+            />
+          )}
+          {Boolean(notification) && (
+            <ErrorNotification
+              data-testid="error-notification"
+              open={Boolean(notification)}
+              severity={notification.type}
+              onClose={onCloseNotification}
+            >
+              {notification.message}
+            </ErrorNotification>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={handleClose}
+            data-testid="close-dialog-button"
+            color="primary"
+          >
+            Cancel
+          </Button>
+          <Button
+            data-testid="action-type-button"
+            onClick={contextUser ? handleUpdate : handleAdd}
+            color="primary"
+            disabled={Boolean(isError)}
+          >
+            {contextUser ? 'Save' : 'Add'}
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  )
 }
 
 UserDialog.propTypes = {
-	onDialogClose: PropTypes.func.isRequired,
-	onDialogOpen: PropTypes.func.isRequired,
-	onUserUpdate: PropTypes.func.isRequired,
-	onAddNewUser: PropTypes.func.isRequired,
-	contextUser: PropTypes.object,
-	isDialogOpen: PropTypes.bool.isRequired,
+  onDialogClose: PropTypes.func.isRequired,
+  onDialogOpen: PropTypes.func.isRequired,
+  onUserUpdate: PropTypes.func.isRequired,
+  onAddNewUser: PropTypes.func.isRequired,
+  contextUser: PropTypes.object,
+  isDialogOpen: PropTypes.bool.isRequired,
 }
 
 const mapStateToProps = (state) => {
-	const { contextUser, isDialogOpen } = state.user
-	const { notification } = state.auth
-	return { contextUser, isDialogOpen, notification }
+  const { contextUser, isDialogOpen } = state.user
+  const { notification } = state.auth
+  return { contextUser, isDialogOpen, notification }
 }
 
 const mapDispatchToProps = (dispatch) => {
-	return {
-		onDialogClose: () => dispatch(closeDialog()),
-		onDialogOpen: () => dispatch(openDialog()),
-		onGetUsers: () => dispatch(getUsers()),
-		onUserUpdate: (userId, data) => {
-			dispatch(updateUser(userId, data))
-		},
-		onAddNewUser: (data) => {
-			dispatch(register(data))
-		},
-		onResetAuthStatus: () => {
-			dispatch(resetAuthNotification())
-		},
-	}
+  return {
+    onDialogClose: () => dispatch(closeDialog()),
+    onDialogOpen: () => dispatch(openDialog()),
+    onGetUsers: () => dispatch(getUsers()),
+    onUserUpdate: (userId, data) => {
+      dispatch(updateUser(userId, data))
+    },
+    onAddNewUser: (data) => {
+      dispatch(register(data))
+    },
+    onResetAuthStatus: () => {
+      dispatch(resetAuthNotification())
+    },
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserDialog)

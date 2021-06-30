@@ -1,7 +1,7 @@
 import authReducer, {
   initialState as authInitialState,
 } from '../authReducer';
-import * as constants from '../../constants'
+import * as constants from '../../actionTypes'
 
 
 describe('authReducer', () => {

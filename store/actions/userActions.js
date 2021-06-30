@@ -10,7 +10,7 @@ import {
   DELETE_USER_FAIL,
   HIDE_DIALOG,
   SHOW_DIALOG
-} from "../constants";
+} from "../actionTypes";
 
 import UserService from "../../pages/api/usersApi";
 
