@@ -3,7 +3,7 @@ import {
   REQUIRE_ERROR,
   EMAIL_REGEXP,
   MIN_LENGTH_ERROR
-} from "../store/constants";
+} from "../utils/constants";
 import {
   useState,
 } from 'react';

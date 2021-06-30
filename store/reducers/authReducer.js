@@ -7,7 +7,7 @@ import {
   LOGIN_FAIL,
   LOGOUT,
   RESET_AUTH_NOTIFICATION,
-} from "../constants";
+} from "../actionTypes";
 
 export const getLocalStorage = (item) => {
   if (typeof localStorage !== 'undefined') {

@@ -7,7 +7,7 @@ import {
   DELETE_USER_FAIL,
   SHOW_DIALOG,
   HIDE_DIALOG
-} from "../constants";
+} from "../actionTypes";
 
 export const initialState = {
   users: [],

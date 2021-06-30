@@ -11,7 +11,7 @@ import {
   MIN_LENGTH_ERROR,
   EMAIL_ERROR,
   REQUIRE_ERROR
-} from '../../store/constants';
+} from '../../utils/constants';
 
 describe('useSetForm', () => {
   const initialForm = {

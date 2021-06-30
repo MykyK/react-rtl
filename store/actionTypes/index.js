@@ -21,9 +21,3 @@ export const SHOW_DIALOG = "SHOW_DIALOG";
 export const HIDE_DIALOG = "HIDE_DIALOG";
 export const RESET_AUTH_NOTIFICATION = "RESET_AUTH_NOTIFICATION";
 export const RESET_USER_NOTIFICATION = "RESET_USER_NOTIFICATION";
-
-
-export const EMAIL_ERROR = 'invalid format.Email should be: test@test.com';
-export const MIN_LENGTH_ERROR = 'Username must be longer than 5 characters'
-export const REQUIRE_ERROR = 'field is require'
-export const EMAIL_REGEXP = new RegExp(/\S+@\S+\.\S+/)

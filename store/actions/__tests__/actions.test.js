@@ -1,6 +1,6 @@
 import * as userActions from '../userActions'
 import * as authActions from '../authActions'
-import * as constants from '../../constants'
+import * as constants from '../../actionTypes'
 import UserService from '../../../pages/api/usersApi'
 import AuthService from '../../../pages/api/authApi'
 

@@ -1,7 +1,7 @@
 import userReducer, {
   initialState as userInitialState
 } from '../userReducer';
-import * as constants from '../../constants'
+import * as constants from '../../actionTypes'
 
 describe('authReducer', () => {
   it('should return authInitialState with no state passed in', () => {
