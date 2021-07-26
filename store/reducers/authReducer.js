@@ -16,7 +16,7 @@ export const getLocalStorage = (item) => {
   return null;
 }
 
-const user = getLocalStorage('user')
+const user = JSON.parse(getLocalStorage('user'))
 
 export const initialState = user ? {
   isLoggedIn: true,

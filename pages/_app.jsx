@@ -5,15 +5,16 @@ import { Provider } from 'react-redux'
 import { createWrapper } from 'next-redux-wrapper'
 
 const MyApp = ({ Component, pageProps }) => {
-  const { isLoggedIn } = store.getState().auth
   const router = useRouter()
+  const isLoggedIn = store.getState().auth.isLoggedIn
+
   useEffect(() => {
     isLoggedIn ? router.push('/dashboard') : router.push('/login')
-  }, [isLoggedIn])
+  }, [])
 
   return (
     <Provider store={store}>
-      <Component {...pageProps} />{' '}
+      <Component {...pageProps} />
     </Provider>
   )
 }

@@ -39,8 +39,9 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const initialUser = {
-  username: '',
-  email: '',
+  firstName: '',
+  lastName: '',
+  emailAddress: '',
   password: '',
 }
 
@@ -54,19 +55,26 @@ const Login = (props) => {
 
   const [authType, setAuthType] = useState(false)
 
-  const [userNameError, emailError, passwordError] = useFieldValidation(form)
+  const [firstNameError, lastNameError, emailError, passwordError] =
+    useFieldValidation(form)
 
   const isError = authType
-    ? userNameError || emailError || passwordError
-    : userNameError || passwordError
+    ? firstNameError || lastNameError || emailError || passwordError
+    : emailError || passwordError
 
   const onSubmit = async (e) => {
     e.preventDefault(e)
     if (!authType) {
-      await onLogin({ username: form.username, password: form.password })
+      await onLogin({
+        emailAddress: form.emailAddress,
+        password: form.password,
+      })
     } else {
       await onSingUp(form)
-      await onLogin({ username: form.username, password: form.password })
+      await onLogin({
+        emailAddress: form.emailAddress,
+        password: form.password,
+      })
     }
   }
   const handleChangeAuthType = () => {
@@ -77,13 +85,13 @@ const Login = (props) => {
     onResetAuthStatus()
   }
 
-  useEffect(() => {
-    if (notification && notification.type === 'success') {
-      setTimeout(() => {
-        router.push('/dashboard')
-      }, 400)
-    }
-  }, [notification])
+  // useEffect(() => {
+  //   if (notification && notification.type === 'success') {
+  //     setTimeout(() => {
+  //       router.push('/dashboard')
+  //     }, 400)
+  //   }
+  // }, [notification])
 
   return (
     <Container component="main" maxWidth="xs">
@@ -101,29 +109,42 @@ const Login = (props) => {
           noValidate
           onSubmit={(e) => onSubmit(e)}
         >
+          {authType && (
+            <React.Fragment>
+              <InputField
+                margin="dense"
+                error={firstNameError}
+                name="firstName"
+                label="firstName"
+                type="text"
+                fullWidth
+                value={form.firstName}
+                onChange={setFormValue('firstName')}
+              />
+
+              <InputField
+                margin="dense"
+                error={lastNameError}
+                name="lastName"
+                label="lastName"
+                type="text"
+                fullWidth
+                value={form.lastName}
+                onChange={setFormValue('lastName')}
+              />
+            </React.Fragment>
+          )}
           <InputField
+            data-testid="email-input"
             margin="dense"
-            error={userNameError}
-            name="username"
-            label="UserName"
+            error={emailError}
+            name="emailAddress"
+            label="Email"
             type="text"
             fullWidth
-            value={form.username}
-            onChange={setFormValue('username')}
+            value={form.emailAddress}
+            onChange={setFormValue('emailAddress')}
           />
-          {authType && (
-            <InputField
-              data-testid="email-input"
-              margin="dense"
-              error={emailError}
-              name="email"
-              label="Email"
-              type="text"
-              fullWidth
-              value={form.email}
-              onChange={setFormValue('email')}
-            />
-          )}
           <InputField
             error={passwordError}
             name="password"

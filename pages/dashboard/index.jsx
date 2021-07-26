@@ -1,54 +1,49 @@
 import React, { useMemo, useEffect } from 'react'
-import UserTable from '../../components/UserTable'
-import ActionCell from '../../components/ActionCell'
-import Button from '@material-ui/core/Button'
+import DashboardTable from '../../components/DashboardTable'
 import CircularProgress from '@material-ui/core/CircularProgress'
-import ActionUserDialog from '../../components/UserDialog/index'
+import DashboardDialog from '../../components/DashboardDialog/index'
 import { connect } from 'react-redux'
-import { getUsers } from '../../store/actions/userActions'
-import { logout } from '../../store/actions/authActions'
+import {
+  getUsers,
+  resetUserNotification,
+} from '../../store/actions/userActions'
 import styles from '../../styles/Dashboard.module.scss'
-import { useRouter } from 'next/router'
 import PropTypes from 'prop-types'
+import MainLayout from './../../components/AppHeader/index'
+import { userTable, companiesTable } from './constants'
+import ErrorNotification from './../../components/ErrorNotification/index'
+import { resetAuthNotification } from '../../store/actions/authActions'
 
-export const tableColumns = [
-  {
-    Header: 'USERS LIST',
-    columns: [
-      {
-        Header: 'ID',
-        accessor: 'id',
-      },
-      {
-        Header: 'Username',
-        accessor: 'username',
-      },
-      {
-        Header: 'Email',
-        accessor: 'email',
-      },
-      {
-        Header: 'Action',
-        accessor: 'action',
-        disableSortBy: true,
-        Cell: ({ row }) => <ActionCell row={row} />,
-      },
-    ],
-  },
-]
 const Dashboard = (props) => {
-  const { users, getUsers, isLoading, onLogOut } = props
+  const {
+    users,
+    onGetUsers,
+    isLoading,
+    contextUser,
+    notification,
+    onResetUserNotification,
+  } = props
   useEffect(() => {
-    getUsers()
+    onGetUsers()
   }, [])
 
-  const router = useRouter()
-
-  const handleLogOut = async () => {
-    await onLogOut()
-    router.push('/login')
+  const onCloseNotification = () => {
+    onResetUserNotification()
   }
-  const columns = useMemo(() => tableColumns, [])
+
+  useEffect(() => {
+    if (notification && notification.type === 'success') {
+      setTimeout(() => {
+        onGetUsers()
+        onCloseNotification()
+      }, 400)
+    }
+  }, [notification])
+  const isCompaniesExists =
+    contextUser && contextUser.companies && contextUser.companies.length
+
+  const userColumns = useMemo(() => userTable, [])
+  const companiesColumns = useMemo(() => companiesTable, [])
 
   if (isLoading) {
     return (
@@ -58,23 +53,43 @@ const Dashboard = (props) => {
     )
   } else {
     return (
-      <div data-testid="dashboard-container">
-        <React.Fragment>
-          <div className={styles.spaceBetween}>
-            <ActionUserDialog />
-            <Button data-testid="logout" onClick={handleLogOut}>
-              Logout
-            </Button>
-          </div>
-          {users.length ? (
-            <UserTable columns={columns} data={users} />
-          ) : (
-            <div className={styles.centered} data-testid="no-data">
-              <span>no data available</span>
-            </div>
-          )}
-        </React.Fragment>
-      </div>
+      <MainLayout>
+        <div data-testid="dashboard-container">
+          <React.Fragment>
+            <DashboardDialog />
+            {Boolean(notification) && (
+              <ErrorNotification
+                data-testid="error-notification"
+                open={Boolean(notification)}
+                severity={notification.type}
+                onClose={onCloseNotification}
+              >
+                {notification.message}
+              </ErrorNotification>
+            )}
+            {Boolean(users.length) ? (
+              <React.Fragment>
+                <DashboardTable
+                  columns={userColumns}
+                  data={users}
+                  isSelected
+                  toolBar
+                />
+                {isCompaniesExists && (
+                  <DashboardTable
+                    columns={companiesColumns}
+                    data={contextUser.companies}
+                  />
+                )}
+              </React.Fragment>
+            ) : (
+              <div className={styles.centered} data-testid="no-data">
+                <span>no data available</span>
+              </div>
+            )}
+          </React.Fragment>
+        </div>
+      </MainLayout>
     )
   }
 }
@@ -83,20 +98,21 @@ Dashboard.propsTypes = {
   users: PropTypes.array.isRequired,
   getUsers: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
-  onLogOut: PropTypes.func.isRequired,
 }
 
-function mapStateToProps(state) {
-  const { users, isLoading } = state.user
-  return { users, isLoading }
+const mapStateToProps = (state) => {
+  const { users, isLoading, contextUser, notification } = state.user
+  return { users, isLoading, contextUser, notification }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getUsers: () => {
+    onGetUsers: () => {
       dispatch(getUsers())
     },
-    onLogOut: () => dispatch(logout()),
+    onResetUserNotification: () => {
+      dispatch(resetUserNotification())
+    },
   }
 }
 
