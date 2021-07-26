@@ -1,6 +1,6 @@
 import React from 'react'
 import { renderWithState } from '../../../utils/renderWithState'
-import UserTable from '..'
+import DashboardTable from '..'
 import { tableColumns } from '../../../pages/dashboard'
 
 jest.mock('../../../styles/Dashboard.module.scss', () => {

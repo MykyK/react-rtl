@@ -1,19 +1,33 @@
 import {
+  UPDATE_USER_IN_COMPANY_REQUEST,
+  UPDATE_USER_IN_COMPANY_SUCCESS,
+  UPDATE_USER_IN_COMPANY_FAIL,
+  RESET_USER_NOTIFICATION,
   GET_USERS_REQUEST,
   GET_USERS_SUCCESS,
   GET_USERS_FAIL,
+  UPDATE_USER_REQUEST,
+  UPDATE_USER_SUCCESS,
+  UPDATE_USER_FAIL,
   DELETE_USER_REQUEST,
   DELETE_USER_SUCCESS,
   DELETE_USER_FAIL,
   SHOW_DIALOG,
-  HIDE_DIALOG
+  HIDE_DIALOG,
+  GET_USER_CONTEXT,
+  CREATE_USER_REQUEST,
+  CREATE_USER_SUCCESS,
+  CREATE_USER_FAIL,
 } from "../actionTypes";
 
 export const initialState = {
   users: [],
   contextUser: null,
+  dialogContext: null,
+  dialogType: '',
   isDialogOpen: false,
-  isLoading: true
+  isLoading: true,
+  notification: null
 }
 
 export default function userReducer(state = initialState, action) {
@@ -39,10 +53,35 @@ export default function userReducer(state = initialState, action) {
         ...state,
         isLoading: false
       };
+    case CREATE_USER_REQUEST:
+      return {
+        ...state,
+      };
+    case CREATE_USER_SUCCESS:
+    case CREATE_USER_FAIL:
+      return {
+        ...state,
+        notification: {
+          message: payload.message,
+          type: payload.status
+        },
+      };
+    case UPDATE_USER_REQUEST:
+      return {
+        ...state,
+      };
+    case UPDATE_USER_SUCCESS:
+    case UPDATE_USER_FAIL:
+      return {
+        ...state,
+        notification: {
+          message: payload.message,
+          type: payload.status
+        },
+      };
     case DELETE_USER_REQUEST:
       return {
         ...state,
-        isLoading: true
       };
     case DELETE_USER_SUCCESS:
       return {
@@ -52,18 +91,25 @@ export default function userReducer(state = initialState, action) {
               return user
             }
           }),
-          isLoading: false
+          notification: {
+            message: payload.response.message,
+            type: payload.response.status
+          },
       };
     case DELETE_USER_FAIL:
       return {
         ...state,
         users: null,
-          isLoading: false
+          notification: {
+            message: payload.message,
+            type: payload.status
+          },
       };
     case SHOW_DIALOG:
       return {
         ...state,
-        contextUser: payload ?
+        dialogType: payload.dialogType,
+          dialogContext: payload ?
           payload.user :
           null,
           isDialogOpen: true
@@ -72,6 +118,16 @@ export default function userReducer(state = initialState, action) {
       return {
         ...state,
         isDialogOpen: false
+      };
+    case GET_USER_CONTEXT:
+      return {
+        ...state,
+        contextUser: payload.user
+      };
+    case RESET_USER_NOTIFICATION:
+      return {
+        ...state,
+        notification: null,
       };
     default:
       return state;

@@ -4,11 +4,15 @@ import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import { IconButton } from '@material-ui/core'
 import { connect } from 'react-redux'
-import { deleteUser, openDialog } from '../../store/actions/userActions'
+import {
+  deleteCompanyFromUser,
+  deleteUser,
+  openDialog,
+} from '../../store/actions/userActions'
 import PropTypes from 'prop-types'
 
 const ActionCell = (props) => {
-  const { onDelete, onDialogOpen, row } = props
+  const { onDelete, onDialogOpen, row, userId } = props
   const [anchorEl, setAnchorEl] = useState(null)
 
   const handleClick = (event) => {
@@ -16,11 +20,11 @@ const ActionCell = (props) => {
   }
 
   const handleDelete = () => {
-    onDelete(row.original.id)
+    onDelete({ companyId: row.original.companyId, userId: userId })
   }
 
   const handleEdit = () => {
-    onDialogOpen(row.original)
+    onDialogOpen({ ...row.original, userId }, 'Edit role and status')
   }
 
   const handleClose = () => {
@@ -60,17 +64,25 @@ ActionCell.propsTypes = {
   row: PropTypes.object.isRequired,
   onDelete: PropTypes.func.isRequired,
   onDialogOpen: PropTypes.func.isRequired,
+  userId: PropTypes.number.isRequired,
+}
+
+const mapStateToProps = (state) => {
+  const { contextUser } = state.user
+  return {
+    userId: contextUser.id,
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onDelete: (userId) => {
-      dispatch(deleteUser(userId))
+    onDelete: (data) => {
+      dispatch(deleteCompanyFromUser(data))
     },
-    onDialogOpen: (user) => {
-      dispatch(openDialog(user))
+    onDialogOpen: (dialogContext, dialogType) => {
+      dispatch(openDialog(dialogContext, dialogType))
     },
   }
 }
 
-export default connect(null, mapDispatchToProps)(ActionCell)
+export default connect(mapStateToProps, mapDispatchToProps)(ActionCell)

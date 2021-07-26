@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export const UserTablePagination = (props) => {
+export const DashboardTablePagination = (props) => {
   const classes = useStyles()
   const theme = useTheme()
   const { count, page, rowsPerPage, onChangePage } = props
@@ -89,7 +89,7 @@ export const UserTablePagination = (props) => {
   )
 }
 
-UserTablePagination.propTypes = {
+DashboardTablePagination.propTypes = {
   count: PropTypes.number.isRequired,
   onChangePage: PropTypes.func.isRequired,
   page: PropTypes.number.isRequired,

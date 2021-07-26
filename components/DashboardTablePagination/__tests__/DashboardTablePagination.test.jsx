@@ -2,7 +2,7 @@ import React from 'react'
 import { fireEvent, cleanup, getByTestId } from '@testing-library/react'
 import { renderWithState } from '../../../utils/renderWithState'
 import { useTheme } from '@material-ui/core/styles'
-import UserTablePagination from '..'
+import DashboardTablePagination from '..'
 
 jest.mock('@material-ui/core/styles', () => ({
   ...jest.requireActual('@material-ui/core/styles'),
