@@ -52,12 +52,13 @@ export const useFieldValidation = (form) => {
       if (value.length < 1) {
         return REQUIRE_ERROR
       } else if (value.length < 6) {
-        return MIN_LENGTH_ERROR;
+        return name + ' ' + MIN_LENGTH_ERROR;
       } else {
         return null
       }
     }
   })
+
   return errors
 }
 
@@ -71,18 +72,18 @@ export const useDialogContext = (contextProps) => {
   if (dialogType === 'Edit Company') {
     return {
       companyId: dialogContext.id,
-      firstName: dialogContext.firstName,
-      lastName: dialogContext.lastName,
-      phoneNumber: dialogContext.phoneNumber,
-      emailAddress: dialogContext.emailAddress,
+      companyName: dialogContext.companyName,
+      email: dialogContext.email,
+      corporateNumber: dialogContext.corporateNumber,
+      type: dialogContext.type,
     }
 
   } else if (dialogType === 'Edit role and status') {
     return {
       companyId: dialogContext.companyId,
       userId: dialogContext.userId,
-      companyRole: dialogContext.companyRole,
-      status: dialogContext.status
+      companyRole: dialogContext.companyRole ? dialogContext.companyRole : '',
+      status: dialogContext.status ? dialogContext.status : ''
     }
   } else if (dialogType === 'Edit User') {
     return {
@@ -100,13 +101,12 @@ export const useDialogContext = (contextProps) => {
       emailAddress: '',
       password: ''
     }
-  } else if (dialogType === 'Add Company') {
+  } else if (dialogType === 'Add Company' || dialogType === 'Add company to user') {
     return {
       companyName: "",
       email: "",
       corporateNumber: "",
       type: '',
-      password: ''
     }
   } else {
     return {

@@ -1,0 +1,16 @@
+.companyContainer{
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  .contentWrapper{
+    display: flex;
+    flex-direction: column;
+    span {
+      padding-bottom: 10px;
+      strong{
+        padding-right: 10px;
+      }
+    }
+  }
+}
+

@@ -18,6 +18,9 @@ import {
   CREATE_USER_REQUEST,
   CREATE_USER_SUCCESS,
   CREATE_USER_FAIL,
+  ADD_COMPANY_TO_USER_REQUEST,
+  ADD_COMPANY_TO_USER_SUCCESS,
+  ADD_COMPANY_TO_USER_FAIL,
 } from "../actionTypes";
 
 export const initialState = {
@@ -54,6 +57,10 @@ export default function userReducer(state = initialState, action) {
         isLoading: false
       };
     case CREATE_USER_REQUEST:
+    case DELETE_USER_REQUEST:
+    case UPDATE_USER_REQUEST:
+    case UPDATE_USER_IN_COMPANY_REQUEST:
+    case ADD_COMPANY_TO_USER_REQUEST:
       return {
         ...state,
       };
@@ -66,22 +73,19 @@ export default function userReducer(state = initialState, action) {
           type: payload.status
         },
       };
-    case UPDATE_USER_REQUEST:
-      return {
-        ...state,
-      };
     case UPDATE_USER_SUCCESS:
+    case ADD_COMPANY_TO_USER_SUCCESS:
+    case UPDATE_USER_IN_COMPANY_SUCCESS:
     case UPDATE_USER_FAIL:
+    case ADD_COMPANY_TO_USER_FAIL:
+    case UPDATE_USER_IN_COMPANY_FAIL:
+    case DELETE_USER_FAIL:
       return {
         ...state,
         notification: {
           message: payload.message,
           type: payload.status
         },
-      };
-    case DELETE_USER_REQUEST:
-      return {
-        ...state,
       };
     case DELETE_USER_SUCCESS:
       return {
@@ -94,15 +98,6 @@ export default function userReducer(state = initialState, action) {
           notification: {
             message: payload.response.message,
             type: payload.response.status
-          },
-      };
-    case DELETE_USER_FAIL:
-      return {
-        ...state,
-        users: null,
-          notification: {
-            message: payload.message,
-            type: payload.status
           },
       };
     case SHOW_DIALOG:

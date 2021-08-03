@@ -85,13 +85,13 @@ const Login = (props) => {
     onResetAuthStatus()
   }
 
-  // useEffect(() => {
-  //   if (notification && notification.type === 'success') {
-  //     setTimeout(() => {
-  //       router.push('/dashboard')
-  //     }, 400)
-  //   }
-  // }, [notification])
+  useEffect(() => {
+    if (notification && notification.type === 'success') {
+      setTimeout(() => {
+        router.push('/dashboard')
+      }, 400)
+    }
+  }, [notification])
 
   return (
     <Container component="main" maxWidth="xs">

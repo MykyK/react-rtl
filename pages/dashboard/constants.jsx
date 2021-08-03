@@ -1,6 +1,9 @@
 import React from 'react'
 import ExpandedCell from './../../components/ExpandedCell/ExpandedCell'
 import ActionCell from './../../components/ActionCell/index'
+import Link from 'next/link'
+import ForwardIcon from '@material-ui/icons/Forward'
+import IconButton from '@material-ui/core/IconButton'
 
 export const userTable = [
   {
@@ -54,7 +57,7 @@ export const userTable = [
   },
 ]
 
-export const companiesTable = [
+export const userCompaniesTable = [
   {
     Header: 'Companies LIST',
     columns: [
@@ -74,6 +77,53 @@ export const companiesTable = [
         Header: 'Action',
         accessor: 'action',
         Cell: ({ row }) => <ActionCell row={row} />,
+      },
+    ],
+  },
+]
+
+export const companiesTable = [
+  {
+    Header: 'COMPANIES LIST',
+    columns: [
+      {
+        Header: '#',
+        Cell: ({ row }) => <span>{row.index + 1}</span>,
+      },
+      {
+        Header: 'Company Name',
+        accessor: 'companyName',
+      },
+      {
+        Header: 'Email',
+        accessor: 'email',
+      },
+      {
+        Header: 'Phone',
+        accessor: 'corporateNumber',
+      },
+      {
+        Header: 'Type',
+        accessor: 'type',
+      },
+      {
+        Header: 'Users Quantity',
+        accessor: 'users',
+        Cell: ({ row }) => <span>{row.original.users.length}</span>,
+      },
+      {
+        Header: () => 'action',
+        id: 'link',
+        Cell: ({ row }) => (
+          <Link
+            key={row.original.id}
+            href={`/dashboard/companies/${row.original.id}`}
+          >
+            <IconButton>
+              <ForwardIcon />
+            </IconButton>
+          </Link>
+        ),
       },
     ],
   },

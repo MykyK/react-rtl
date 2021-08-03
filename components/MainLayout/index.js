@@ -1,5 +1,5 @@
 import {
   MainLayout
-} from "./AppHeader";
+} from "./MainLayout";
 
 export default MainLayout;

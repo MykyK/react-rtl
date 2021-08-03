@@ -4,15 +4,15 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import DashboardDialog from '../../components/DashboardDialog/index'
 import { connect } from 'react-redux'
 import {
+  closeDialog,
   getUsers,
   resetUserNotification,
 } from '../../store/actions/userActions'
 import styles from '../../styles/Dashboard.module.scss'
 import PropTypes from 'prop-types'
-import MainLayout from './../../components/AppHeader/index'
-import { userTable, companiesTable } from './constants'
+import MainLayout from '../../components/MainLayout/index'
+import { userTable, companiesTable, userCompaniesTable } from './constants'
 import ErrorNotification from './../../components/ErrorNotification/index'
-import { resetAuthNotification } from '../../store/actions/authActions'
 
 const Dashboard = (props) => {
   const {
@@ -22,7 +22,9 @@ const Dashboard = (props) => {
     contextUser,
     notification,
     onResetUserNotification,
+    onDialogClose,
   } = props
+
   useEffect(() => {
     onGetUsers()
   }, [])
@@ -35,6 +37,7 @@ const Dashboard = (props) => {
     if (notification && notification.type === 'success') {
       setTimeout(() => {
         onGetUsers()
+        onDialogClose()
         onCloseNotification()
       }, 400)
     }
@@ -43,7 +46,7 @@ const Dashboard = (props) => {
     contextUser && contextUser.companies && contextUser.companies.length
 
   const userColumns = useMemo(() => userTable, [])
-  const companiesColumns = useMemo(() => companiesTable, [])
+  const userCompaniesColumns = useMemo(() => userCompaniesTable, [])
 
   if (isLoading) {
     return (
@@ -53,43 +56,41 @@ const Dashboard = (props) => {
     )
   } else {
     return (
-      <MainLayout>
-        <div data-testid="dashboard-container">
-          <React.Fragment>
-            <DashboardDialog />
-            {Boolean(notification) && (
-              <ErrorNotification
-                data-testid="error-notification"
-                open={Boolean(notification)}
-                severity={notification.type}
-                onClose={onCloseNotification}
-              >
-                {notification.message}
-              </ErrorNotification>
-            )}
-            {Boolean(users.length) ? (
-              <React.Fragment>
+      <div data-testid="dashboard-container">
+        <React.Fragment>
+          <DashboardDialog />
+          {Boolean(notification) && (
+            <ErrorNotification
+              data-testid="error-notification"
+              open={Boolean(notification)}
+              severity={notification.type}
+              onClose={onCloseNotification}
+            >
+              {notification.message}
+            </ErrorNotification>
+          )}
+          {Boolean(users.length) ? (
+            <React.Fragment>
+              <DashboardTable
+                columns={userColumns}
+                data={users}
+                isSelected
+                toolBar
+              />
+              {Boolean(isCompaniesExists) && (
                 <DashboardTable
-                  columns={userColumns}
-                  data={users}
-                  isSelected
-                  toolBar
+                  columns={userCompaniesColumns}
+                  data={contextUser.companies}
                 />
-                {isCompaniesExists && (
-                  <DashboardTable
-                    columns={companiesColumns}
-                    data={contextUser.companies}
-                  />
-                )}
-              </React.Fragment>
-            ) : (
-              <div className={styles.centered} data-testid="no-data">
-                <span>no data available</span>
-              </div>
-            )}
-          </React.Fragment>
-        </div>
-      </MainLayout>
+              )}
+            </React.Fragment>
+          ) : (
+            <div className={styles.centered} data-testid="no-data">
+              <span>no data available</span>
+            </div>
+          )}
+        </React.Fragment>
+      </div>
     )
   }
 }
@@ -110,6 +111,7 @@ const mapDispatchToProps = (dispatch) => {
     onGetUsers: () => {
       dispatch(getUsers())
     },
+    onDialogClose: () => dispatch(closeDialog()),
     onResetUserNotification: () => {
       dispatch(resetUserNotification())
     },
