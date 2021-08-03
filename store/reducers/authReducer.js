@@ -58,7 +58,7 @@ export default function authReducer(state = initialState, action) {
           isLoading: false,
           notification: {
             message: payload.message,
-            type: 'error'
+            type: payload.status
           }
       };
     case LOGIN_REQUEST:
@@ -84,7 +84,7 @@ export default function authReducer(state = initialState, action) {
           user: null,
           notification: {
             message: payload.message,
-            type: 'error'
+            type: payload.status
           }
       };
     case LOGOUT:

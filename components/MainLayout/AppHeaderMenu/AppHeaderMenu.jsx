@@ -3,13 +3,14 @@ import Button from '@material-ui/core/Button'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import { connect } from 'react-redux'
-import { logout } from './../../../store/actions/authActions'
+import { logout } from '../../../store/actions/authActions'
 import PropTypes from 'prop-types'
+import { useRouter } from 'next/router'
 
 const AppHeaderMenu = (props) => {
   const { user, onLogOut } = props
   const [anchorEl, setAnchorEl] = React.useState(null)
-
+  const router = useRouter()
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget)
   }
@@ -20,6 +21,7 @@ const AppHeaderMenu = (props) => {
 
   const handleLogout = () => {
     onLogOut()
+    router.push('/login')
   }
 
   return (
@@ -29,7 +31,7 @@ const AppHeaderMenu = (props) => {
         aria-haspopup="true"
         onClick={handleClick}
       >
-        {user.firstName}
+        <span suppressHydrationWarning>{user && user.firstName}</span>
       </Button>
       <Menu
         id="simple-menu"

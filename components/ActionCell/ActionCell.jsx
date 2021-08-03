@@ -6,7 +6,6 @@ import { IconButton } from '@material-ui/core'
 import { connect } from 'react-redux'
 import {
   deleteCompanyFromUser,
-  deleteUser,
   openDialog,
 } from '../../store/actions/userActions'
 import PropTypes from 'prop-types'

@@ -3,7 +3,9 @@ export const API_USERS_URL = "http://localhost:8080/api/users/";
 
 class UserService {
   async getUsers() {
-    const response = await axios.get(API_USERS_URL + "all");
+    const response = await axios.get(API_USERS_URL + "all", {
+      withCredentials: true
+    });
     return response.data;
   }
 
@@ -42,8 +44,12 @@ class UserService {
       userId,
       companyId
     } = data
-    console.log(data)
     const response = await axios.delete(API_USERS_URL + userId + '/delete/' + companyId, data);
+    return response.data;
+  }
+
+  async addCompanyToUser(data) {
+    const response = await axios.post(API_USERS_URL + 'add-company', data);
     return response.data;
   }
 }

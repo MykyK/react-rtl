@@ -13,6 +13,9 @@ import {
   DELETE_COMPANY_FROM_USER_REQUEST,
   DELETE_COMPANY_FROM_USER_SUCCESS,
   DELETE_COMPANY_FROM_USER_FAIL,
+  ADD_COMPANY_TO_USER_REQUEST,
+  ADD_COMPANY_TO_USER_SUCCESS,
+  ADD_COMPANY_TO_USER_FAIL,
   RESET_USER_NOTIFICATION,
   UPDATE_USER_FAIL,
   DELETE_USER_REQUEST,
@@ -49,6 +52,7 @@ export const getUsers = () => async (dispatch) => {
 export const updateUser = (data) => async (dispatch) => {
   try {
     const response = await UserService.updateUser(data)
+    console.log(response)
     dispatch({
       type: UPDATE_USER_REQUEST
     })
@@ -67,12 +71,13 @@ export const updateUser = (data) => async (dispatch) => {
 
 export const updateUserInCompany = (data) => async (dispatch) => {
   try {
-    await UserService.updateUserInCompany(data)
+    const response = await UserService.updateUserInCompany(data)
     dispatch({
       type: UPDATE_USER_IN_COMPANY_REQUEST
     })
     dispatch({
-      type: UPDATE_USER_IN_COMPANY_SUCCESS
+      type: UPDATE_USER_IN_COMPANY_SUCCESS,
+      payload: response
     })
 
   } catch (error) {
@@ -139,7 +144,26 @@ export const deleteUser = (userId) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: DELETE_USER_FAIL,
+      payload: error
+    })
+  }
+};
+
+export const addCompanyToUserAction = (data) => async (dispatch) => {
+  try {
+    const response = await UserService.addCompanyToUser(data)
+    dispatch({
+      type: ADD_COMPANY_TO_USER_REQUEST
+    })
+    dispatch({
+      type: ADD_COMPANY_TO_USER_SUCCESS,
       payload: response
+    })
+
+  } catch (error) {
+    dispatch({
+      type: ADD_COMPANY_TO_USER_FAIL,
+      payload: error
     })
   }
 };
