@@ -87,8 +87,8 @@ export const companiesTable = [
     Header: 'COMPANIES LIST',
     columns: [
       {
-        Header: '#',
-        Cell: ({ row }) => <span>{row.index + 1}</span>,
+        Header: 'ID',
+        Cell: ({ row }) => <span>{row.original.id}</span>,
       },
       {
         Header: 'Company Name',

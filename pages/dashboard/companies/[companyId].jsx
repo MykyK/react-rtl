@@ -15,28 +15,30 @@ const Company = (props) => {
 
   return (
     <div className={styles.companyContainer}>
-      <div className={styles.contentWrapper}>
-        <span>
-          <strong>ID:</strong>
-          {company.id}
-        </span>
-        <span>
-          <strong>NAME:</strong>
-          {company.companyName}
-        </span>
-        <span>
-          <strong>EMAIL:</strong>
-          {company.email}
-        </span>
-        <span>
-          <strong>PHONE:</strong>
-          {company.corporateNumber}
-        </span>
-        <span>
-          <strong>TYPE:</strong>
-          {company.type}
-        </span>
-      </div>
+      {company && (
+        <div className={styles.contentWrapper}>
+          <span>
+            <strong>ID:</strong>
+            {company.id}
+          </span>
+          <span>
+            <strong>NAME:</strong>
+            {company.companyName}
+          </span>
+          <span>
+            <strong>EMAIL:</strong>
+            {company.email}
+          </span>
+          <span>
+            <strong>PHONE:</strong>
+            {company.corporateNumber}
+          </span>
+          <span>
+            <strong>TYPE:</strong>
+            {company.type}
+          </span>
+        </div>
+      )}
     </div>
   )
 }

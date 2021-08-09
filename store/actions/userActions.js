@@ -28,9 +28,9 @@ import {
 
 import UserService from "../../pages/api/usersApi";
 
-export const getUsers = () => async (dispatch) => {
+export const getUsers = (params) => async (dispatch) => {
   try {
-    const users = await UserService.getUsers()
+    const users = await UserService.getUsers(params)
     await dispatch({
       type: GET_USERS_REQUEST
     })
@@ -41,8 +41,10 @@ export const getUsers = () => async (dispatch) => {
       }
     })
   } catch (error) {
+    error.status ? error : error.status = 'error'
     dispatch({
-      type: GET_USERS_FAIL
+      type: GET_USERS_FAIL,
+      payload: error
     })
     return console.error(error);
   }
@@ -62,8 +64,10 @@ export const updateUser = (data) => async (dispatch) => {
     })
 
   } catch (error) {
+    error.status ? error : error.status = 'error'
     dispatch({
-      type: UPDATE_USER_FAIL
+      type: UPDATE_USER_FAIL,
+      payload: error
     })
     return console.error(error);
   }
@@ -81,6 +85,7 @@ export const updateUserInCompany = (data) => async (dispatch) => {
     })
 
   } catch (error) {
+    error.status ? error : error.status = 'error'
     dispatch({
       type: UPDATE_USER_IN_COMPANY_FAIL,
       payload: error
@@ -100,6 +105,7 @@ export const deleteCompanyFromUser = (data) => async (dispatch) => {
     })
 
   } catch (error) {
+    error.status ? error : error.status = 'error'
     dispatch({
       type: DELETE_COMPANY_FROM_USER_FAIL,
       payload: error
@@ -119,6 +125,7 @@ export const createUser = (data) => async (dispatch) => {
       payload: response
     })
   } catch (error) {
+    error.status ? error : error.status = 'error'
     dispatch({
       type: CREATE_USER_FAIL,
       payload: error
@@ -142,6 +149,8 @@ export const deleteUser = (userId) => async (dispatch) => {
     })
 
   } catch (error) {
+    error.status ? error : error.status = 'error'
+    console.log(error)
     dispatch({
       type: DELETE_USER_FAIL,
       payload: error
@@ -161,6 +170,7 @@ export const addCompanyToUserAction = (data) => async (dispatch) => {
     })
 
   } catch (error) {
+    error.status ? error : error.status = 'error'
     dispatch({
       type: ADD_COMPANY_TO_USER_FAIL,
       payload: error

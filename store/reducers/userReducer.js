@@ -24,7 +24,8 @@ import {
 } from "../actionTypes";
 
 export const initialState = {
-  users: [],
+  users: null,
+  isExpanded: false,
   contextUser: null,
   dialogContext: null,
   dialogType: '',
@@ -54,7 +55,11 @@ export default function userReducer(state = initialState, action) {
     case GET_USERS_FAIL:
       return {
         ...state,
-        isLoading: false
+        isLoading: false,
+          notification: {
+            message: payload.message,
+            type: payload.status
+          },
       };
     case CREATE_USER_REQUEST:
     case DELETE_USER_REQUEST:
@@ -76,6 +81,7 @@ export default function userReducer(state = initialState, action) {
     case UPDATE_USER_SUCCESS:
     case ADD_COMPANY_TO_USER_SUCCESS:
     case UPDATE_USER_IN_COMPANY_SUCCESS:
+    case DELETE_USER_SUCCESS:
     case UPDATE_USER_FAIL:
     case ADD_COMPANY_TO_USER_FAIL:
     case UPDATE_USER_IN_COMPANY_FAIL:
@@ -86,19 +92,6 @@ export default function userReducer(state = initialState, action) {
           message: payload.message,
           type: payload.status
         },
-      };
-    case DELETE_USER_SUCCESS:
-      return {
-        ...state,
-        users: [...state.users].filter(user => {
-            if (user.id !== payload.userId) {
-              return user
-            }
-          }),
-          notification: {
-            message: payload.response.message,
-            type: payload.response.status
-          },
       };
     case SHOW_DIALOG:
       return {
@@ -117,7 +110,8 @@ export default function userReducer(state = initialState, action) {
     case GET_USER_CONTEXT:
       return {
         ...state,
-        contextUser: payload.user
+        contextUser: payload.user,
+          isExpanded: !state.isExpanded
       };
     case RESET_USER_NOTIFICATION:
       return {

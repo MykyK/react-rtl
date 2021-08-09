@@ -21,9 +21,14 @@ const DashboardCompanies = (props) => {
     onDialogClose,
   } = props
 
+  const isLoadingCompanies = useMemo(() => isLoading, [isLoading])
+  const companiesColumns = useMemo(() => companiesTable, [])
+
   useEffect(() => {
-    onGetCompanies()
-  }, [])
+    if (!companies) {
+      onGetCompanies()
+    }
+  }, [companies])
 
   const onCloseNotification = () => {
     onResetNotification()
@@ -36,13 +41,10 @@ const DashboardCompanies = (props) => {
         onDialogClose()
         onCloseNotification()
       }, 400)
-      console.log(notification)
     }
   }, [notification])
 
-  const companiesColumns = useMemo(() => companiesTable, [])
-
-  if (isLoading) {
+  if (isLoadingCompanies && !companies) {
     return (
       <div className={styles.loader} data-testid="dashboard-loader">
         <CircularProgress />
@@ -63,11 +65,12 @@ const DashboardCompanies = (props) => {
               {notification.message}
             </ErrorNotification>
           )}
-          {Boolean(companies.length) ? (
+          {companies && Boolean(companies.items) ? (
             <React.Fragment>
               <DashboardTable
                 columns={companiesColumns}
-                data={companies}
+                data={companies.items}
+                pagination={companies}
                 isSelected
                 toolBar
               />

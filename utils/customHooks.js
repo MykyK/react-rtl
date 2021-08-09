@@ -25,10 +25,17 @@ export const useSetForm = (formValues) => {
     setForm(form)
   }
 
+
+  const resetForm = () => {
+    for (const key in form) {
+      form[key] = ''
+    }
+  }
   return {
     form,
     setFormValue,
-    setNewForm
+    setNewForm,
+    resetForm
   };
 };
 

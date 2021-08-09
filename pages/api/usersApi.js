@@ -2,8 +2,12 @@ import axios from "axios";
 export const API_USERS_URL = "http://localhost:8080/api/users/";
 
 class UserService {
-  async getUsers() {
+  async getUsers(params = {
+    size: 5,
+    page: 0
+  }) {
     const response = await axios.get(API_USERS_URL + "all", {
+      params,
       withCredentials: true
     });
     return response.data;

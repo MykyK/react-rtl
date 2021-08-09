@@ -12,14 +12,18 @@ import {
   DELETE_COMPANY_REQUEST,
   DELETE_COMPANY_SUCCESS,
   DELETE_COMPANY_FAIL,
-} from "../actionTypes";
+  CREATE_COMPANY_REQUEST,
+  CREATE_COMPANY_SUCCESS,
+  CREATE_COMPANY_FAIL
+}
+from "../actionTypes";
 
 export const initialState = {
-  companies: [],
+  companies: null,
   notification: null,
   contextCompany: null,
   company: null,
-  isLoading: false
+  isLoading: true
 }
 
 export default function userReducer(state = initialState, action) {
@@ -30,7 +34,12 @@ export default function userReducer(state = initialState, action) {
 
   switch (type) {
     case GET_COMPANIES_REQUEST:
+      return {
+        ...state,
+        isLoading: true
+      };
     case GET_COMPANY_REQUEST:
+    case CREATE_COMPANY_REQUEST:
     case UPDATE_COMPANY_REQUEST:
     case DELETE_COMPANY_REQUEST:
       return {
@@ -43,6 +52,9 @@ export default function userReducer(state = initialState, action) {
           isLoading: false,
       };
     case UPDATE_COMPANY_SUCCESS:
+    case DELETE_COMPANY_SUCCESS:
+    case CREATE_COMPANY_SUCCESS:
+    case CREATE_COMPANY_FAIL:
     case GET_COMPANIES_FAIL:
     case GET_COMPANY_FAIL:
     case UPDATE_COMPANY_FAIL:
@@ -65,19 +77,6 @@ export default function userReducer(state = initialState, action) {
             type: payload.status
           },
           isLoading: false
-      };
-    case DELETE_COMPANY_SUCCESS:
-      return {
-        ...state,
-        companies: [...state.companies].filter(company => {
-            if (company.id !== payload.companyId) {
-              return company
-            }
-          }),
-          notification: {
-            message: payload.response.message,
-            type: payload.response.status
-          },
       };
     case RESET_COMPANY_NOTIFICATION:
       return {

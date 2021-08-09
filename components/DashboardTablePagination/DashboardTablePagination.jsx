@@ -28,7 +28,6 @@ export const DashboardTablePagination = (props) => {
   }
 
   const handleNextButtonClick = (event) => {
-    console.log('test')
     onPageChange(event, page + 1)
   }
 
