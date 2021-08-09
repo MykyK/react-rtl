@@ -46,7 +46,8 @@ const DashboardDialog = (props) => {
     dialogType,
   })
 
-  const { form, setFormValue, setNewForm } = useSetForm(initialContext)
+  const { form, setFormValue, setNewForm, resetForm } =
+    useSetForm(initialContext)
   const errors = useFieldValidation(form)
   const selectHandleChange = (event) => {
     setNewForm({
@@ -67,6 +68,7 @@ const DashboardDialog = (props) => {
 
   const handleClose = () => {
     onDialogClose()
+    resetForm()
   }
 
   const handleAdd = () => {
@@ -100,6 +102,9 @@ const DashboardDialog = (props) => {
 
   useEffect(() => {
     setOpen(isDialogOpen)
+    if (isDialogOpen) {
+      resetForm()
+    }
   }, [isDialogOpen])
 
   useEffect(() => {
@@ -192,7 +197,7 @@ DashboardDialog.propTypes = {
   onAddNewUser: PropTypes.func.isRequired,
   dialogContext: PropTypes.object,
   isDialogOpen: PropTypes.bool.isRequired,
-  companies: PropTypes.array.isRequired,
+  companies: PropTypes.array,
   onUserInCompanyUpdate: PropTypes.func.isRequired,
   onCompanyUpdate: PropTypes.func.isRequired,
   onAddCompanyToUser: PropTypes.func.isRequired,
@@ -203,7 +208,12 @@ DashboardDialog.propTypes = {
 const mapStateToProps = (state) => {
   const { dialogContext, isDialogOpen, dialogType } = state.user
   const { companies } = state.company
-  return { dialogContext, dialogType, isDialogOpen, companies }
+  return {
+    dialogContext,
+    dialogType,
+    isDialogOpen,
+    companies: companies && companies.items,
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {

@@ -10,8 +10,12 @@ class CompanyService {
     return response.data
   }
 
-  async getCompanies() {
+  async getCompanies(params = {
+    page: 0,
+    size: 5
+  }) {
     const response = await axios.get(API_COMPANY_URL + 'all', {
+      params,
       withCredentials: true
     })
     return response.data

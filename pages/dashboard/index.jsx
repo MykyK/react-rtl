@@ -10,8 +10,7 @@ import {
 } from '../../store/actions/userActions'
 import styles from '../../styles/Dashboard.module.scss'
 import PropTypes from 'prop-types'
-import MainLayout from '../../components/MainLayout/index'
-import { userTable, companiesTable, userCompaniesTable } from './constants'
+import { userTable, userCompaniesTable } from './constants'
 import ErrorNotification from './../../components/ErrorNotification/index'
 
 const Dashboard = (props) => {
@@ -19,15 +18,27 @@ const Dashboard = (props) => {
     users,
     onGetUsers,
     isLoading,
+    isExpanded,
     contextUser,
     notification,
     onResetUserNotification,
     onDialogClose,
   } = props
 
+  const isLoadingUsers = useMemo(() => isLoading, [isLoading])
+
+  const isCompaniesExists =
+    contextUser && contextUser.companies && contextUser.companies.length
+
+  const userColumns = useMemo(() => userTable, [])
+
+  const userCompaniesColumns = useMemo(() => userCompaniesTable, [])
+
   useEffect(() => {
-    onGetUsers()
-  }, [])
+    if (!users) {
+      onGetUsers()
+    }
+  }, [users])
 
   const onCloseNotification = () => {
     onResetUserNotification()
@@ -42,13 +53,8 @@ const Dashboard = (props) => {
       }, 400)
     }
   }, [notification])
-  const isCompaniesExists =
-    contextUser && contextUser.companies && contextUser.companies.length
 
-  const userColumns = useMemo(() => userTable, [])
-  const userCompaniesColumns = useMemo(() => userCompaniesTable, [])
-
-  if (isLoading) {
+  if (isLoadingUsers && !users) {
     return (
       <div className={styles.loader} data-testid="dashboard-loader">
         <CircularProgress />
@@ -69,15 +75,16 @@ const Dashboard = (props) => {
               {notification.message}
             </ErrorNotification>
           )}
-          {Boolean(users.length) ? (
+          {users && Boolean(users.items.length) ? (
             <React.Fragment>
               <DashboardTable
                 columns={userColumns}
-                data={users}
+                data={users.items}
+                pagination={users}
                 isSelected
                 toolBar
               />
-              {Boolean(isCompaniesExists) && (
+              {Boolean(isCompaniesExists) && isExpanded && (
                 <DashboardTable
                   columns={userCompaniesColumns}
                   data={contextUser.companies}
@@ -102,8 +109,8 @@ Dashboard.propsTypes = {
 }
 
 const mapStateToProps = (state) => {
-  const { users, isLoading, contextUser, notification } = state.user
-  return { users, isLoading, contextUser, notification }
+  const { users, isLoading, isExpanded, contextUser, notification } = state.user
+  return { users, isLoading, isExpanded, contextUser, notification }
 }
 
 const mapDispatchToProps = (dispatch) => {

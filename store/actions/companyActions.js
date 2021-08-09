@@ -49,10 +49,7 @@ export const deleteCompanyAction = (companyId) => async (dispatch) => {
     })
     dispatch({
       type: DELETE_COMPANY_SUCCESS,
-      payload: {
-        companyId,
-        response
-      }
+      payload: response
     })
   } catch (error) {
     dispatch({
@@ -64,25 +61,28 @@ export const deleteCompanyAction = (companyId) => async (dispatch) => {
 
 export const createCompanyAction = (data) => async (dispatch) => {
   try {
-    await CompanyService.createCompany(data)
+    const response = await CompanyService.createCompany(data)
     dispatch({
       type: CREATE_COMPANY_REQUEST
     })
     dispatch({
-      type: CREATE_COMPANY_SUCCESS
+      type: CREATE_COMPANY_SUCCESS,
+      payload: response
     })
 
   } catch (error) {
+    error.status ? error : error.status = 'error'
     dispatch({
-      type: CREATE_COMPANY_FAIL
+      type: CREATE_COMPANY_FAIL,
+      payload: error
     })
     return console.error(error);
   }
 };
 
-export const getCompaniesAction = () => async (dispatch) => {
+export const getCompaniesAction = (params) => async (dispatch) => {
   try {
-    const companies = await CompanyService.getCompanies()
+    const companies = await CompanyService.getCompanies(params)
     dispatch({
       type: GET_COMPANIES_REQUEST
     })

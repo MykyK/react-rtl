@@ -21,6 +21,10 @@ import {
 } from 'react-table'
 import TableToolBar from '../TableToolBar'
 import ExpandedContent from '../ExpandedContent/index'
+import { connect } from 'react-redux'
+import { getUsers } from './../../store/actions/userActions'
+import { getCompaniesAction } from '../../store/actions/companyActions'
+import { useRouter } from 'next/router'
 
 const IndeterminateCheckbox = forwardRef(({ indeterminate, ...rest }, ref) => {
   const defaultRef = useRef()
@@ -36,8 +40,16 @@ const IndeterminateCheckbox = forwardRef(({ indeterminate, ...rest }, ref) => {
     </React.Fragment>
   )
 })
-export const DashboardTable = (props) => {
-  const { columns, data, isSelected, toolBar } = props
+const DashboardTable = (props) => {
+  const {
+    columns,
+    data,
+    isSelected,
+    toolBar,
+    pagination,
+    onGetUsers,
+    onGetCompanies,
+  } = props
   const {
     getTableProps,
     headerGroups,
@@ -77,16 +89,29 @@ export const DashboardTable = (props) => {
         : null
     }
   )
+  const [pagePag, setPage] = useState(
+    pagination ? pagination.currentPage : pageIndex
+  )
+  const router = useRouter()
+  const isUserContent = router.pathname == '/dashboard'
 
   const selectedRows = page.filter((row) => row.isSelected)
 
   const handleChangePage = (event, newPage) => {
-    gotoPage(newPage)
+    setPage(newPage)
   }
 
   const handleChangeRowsPerPage = (event) => {
     setPageSize(Number(event.target.value))
   }
+
+  useEffect(() => {
+    if (pagination) {
+      isUserContent
+        ? onGetUsers({ size: pageSize, page: pagePag })
+        : onGetCompanies({ size: pageSize, page: pagePag })
+    }
+  }, [pageSize, pagePag])
 
   return (
     <TableContainer data-testid="dashboard-table">
@@ -144,11 +169,11 @@ export const DashboardTable = (props) => {
         <TableFooter>
           <TableRow>
             <TablePagination
-              rowsPerPageOptions={[5, 10, 15]}
+              rowsPerPageOptions={[2, 5, 10]}
               colSpan={3}
-              count={data.length}
+              count={pagination ? pagination.totalItems : data.length}
               rowsPerPage={pageSize}
-              page={pageIndex}
+              page={pagination ? pagePag : pageIndex}
               SelectProps={{
                 inputProps: {
                   'aria-label': 'rows per page',
@@ -171,4 +196,18 @@ DashboardTable.propTypes = {
   data: PropTypes.array.isRequired,
   isSelected: PropTypes.bool,
   toolBar: PropTypes.bool,
+  pagination: PropTypes.object,
 }
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onGetUsers: (params) => {
+      dispatch(getUsers(params))
+    },
+    onGetCompanies: (params) => {
+      dispatch(getCompaniesAction(params))
+    },
+  }
+}
+
+export default connect(null, mapDispatchToProps)(DashboardTable)
