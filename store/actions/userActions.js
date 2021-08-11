@@ -142,15 +142,11 @@ export const deleteUser = (userId) => async (dispatch) => {
     })
     dispatch({
       type: DELETE_USER_SUCCESS,
-      payload: {
-        userId,
-        response
-      }
+      payload: response
     })
 
   } catch (error) {
     error.status ? error : error.status = 'error'
-    console.log(error)
     dispatch({
       type: DELETE_USER_FAIL,
       payload: error

@@ -8,11 +8,7 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { closeDialog, createUser } from '../../store/actions/userActions'
-import {
-  openDialog,
-  updateUser,
-  getUsers,
-} from '../../store/actions/userActions'
+import { openDialog, updateUser } from '../../store/actions/userActions'
 import { useFieldValidation, useSetForm } from '../../utils/customHooks'
 import InputField from '../InputField/index'
 import { useDialogContext } from '../../utils/customHooks'
@@ -30,6 +26,7 @@ const DashboardDialog = (props) => {
     dialogContext,
     dialogType,
     companies,
+    totalItems,
     isDialogOpen,
     onDialogClose,
     onCompanyUpdate,
@@ -93,9 +90,11 @@ const DashboardDialog = (props) => {
     }
 
     if (dialogType === 'Add company to user') {
-      onAddCompanyToUser({
-        ...form,
-        emailAddress: dialogContext.emailAddress,
+      dialogContext.map(async (row) => {
+        await onAddCompanyToUser({
+          ...form,
+          emailAddress: row.original.emailAddress,
+        })
       })
     }
   }
@@ -118,8 +117,11 @@ const DashboardDialog = (props) => {
   useEffect(() => {
     if (dialogType === 'Add company to user') {
       onGetCompanies()
+      if (companies && companies.length < totalItems) {
+        onGetCompanies({ size: totalItems })
+      }
     }
-  }, [dialogType])
+  }, [dialogType, totalItems])
   return (
     <div data-testid="dialog-wrapper">
       <Dialog
@@ -130,7 +132,7 @@ const DashboardDialog = (props) => {
       >
         <DialogTitle id="form-dialog-title">{dialogType}</DialogTitle>
         <DialogContent>
-          {dialogType === 'Add company to user' && (
+          {dialogType === 'Add company to user' && companies && (
             <CompanySelect
               companies={companies}
               form={form}
@@ -195,7 +197,7 @@ DashboardDialog.propTypes = {
   onDialogClose: PropTypes.func.isRequired,
   onUserUpdate: PropTypes.func.isRequired,
   onAddNewUser: PropTypes.func.isRequired,
-  dialogContext: PropTypes.object,
+  dialogContext: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   isDialogOpen: PropTypes.bool.isRequired,
   companies: PropTypes.array,
   onUserInCompanyUpdate: PropTypes.func.isRequired,
@@ -213,6 +215,7 @@ const mapStateToProps = (state) => {
     dialogType,
     isDialogOpen,
     companies: companies && companies.items,
+    totalItems: companies && companies.totalItems,
   }
 }
 
@@ -220,7 +223,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onDialogClose: () => dispatch(closeDialog()),
     onDialogOpen: () => dispatch(openDialog()),
-    onGetCompanies: () => dispatch(getCompaniesAction()),
+    onGetCompanies: (params) => dispatch(getCompaniesAction(params)),
     onUserUpdate: (data) => {
       dispatch(updateUser(data))
     },

@@ -1,6 +1,5 @@
 import React, { useMemo, useEffect } from 'react'
 import DashboardTable from '../../components/DashboardTable'
-import CircularProgress from '@material-ui/core/CircularProgress'
 import DashboardDialog from '../../components/DashboardDialog/index'
 import { connect } from 'react-redux'
 import {
@@ -12,6 +11,7 @@ import styles from '../../styles/Dashboard.module.scss'
 import PropTypes from 'prop-types'
 import { userTable, userCompaniesTable } from './constants'
 import ErrorNotification from './../../components/ErrorNotification/index'
+import Loader from './../../components/Loader'
 
 const Dashboard = (props) => {
   const {
@@ -53,13 +53,8 @@ const Dashboard = (props) => {
       }, 400)
     }
   }, [notification])
-
   if (isLoadingUsers && !users) {
-    return (
-      <div className={styles.loader} data-testid="dashboard-loader">
-        <CircularProgress />
-      </div>
-    )
+    return <Loader />
   } else {
     return (
       <div data-testid="dashboard-container">
