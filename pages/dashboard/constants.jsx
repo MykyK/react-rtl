@@ -10,8 +10,8 @@ export const userTable = [
     Header: 'USERS LIST',
     columns: [
       {
-        Header: '#',
-        Cell: ({ row }) => <span>{row.index + 1}</span>,
+        Header: 'ID',
+        Cell: ({ row }) => <span>{row.original.id}</span>,
       },
       {
         Header: 'Full Name',
@@ -59,7 +59,7 @@ export const userTable = [
 
 export const userCompaniesTable = [
   {
-    Header: 'Companies LIST',
+    Header: 'User Companies List',
     columns: [
       {
         Header: 'Name',

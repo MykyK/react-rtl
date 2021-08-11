@@ -55,7 +55,6 @@ const DashboardTable = (props) => {
     headerGroups,
     prepareRow,
     page,
-    gotoPage,
     setPageSize,
     visibleColumns,
     state: { pageIndex, pageSize },
@@ -89,7 +88,7 @@ const DashboardTable = (props) => {
         : null
     }
   )
-  const [pagePag, setPage] = useState(
+  const [currentPage, setCurrentPage] = useState(
     pagination ? pagination.currentPage : pageIndex
   )
   const router = useRouter()
@@ -98,7 +97,7 @@ const DashboardTable = (props) => {
   const selectedRows = page.filter((row) => row.isSelected)
 
   const handleChangePage = (event, newPage) => {
-    setPage(newPage)
+    setCurrentPage(newPage)
   }
 
   const handleChangeRowsPerPage = (event) => {
@@ -108,10 +107,16 @@ const DashboardTable = (props) => {
   useEffect(() => {
     if (pagination) {
       isUserContent
-        ? onGetUsers({ size: pageSize, page: pagePag })
-        : onGetCompanies({ size: pageSize, page: pagePag })
+        ? onGetUsers({
+            size: pageSize,
+            page: currentPage,
+          })
+        : onGetCompanies({
+            size: pageSize,
+            page: currentPage,
+          })
     }
-  }, [pageSize, pagePag])
+  }, [pageSize, currentPage])
 
   return (
     <TableContainer data-testid="dashboard-table">
@@ -173,7 +178,7 @@ const DashboardTable = (props) => {
               colSpan={3}
               count={pagination ? pagination.totalItems : data.length}
               rowsPerPage={pageSize}
-              page={pagination ? pagePag : pageIndex}
+              page={pagination ? currentPage : pageIndex}
               SelectProps={{
                 inputProps: {
                   'aria-label': 'rows per page',

@@ -23,7 +23,7 @@ const TableToolBar = (props) => {
     onDialogOpen(null, dialogType)
   }
   const handleAddCompanyToUser = () => {
-    onDialogOpen(selectedRows[0].original, 'Add company to user')
+    onDialogOpen(selectedRows, 'Add company to user')
   }
   const handleEdit = () => {
     const dialogType = isUserContent ? 'Edit User' : 'Edit Company'
@@ -45,7 +45,7 @@ const TableToolBar = (props) => {
           data-testid="open-dialog-button"
           aria-label="add-company"
           onClick={handleAddCompanyToUser}
-          disabled={selectedRows.length > 1 || !selectedRows.length}
+          disabled={!selectedRows.length}
         >
           <AddIcon fontSize="small" />
           <BusinessIcon fontSize="small" />

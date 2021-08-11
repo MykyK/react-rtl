@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { connect } from 'react-redux'
 import { getCompanyAction } from '../../../store/actions/companyActions'
 import styles from './Company.module.scss'
+import Loader from './../../../components/Loader/index'
 
 const Company = (props) => {
   const { onGetCompany, company } = props
@@ -15,7 +16,7 @@ const Company = (props) => {
 
   return (
     <div className={styles.companyContainer}>
-      {company && (
+      {company ? (
         <div className={styles.contentWrapper}>
           <span>
             <strong>ID:</strong>
@@ -38,6 +39,8 @@ const Company = (props) => {
             {company.type}
           </span>
         </div>
+      ) : (
+        <Loader />
       )}
     </div>
   )

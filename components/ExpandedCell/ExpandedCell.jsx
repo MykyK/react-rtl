@@ -7,9 +7,13 @@ import PropTypes from 'prop-types'
 
 const ExpandedCell = (props) => {
   const { row, rows, toggleRowExpanded, onGetUserContext } = props
+
   const onExpanded = () => {
-    onGetUserContext(row.original)
     const expandedRow = rows.find((row) => row.isExpanded)
+    onGetUserContext({
+      context: row.original,
+      isExpanded: !Boolean(row.isExpanded),
+    })
     if (expandedRow) {
       const isSubItemOfRow = Boolean(
         expandedRow && row.id.split('.')[0] === expandedRow.id

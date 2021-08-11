@@ -110,8 +110,8 @@ export default function userReducer(state = initialState, action) {
     case GET_USER_CONTEXT:
       return {
         ...state,
-        contextUser: payload.user,
-          isExpanded: !state.isExpanded
+        contextUser: payload.user.context,
+          isExpanded: payload.user.isExpanded
       };
     case RESET_USER_NOTIFICATION:
       return {
