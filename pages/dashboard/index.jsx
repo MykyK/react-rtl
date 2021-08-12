@@ -12,23 +12,25 @@ import PropTypes from 'prop-types'
 import { userTable, userCompaniesTable } from './constants'
 import ErrorNotification from './../../components/ErrorNotification/index'
 import Loader from './../../components/Loader'
+import { getUser } from './../../store/actions/userActions'
 
 const Dashboard = (props) => {
   const {
     users,
+    user,
     onGetUsers,
     isLoading,
     isExpanded,
-    contextUser,
+    onGetUser,
     notification,
+    userCompanies,
     onResetUserNotification,
     onDialogClose,
   } = props
 
   const isLoadingUsers = useMemo(() => isLoading, [isLoading])
 
-  const isCompaniesExists =
-    contextUser && contextUser.companies && contextUser.companies.length
+  const isCompaniesExists = userCompanies && userCompanies.length
 
   const userColumns = useMemo(() => userTable, [])
 
@@ -48,6 +50,10 @@ const Dashboard = (props) => {
     if (notification && notification.type === 'success') {
       setTimeout(() => {
         onGetUsers()
+        onGetUser({
+          userId: user.id,
+          isExpanded: isExpanded,
+        })
         onDialogClose()
         onCloseNotification()
       }, 400)
@@ -82,7 +88,7 @@ const Dashboard = (props) => {
               {Boolean(isCompaniesExists) && isExpanded && (
                 <DashboardTable
                   columns={userCompaniesColumns}
-                  data={contextUser.companies}
+                  data={userCompanies}
                 />
               )}
             </React.Fragment>
@@ -104,14 +110,25 @@ Dashboard.propsTypes = {
 }
 
 const mapStateToProps = (state) => {
-  const { users, isLoading, isExpanded, contextUser, notification } = state.user
-  return { users, isLoading, isExpanded, contextUser, notification }
+  const { users, isLoading, isExpanded, user, userCompanies, notification } =
+    state.user
+  return {
+    users,
+    isLoading,
+    isExpanded,
+    user,
+    userCompanies,
+    notification,
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     onGetUsers: () => {
       dispatch(getUsers())
+    },
+    onGetUser: (param) => {
+      dispatch(getUser(param))
     },
     onDialogClose: () => dispatch(closeDialog()),
     onResetUserNotification: () => {

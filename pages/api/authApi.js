@@ -9,7 +9,6 @@ class AuthService {
     if (response.data.emailAddress) {
       localStorage.setItem("user", JSON.stringify(response.data));
     }
-    console.log(response)
     return response.data;
   }
 

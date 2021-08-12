@@ -19,7 +19,7 @@ const ActionCell = (props) => {
   }
 
   const handleDelete = () => {
-    onDelete({ companyId: row.original.companyId, userId: userId })
+    onDelete({ companyId: row.original.id, userId: userId })
   }
 
   const handleEdit = () => {
@@ -67,9 +67,9 @@ ActionCell.propsTypes = {
 }
 
 const mapStateToProps = (state) => {
-  const { contextUser } = state.user
+  const { user } = state.user
   return {
-    userId: contextUser.id,
+    userId: user.id,
   }
 }
 

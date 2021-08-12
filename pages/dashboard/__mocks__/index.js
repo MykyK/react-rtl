@@ -1,6 +1,6 @@
 export const mockUserStore = {
   users: [],
-  contextUser: null,
+  user: null,
   isDialogOpen: false,
   isLoading: false
 }
