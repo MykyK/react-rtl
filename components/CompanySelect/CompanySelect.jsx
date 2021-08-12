@@ -7,7 +7,6 @@ export const CompanySelect = (props) => {
   const { selectHandleChange, companies } = props
 
   const [selectedOption, setSelectedOption] = React.useState('Company')
-  console.log(companies)
   const onSelectChange = (event) => {
     selectHandleChange(event)
     setSelectedOption(companies[event.target.value].companyName)

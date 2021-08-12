@@ -23,7 +23,9 @@ import {
   DELETE_USER_FAIL,
   HIDE_DIALOG,
   SHOW_DIALOG,
-  GET_USER_CONTEXT
+  GET_USER_REQUEST,
+  GET_USER_SUCCESS,
+  GET_USER_FAIL,
 } from "../actionTypes";
 
 import UserService from "../../pages/api/usersApi";
@@ -54,7 +56,6 @@ export const getUsers = (params) => async (dispatch) => {
 export const updateUser = (data) => async (dispatch) => {
   try {
     const response = await UserService.updateUser(data)
-    console.log(response)
     dispatch({
       type: UPDATE_USER_REQUEST
     })
@@ -96,12 +97,13 @@ export const updateUserInCompany = (data) => async (dispatch) => {
 
 export const deleteCompanyFromUser = (data) => async (dispatch) => {
   try {
-    await UserService.deleteCompanyFromUser(data)
+    const response = await UserService.deleteCompanyFromUser(data)
     dispatch({
       type: DELETE_COMPANY_FROM_USER_REQUEST
     })
     dispatch({
-      type: DELETE_COMPANY_FROM_USER_SUCCESS
+      type: DELETE_COMPANY_FROM_USER_SUCCESS,
+      payload: response
     })
 
   } catch (error) {
@@ -184,13 +186,27 @@ export const openDialog = (user, dialogType) => (dispatch) => {
   })
 };
 
-export const getUserContext = (user) => (dispatch) => {
-  dispatch({
-    type: GET_USER_CONTEXT,
-    payload: {
-      user
-    }
-  })
+export const getUser = (data) => async (dispatch) => {
+  try {
+    const response = await UserService.getUser(data.userId)
+    dispatch({
+      type: GET_USER_REQUEST
+    })
+    dispatch({
+      type: GET_USER_SUCCESS,
+      payload: {
+        ...response,
+        isExpanded: data.isExpanded
+      }
+    })
+
+  } catch (error) {
+    error.status ? error : error.status = 'error'
+    dispatch({
+      type: GET_USER_FAIL,
+      payload: error
+    })
+  }
 };
 
 export const closeDialog = () => (dispatch) => {

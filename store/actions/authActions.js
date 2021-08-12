@@ -23,9 +23,10 @@ export const register = (data) => async (dispatch) => {
     });
     return response
   } catch (error) {
+    error.status ? error : error.status = 'error'
     dispatch({
       type: REGISTER_FAIL,
-      payload: error.response.data
+      payload: error
     });
     return error.response.data
   }
@@ -45,9 +46,10 @@ export const login = (data) => async (dispatch) => {
     });
     return response
   } catch (error) {
+    error.status ? error : error.status = 'error'
     dispatch({
       type: LOGIN_FAIL,
-      payload: error.response.data
+      payload: error
     });
     return error
   }

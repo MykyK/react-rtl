@@ -56,6 +56,7 @@ export const useFieldValidation = (form) => {
     }
     if (name !== 'emailAddress' || name !== 'email') {
       const value = form[name]
+      if (!value) return null
       if (value.length < 1) {
         return REQUIRE_ERROR
       } else if (value.length < 6) {

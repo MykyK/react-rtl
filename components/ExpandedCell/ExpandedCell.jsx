@@ -2,16 +2,16 @@ import React from 'react'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import ExpandLessIcon from '@material-ui/icons/ExpandLess'
 import { connect } from 'react-redux'
-import { getUserContext } from './../../store/actions/userActions'
+import { getUser } from './../../store/actions/userActions'
 import PropTypes from 'prop-types'
 
 const ExpandedCell = (props) => {
-  const { row, rows, toggleRowExpanded, onGetUserContext } = props
+  const { row, rows, toggleRowExpanded, onGetUser } = props
 
   const onExpanded = () => {
     const expandedRow = rows.find((row) => row.isExpanded)
-    onGetUserContext({
-      context: row.original,
+    onGetUser({
+      userId: row.original.id,
       isExpanded: !Boolean(row.isExpanded),
     })
     if (expandedRow) {
@@ -38,8 +38,8 @@ const ExpandedCell = (props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onGetUserContext: (data) => {
-      dispatch(getUserContext(data))
+    onGetUser: (data) => {
+      dispatch(getUser(data))
     },
   }
 }
@@ -48,7 +48,7 @@ ExpandedCell.propTypes = {
   row: PropTypes.object.isRequired,
   rows: PropTypes.array.isRequired,
   toggleRowExpanded: PropTypes.func.isRequired,
-  onGetUserContext: PropTypes.func.isRequired,
+  onGetUser: PropTypes.func.isRequired,
 }
 
 export default connect(null, mapDispatchToProps)(ExpandedCell)

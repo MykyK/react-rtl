@@ -2,6 +2,9 @@ import {
   UPDATE_USER_IN_COMPANY_REQUEST,
   UPDATE_USER_IN_COMPANY_SUCCESS,
   UPDATE_USER_IN_COMPANY_FAIL,
+  DELETE_COMPANY_FROM_USER_REQUEST,
+  DELETE_COMPANY_FROM_USER_SUCCESS,
+  DELETE_COMPANY_FROM_USER_FAIL,
   RESET_USER_NOTIFICATION,
   GET_USERS_REQUEST,
   GET_USERS_SUCCESS,
@@ -21,13 +24,17 @@ import {
   ADD_COMPANY_TO_USER_REQUEST,
   ADD_COMPANY_TO_USER_SUCCESS,
   ADD_COMPANY_TO_USER_FAIL,
+  GET_USER_REQUEST,
+  GET_USER_SUCCESS,
+  GET_USER_FAIL
 } from "../actionTypes";
 
 export const initialState = {
   users: null,
   isExpanded: false,
-  contextUser: null,
+  user: null,
   dialogContext: null,
+  userCompanies: null,
   dialogType: '',
   isDialogOpen: false,
   isLoading: true,
@@ -64,8 +71,10 @@ export default function userReducer(state = initialState, action) {
     case CREATE_USER_REQUEST:
     case DELETE_USER_REQUEST:
     case UPDATE_USER_REQUEST:
+    case GET_USER_REQUEST:
     case UPDATE_USER_IN_COMPANY_REQUEST:
     case ADD_COMPANY_TO_USER_REQUEST:
+    case DELETE_COMPANY_FROM_USER_REQUEST:
       return {
         ...state,
       };
@@ -81,11 +90,14 @@ export default function userReducer(state = initialState, action) {
     case UPDATE_USER_SUCCESS:
     case ADD_COMPANY_TO_USER_SUCCESS:
     case UPDATE_USER_IN_COMPANY_SUCCESS:
+    case DELETE_COMPANY_FROM_USER_SUCCESS:
     case DELETE_USER_SUCCESS:
     case UPDATE_USER_FAIL:
     case ADD_COMPANY_TO_USER_FAIL:
+    case DELETE_COMPANY_FROM_USER_FAIL:
     case UPDATE_USER_IN_COMPANY_FAIL:
     case DELETE_USER_FAIL:
+    case GET_USER_FAIL:
       return {
         ...state,
         notification: {
@@ -107,11 +119,12 @@ export default function userReducer(state = initialState, action) {
         ...state,
         isDialogOpen: false
       };
-    case GET_USER_CONTEXT:
+    case GET_USER_SUCCESS:
       return {
         ...state,
-        contextUser: payload.user.context,
-          isExpanded: payload.user.isExpanded
+        user: payload.data,
+          isExpanded: payload.isExpanded,
+          userCompanies: payload.data.companies,
       };
     case RESET_USER_NOTIFICATION:
       return {

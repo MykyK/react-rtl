@@ -13,6 +13,13 @@ class UserService {
     return response.data;
   }
 
+  async getUser(userId) {
+    const response = await axios.get(API_USERS_URL + userId, {
+      withCredentials: true
+    })
+    return response.data
+  }
+
   async deleteUser(userId) {
     const response = await axios.delete(API_USERS_URL + "delete/" + userId);
     return response.data;
