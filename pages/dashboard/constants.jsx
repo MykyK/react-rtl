@@ -63,15 +63,18 @@ export const userCompaniesTable = [
     columns: [
       {
         Header: 'Name',
-        accessor: 'companyName',
+        accessor: (originalRow) =>
+          originalRow.companyName ? originalRow.companyName : '-',
       },
       {
         Header: 'Role',
-        accessor: 'companyRole',
+        accessor: (originalRow) =>
+          originalRow.companyRole ? originalRow.companyRole : '-',
       },
       {
         Header: 'Status',
-        accessor: 'status',
+        accessor: (originalRow) =>
+          originalRow.status ? originalRow.status : '-',
       },
       {
         Header: 'Action',

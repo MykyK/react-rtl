@@ -7,7 +7,7 @@ export const ErrorNotification = (props) => {
   const { open, onCloseNotification, ...rest } = props
   return (
     <Snackbar
-      data-testid="error-notification-wrapper"
+      data-testid="error-notification"
       open={open}
       onClose={onCloseNotification}
     >
