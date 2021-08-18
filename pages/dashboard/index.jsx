@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import {
   closeDialog,
   getUsers,
+  getUser,
   resetUserNotification,
 } from '../../store/actions/userActions'
 import styles from '../../styles/Dashboard.module.scss'
@@ -12,7 +13,6 @@ import PropTypes from 'prop-types'
 import { userTable, userCompaniesTable } from './constants'
 import ErrorNotification from './../../components/ErrorNotification/index'
 import Loader from './../../components/Loader'
-import { getUser } from './../../store/actions/userActions'
 
 const Dashboard = (props) => {
   const {
@@ -59,7 +59,7 @@ const Dashboard = (props) => {
       }, 400)
     }
   }, [notification])
-  if (isLoadingUsers && !users) {
+  if (isLoadingUsers) {
     return <Loader />
   } else {
     return (
@@ -68,7 +68,6 @@ const Dashboard = (props) => {
           <DashboardDialog />
           {Boolean(notification) && (
             <ErrorNotification
-              data-testid="error-notification"
               open={Boolean(notification)}
               severity={notification.type}
               onClose={onCloseNotification}
@@ -79,6 +78,7 @@ const Dashboard = (props) => {
           {users && Boolean(users.items.length) ? (
             <React.Fragment>
               <DashboardTable
+                data-testid="users-table"
                 columns={userColumns}
                 data={users.items}
                 pagination={users}
@@ -87,6 +87,7 @@ const Dashboard = (props) => {
               />
               {Boolean(isCompaniesExists) && isExpanded && (
                 <DashboardTable
+                  data-testid="user-companies-table"
                   columns={userCompaniesColumns}
                   data={userCompanies}
                 />
@@ -105,8 +106,15 @@ const Dashboard = (props) => {
 
 Dashboard.propsTypes = {
   users: PropTypes.array.isRequired,
-  getUsers: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
+  userCompanies: PropTypes.array,
+  onGetUsers: PropTypes.func.isRequired,
+  onGetUser: PropTypes.func.isRequired,
+  onResetUserNotification: PropTypes.func.isRequired,
+  onDialogClose: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
+  isExpanded: PropTypes.bool.isRequired,
+  notification: PropTypes.object,
 }
 
 const mapStateToProps = (state) => {

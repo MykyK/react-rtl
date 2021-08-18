@@ -181,7 +181,6 @@ const Login = (props) => {
       </div>
       {Boolean(notification) && notification.message && (
         <ErrorNotification
-          data-testid="error-notification"
           open={Boolean(notification)}
           severity={notification.type}
           onClose={onCloseNotification}
