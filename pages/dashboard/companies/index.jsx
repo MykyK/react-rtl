@@ -38,8 +38,8 @@ const DashboardCompanies = (props) => {
     if (notification && notification.type === 'success') {
       setTimeout(() => {
         onGetCompanies()
-        onDialogClose()
         onCloseNotification()
+        onDialogClose()
       }, 400)
     }
   }, [notification])
@@ -53,7 +53,6 @@ const DashboardCompanies = (props) => {
           <DashboardDialog />
           {Boolean(notification) && (
             <ErrorNotification
-              data-testid="error-notification"
               open={Boolean(notification)}
               severity={notification.type}
               onClose={onCloseNotification}
@@ -61,7 +60,7 @@ const DashboardCompanies = (props) => {
               {notification.message}
             </ErrorNotification>
           )}
-          {companies && Boolean(companies.items) ? (
+          {companies && Boolean(companies.items.length) ? (
             <React.Fragment>
               <DashboardTable
                 columns={companiesColumns}
@@ -83,9 +82,12 @@ const DashboardCompanies = (props) => {
 }
 
 DashboardCompanies.propsTypes = {
-  users: PropTypes.array.isRequired,
-  getUsers: PropTypes.func.isRequired,
+  companies: PropTypes.array.isRequired,
+  onGetCompanies: PropTypes.array,
+  onResetNotification: PropTypes.func.isRequired,
+  onDialogClose: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
+  notification: PropTypes.object,
 }
 
 const mapStateToProps = (state) => {

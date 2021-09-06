@@ -1,33 +1,35 @@
 import React from 'react'
 import { cleanup } from '@testing-library/react'
-import Dashboard from '../index'
-import { renderWithState } from '../../../utils/renderWithState'
+import DashboardCompanies from './../index'
+import { renderWithState } from './../../../../utils/renderWithState'
 import {
   mockUserStore,
   mockAuthStore,
   mockCompanyStore,
-} from '../__mocks__/index'
+} from '../../__mocks__/index'
 import {
-  GET_USERS_SUCCESS,
-  GET_USER_SUCCESS,
+  GET_COMPANIES_SUCCESS,
   HIDE_DIALOG,
-  RESET_USER_NOTIFICATION,
-} from '../../../store/actionTypes'
+  RESET_COMPANY_NOTIFICATION,
+} from '../../../../store/actionTypes'
 
-jest.mock('../../../store/actions/userActions.js', () => ({
-  getUsers: () => ({
-    type: 'GET_USERS_SUCCESS',
-    payload: [{ emailAddress: 'test@test.com' }],
+jest.mock('../../../../store/actions/companyActions.js', () => ({
+  getCompaniesAction: () => ({
+    type: 'GET_COMPANIES_SUCCESS',
+    payload: [{ email: 'test@test.com' }],
   }),
-  getUser: () => ({
-    type: 'GET_USER_SUCCESS',
-    payload: [{ emailAddress: 'test@test.com' }],
+  resetCompanyNotification: () => ({
+    type: 'RESET_COMPANY_NOTIFICATION',
   }),
+}))
+
+jest.mock('../../../../store/actions/userActions', () => ({
   closeDialog: () => ({
     type: 'HIDE_DIALOG',
   }),
-  resetUserNotification: () => ({
-    type: 'RESET_USER_NOTIFICATION',
+  getUsers: () => ({
+    type: 'GET_USERS_SUCCESS',
+    payload: [{ emailAddress: 'test@test.com' }],
   }),
 }))
 
@@ -42,7 +44,7 @@ jest.mock('next/router', () => ({
   },
 }))
 
-describe('<Dashboard/> ', () => {
+describe('<DashboardCompanies/> ', () => {
   let container
   describe('when the default props are passed', () => {
     const initialState = {
@@ -53,7 +55,9 @@ describe('<Dashboard/> ', () => {
     initialState.dispatch = jest.fn()
 
     beforeEach(() => {
-      container = renderWithState(<Dashboard />, { initialState })
+      container = renderWithState(<DashboardCompanies />, {
+        initialState,
+      })
     })
 
     afterEach(() => {
@@ -80,14 +84,14 @@ describe('<Dashboard/> ', () => {
   })
   describe('when isLoading prop  is true', () => {
     const initialState = {
-      user: { ...mockUserStore, isLoading: true },
+      user: mockUserStore,
       auth: mockAuthStore,
-      company: mockCompanyStore,
+      company: { ...mockCompanyStore, isLoading: true },
     }
     initialState.dispatch = jest.fn()
 
     beforeEach(() => {
-      container = renderWithState(<Dashboard />, { initialState })
+      container = renderWithState(<DashboardCompanies />, { initialState })
     })
 
     afterEach(() => {
@@ -108,18 +112,18 @@ describe('<Dashboard/> ', () => {
 
   describe('when notification exists  with success type', () => {
     const initialState = {
-      user: {
-        ...mockUserStore,
-        users: { items: [] },
+      user: mockUserStore,
+      auth: mockAuthStore,
+      company: {
+        ...mockCompanyStore,
+        companies: { items: [] },
         notification: { message: 'test', type: 'success' },
       },
-      auth: mockAuthStore,
-      company: mockCompanyStore,
     }
     initialState.dispatch = jest.fn()
 
     beforeEach(() => {
-      container = renderWithState(<Dashboard />, { initialState })
+      container = renderWithState(<DashboardCompanies />, { initialState })
       jest.useFakeTimers()
     })
 
@@ -135,59 +139,45 @@ describe('<Dashboard/> ', () => {
     })
 
     it('should dispatch actions', () => {
-      const container = renderWithState(<Dashboard />, { initialState })
+      const container = renderWithState(<DashboardCompanies />, {
+        initialState,
+      })
       jest.advanceTimersByTime(400)
-      expect(container.store.dispatch).toHaveBeenCalledTimes(4)
+      expect(container.store.dispatch).toHaveBeenCalledTimes(3)
       expect(container.store.dispatch).toHaveBeenCalledWith({
-        type: GET_USERS_SUCCESS,
-        payload: [{ emailAddress: 'test@test.com' }],
+        type: GET_COMPANIES_SUCCESS,
+        payload: [{ email: 'test@test.com' }],
       })
       expect(container.store.dispatch).toHaveBeenCalledWith({
-        type: GET_USER_SUCCESS,
-        payload: [{ emailAddress: 'test@test.com' }],
+        type: RESET_COMPANY_NOTIFICATION,
       })
       expect(container.store.dispatch).toHaveBeenCalledWith({
         type: HIDE_DIALOG,
       })
-      expect(container.store.dispatch).toHaveBeenCalledWith({
-        type: RESET_USER_NOTIFICATION,
-      })
     })
   })
 
-  describe('when users exists', () => {
+  describe('when companies exists', () => {
     const initialState = {
-      user: {
-        ...mockUserStore,
-        users: { items: [{ emailAddress: 'test@test.com' }] },
-      },
+      user: mockUserStore,
       auth: mockAuthStore,
-      company: mockCompanyStore,
+      company: {
+        ...mockCompanyStore,
+        companies: { items: [{ email: 'test@test.com' }] },
+      },
     }
 
-    it('should render only one <DashboardTable/> component with data-testid "dashboard-table" ', () => {
-      const container = renderWithState(<Dashboard />, { initialState })
-      const usersTable = container.render.getByTestId('dashboard-table')
-      expect(usersTable).toBeInTheDocument()
+    beforeEach(() => {
+      container = renderWithState(<DashboardCompanies />, { initialState })
     })
-  })
 
-  describe('when users, userCompanies are exist and isExpanded is equal true', () => {
-    const initialState = {
-      user: {
-        ...mockUserStore,
-        users: { items: [{ emailAddress: 'test@test.com' }] },
-        userCompanies: [{ emailAddress: 'test@test.com' }],
-        isExpanded: true,
-      },
-      auth: mockAuthStore,
-      company: mockCompanyStore,
-    }
+    afterEach(() => {
+      cleanup()
+    })
 
-    it('should render two <DashboardTable/> components with data-testid "dashboard-table" ', () => {
-      const container = renderWithState(<Dashboard />, { initialState })
-      const usersTable = container.render.getAllByTestId('dashboard-table')
-      expect(usersTable.length).toBe(2)
+    it('should render  <DashboardTable/> component with data-testid "dashboard-table" ', () => {
+      const table = container.render.getByTestId('dashboard-table')
+      expect(table).toBeInTheDocument()
     })
   })
 })

@@ -112,7 +112,9 @@ export const companiesTable = [
       {
         Header: 'Users Quantity',
         accessor: 'users',
-        Cell: ({ row }) => <span>{row.original.users.length}</span>,
+        Cell: ({ row }) => (
+          <span>{row.original.users ? row.original.users.length : 0}</span>
+        ),
       },
       {
         Header: () => 'action',

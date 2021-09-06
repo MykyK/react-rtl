@@ -59,7 +59,7 @@ const Dashboard = (props) => {
       }, 400)
     }
   }, [notification])
-  if (isLoadingUsers) {
+  if (isLoadingUsers && !users) {
     return <Loader />
   } else {
     return (

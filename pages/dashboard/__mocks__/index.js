@@ -1,9 +1,4 @@
 export const mockUserStore = {
-  // users: {
-  //   items: [{
-  //     emailAddress: 'test'
-  //   }]
-  // },
   users: null,
   isExpanded: false,
   user: {
@@ -35,11 +30,7 @@ export const mockAuthStore = {
 }
 
 export const mockCompanyStore = {
-  companies: {
-    items: [{
-      email: 'company'
-    }]
-  },
+  companies: null,
   notification: null,
   contextCompany: null,
   company: null,
