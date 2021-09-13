@@ -88,10 +88,10 @@ export const useDialogContext = (contextProps) => {
 
   } else if (dialogType === 'Edit role and status') {
     return {
-      companyId: dialogContext.companyId,
+      companyId: dialogContext.userInCompany.companyId,
       userId: dialogContext.userId,
-      companyRole: dialogContext.companyRole ? dialogContext.companyRole : '',
-      status: dialogContext.status ? dialogContext.status : ''
+      companyRole: dialogContext.userInCompany.companyRole ? dialogContext.userInCompany.companyRole : '',
+      status: dialogContext.userInCompany.status ? dialogContext.userInCompany.status : ''
     }
   } else if (dialogType === 'Edit User') {
     return {

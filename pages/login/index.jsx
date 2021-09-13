@@ -46,7 +46,7 @@ const initialUser = {
 }
 
 const Login = (props) => {
-  const { onLogin, onSingUp, notification, onResetAuthStatus, isLoggedIn } =
+  const { onLogin, onSingUp, authNotification, onResetAuthStatus, isLoggedIn } =
     props
   const router = useRouter()
   const classes = useStyles()
@@ -86,12 +86,12 @@ const Login = (props) => {
   }
 
   useEffect(() => {
-    if (notification && notification.type === 'success') {
+    if (authNotification && authNotification.type === 'success') {
       setTimeout(() => {
         router.push('/dashboard')
       }, 400)
     }
-  }, [notification])
+  }, [authNotification])
 
   return (
     <Container component="main" maxWidth="xs">
@@ -179,13 +179,13 @@ const Login = (props) => {
           </Button>
         </form>
       </div>
-      {Boolean(notification) && notification.message && (
+      {Boolean(authNotification) && authNotification.message && (
         <ErrorNotification
-          open={Boolean(notification)}
-          severity={notification.type}
+          open={Boolean(authNotification)}
+          severity={authNotification.type}
           onClose={onCloseNotification}
         >
-          {notification.message}
+          {authNotification.message}
         </ErrorNotification>
       )}
     </Container>
@@ -194,15 +194,15 @@ const Login = (props) => {
 
 Login.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
-  notification: PropTypes.object,
+  authNotification: PropTypes.object,
   onLogin: PropTypes.func.isRequired,
   onSingUp: PropTypes.func.isRequired,
   onResetAuthStatus: PropTypes.func.isRequired,
 }
 
 function mapStateToProps(state) {
-  const { isLoggedIn, notification } = state.auth
-  return { isLoggedIn, notification }
+  const { isLoggedIn, authNotification } = state.auth
+  return { isLoggedIn, authNotification }
 }
 
 const mapDispatchToProps = (dispatch) => {

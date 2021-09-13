@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Select from '@material-ui/core/Select'
 import InputLabel from '@material-ui/core/InputLabel'
 import PropTypes from 'prop-types'
@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
 export const CompanySelect = (props) => {
   const { selectHandleChange, companies } = props
 
-  const [selectedOption, setSelectedOption] = React.useState('Company')
+  const [selectedOption, setSelectedOption] = useState('Company')
   const onSelectChange = (event) => {
     selectHandleChange(event)
     setSelectedOption(companies[event.target.value].companyName)

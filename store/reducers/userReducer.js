@@ -37,8 +37,8 @@ export const initialState = {
   userCompanies: null,
   dialogType: '',
   isDialogOpen: false,
-  isLoading: true,
-  notification: null
+  isUsersLoading: true,
+  userNotification: null
 }
 
 export default function userReducer(state = initialState, action) {
@@ -51,19 +51,19 @@ export default function userReducer(state = initialState, action) {
     case GET_USERS_REQUEST:
       return {
         ...state,
-        isLoading: true
+        isUsersLoading: true
       };
     case GET_USERS_SUCCESS:
       return {
         ...state,
         users: payload.users.data,
-          isLoading: false
+          isUsersLoading: false
       };
     case GET_USERS_FAIL:
       return {
         ...state,
-        isLoading: false,
-          notification: {
+        isUsersLoading: false,
+          userNotification: {
             message: payload.message,
             type: payload.status
           },
@@ -82,7 +82,7 @@ export default function userReducer(state = initialState, action) {
     case CREATE_USER_FAIL:
       return {
         ...state,
-        notification: {
+        userNotification: {
           message: payload.message,
           type: payload.status
         },
@@ -100,7 +100,7 @@ export default function userReducer(state = initialState, action) {
     case GET_USER_FAIL:
       return {
         ...state,
-        notification: {
+        userNotification: {
           message: payload.message,
           type: payload.status
         },
@@ -129,7 +129,7 @@ export default function userReducer(state = initialState, action) {
     case RESET_USER_NOTIFICATION:
       return {
         ...state,
-        notification: null,
+        userNotification: null,
       };
     default:
       return state;
