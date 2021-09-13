@@ -1,13 +1,16 @@
 import React from 'react'
 import clsx from 'clsx'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
+import PropTypes from 'prop-types'
 import IconButton from '@material-ui/core/IconButton'
 import MenuIcon from '@material-ui/icons/Menu'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
-import { DrawerApp } from './DrawerApp/DrawerApp'
-import AppHeaderMenu from './AppHeaderMenu/index'
+import AppHeaderMenu from './../../components/AppHeaderMenu/index'
+import { connect } from 'react-redux'
+import { logout } from './../../store/actions/authActions'
+import { DrawerApp } from './../../components/DrawerApp/DrawerApp'
 const drawerWidth = 240
 
 const useStyles = makeStyles((theme) => ({
@@ -76,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export const MainLayout = (props) => {
+const MainLayout = (props) => {
   const classes = useStyles()
   const theme = useTheme()
   const [open, setOpen] = React.useState(false)
@@ -111,7 +114,7 @@ export const MainLayout = (props) => {
             <MenuIcon />
           </IconButton>
           <div className={classes.appMenu}>
-            <AppHeaderMenu />
+            <AppHeaderMenu user={props.user} onLogOut={props.onLogOut} />
           </div>
         </Toolbar>
       </AppBar>
@@ -128,3 +131,21 @@ export const MainLayout = (props) => {
     </div>
   )
 }
+
+MainLayout.propsTypes = {
+  user: PropTypes.object.isRequired,
+  onLogOut: PropTypes.func.isRequired,
+}
+
+const mapStateToProps = (state) => {
+  const { user } = state.auth
+  return { user }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onLogOut: () => dispatch(logout()),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MainLayout)

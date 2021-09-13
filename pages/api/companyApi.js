@@ -14,7 +14,7 @@ class CompanyService {
     page: 0,
     size: 5
   }) {
-    const response = await axios.get(API_COMPANY_URL + 'all', {
+    const response = await axios.get(API_COMPANY_URL, {
       params,
       withCredentials: true
     })

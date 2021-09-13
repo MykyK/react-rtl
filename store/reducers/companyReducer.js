@@ -20,10 +20,10 @@ from "../actionTypes";
 
 export const initialState = {
   companies: null,
-  notification: null,
+  companyNotification: null,
   contextCompany: null,
   company: null,
-  isLoading: true
+  isCompaniesLoading: true
 }
 
 export default function userReducer(state = initialState, action) {
@@ -36,7 +36,7 @@ export default function userReducer(state = initialState, action) {
     case GET_COMPANIES_REQUEST:
       return {
         ...state,
-        isLoading: true
+        isCompaniesLoading: true
       };
     case GET_COMPANY_REQUEST:
     case CREATE_COMPANY_REQUEST:
@@ -49,7 +49,7 @@ export default function userReducer(state = initialState, action) {
       return {
         ...state,
         companies: payload.companies.data,
-          isLoading: false,
+          isCompaniesLoading: false,
       };
     case UPDATE_COMPANY_SUCCESS:
     case DELETE_COMPANY_SUCCESS:
@@ -62,26 +62,26 @@ export default function userReducer(state = initialState, action) {
     case UPDATE_COMPANY_FAIL:
       return {
         ...state,
-        notification: {
+        companyNotification: {
             message: payload.message,
             type: payload.status
           },
-          isLoading: false
+          isCompaniesLoading: false
       };
     case GET_COMPANY_SUCCESS:
       return {
         ...state,
         company: payload.company.data,
-          notification: {
+          companyNotification: {
             message: payload.message,
             type: payload.status
           },
-          isLoading: false
+          isCompaniesLoading: false
       };
     case RESET_COMPANY_NOTIFICATION:
       return {
         ...state,
-        notification: null,
+        companyNotification: null,
       };
     default:
       return state;

@@ -6,7 +6,7 @@ class UserService {
     size: 5,
     page: 0
   }) {
-    const response = await axios.get(API_USERS_URL + "all", {
+    const response = await axios.get(API_USERS_URL, {
       params,
       withCredentials: true
     });

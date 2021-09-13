@@ -1,3 +1,5 @@
-import DashboardDialog from './DashboardDialog';
+import {
+  DashboardDialog
+} from './DashboardDialog';
 
 export default DashboardDialog

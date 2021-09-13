@@ -19,7 +19,7 @@ export const ErrorNotification = (props) => {
 }
 
 ErrorNotification.propTypes = {
-  onCloseNotification: PropTypes.func,
+  onCloseNotification: PropTypes.func.isRequired,
   severity: PropTypes.string.isRequired,
   open: PropTypes.bool.isRequired,
 }
