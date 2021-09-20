@@ -1,22 +1,11 @@
 import {
-  GET_COMPANIES_REQUEST,
-  GET_COMPANIES_SUCCESS,
-  GET_COMPANIES_FAIL,
-  GET_COMPANY_REQUEST,
-  GET_COMPANY_SUCCESS,
-  GET_COMPANY_FAIL,
-  UPDATE_COMPANY_REQUEST,
-  UPDATE_COMPANY_SUCCESS,
-  UPDATE_COMPANY_FAIL,
   RESET_COMPANY_NOTIFICATION,
-  DELETE_COMPANY_REQUEST,
-  DELETE_COMPANY_SUCCESS,
-  DELETE_COMPANY_FAIL,
-  CREATE_COMPANY_REQUEST,
-  CREATE_COMPANY_SUCCESS,
-  CREATE_COMPANY_FAIL
 }
 from "../actionTypes";
+
+import {
+  getCombineActions
+} from './../../utils/reduxActions';
 
 export const initialState = {
   companies: null,
@@ -29,61 +18,75 @@ export const initialState = {
 export default function userReducer(state = initialState, action) {
   const {
     type,
-    payload
+    payload,
+    ctx,
+    name
   } = action;
 
-  switch (type) {
-    case GET_COMPANIES_REQUEST:
+
+  const initSuccessCompanyAction = (payload, name) => {
+    if (payload.data && payload.message) {
       return {
         ...state,
-        isCompaniesLoading: true
-      };
-    case GET_COMPANY_REQUEST:
-    case CREATE_COMPANY_REQUEST:
-    case UPDATE_COMPANY_REQUEST:
-    case DELETE_COMPANY_REQUEST:
-      return {
-        ...state,
-      };
-    case GET_COMPANIES_SUCCESS:
-      return {
-        ...state,
-        companies: payload.companies.data,
-          isCompaniesLoading: false,
-      };
-    case UPDATE_COMPANY_SUCCESS:
-    case DELETE_COMPANY_SUCCESS:
-    case CREATE_COMPANY_SUCCESS:
-    case CREATE_COMPANY_FAIL:
-    case GET_COMPANIES_FAIL:
-    case GET_COMPANY_FAIL:
-    case UPDATE_COMPANY_FAIL:
-    case DELETE_COMPANY_FAIL:
-    case UPDATE_COMPANY_FAIL:
-      return {
-        ...state,
+        [name]: payload.data,
+        isCompaniesLoading: false,
         companyNotification: {
-            message: payload.message,
-            type: payload.status
-          },
-          isCompaniesLoading: false
-      };
-    case GET_COMPANY_SUCCESS:
+          message: payload.message,
+          type: payload.status
+        },
+      }
+    } else if (!payload.data && payload.message) {
       return {
         ...state,
-        company: payload.company.data,
-          companyNotification: {
-            message: payload.message,
-            type: payload.status
-          },
-          isCompaniesLoading: false
-      };
-    case RESET_COMPANY_NOTIFICATION:
+        isCompaniesLoading: false,
+        companyNotification: {
+          message: payload.message,
+          type: payload.status
+        },
+      }
+    } else if (payload.data && !payload.message) {
       return {
         ...state,
-        companyNotification: null,
-      };
-    default:
-      return state;
+        [name]: payload.data,
+        isCompaniesLoading: false,
+      }
+    } else {
+      return {
+        ...state,
+        isCompaniesLoading: false,
+      }
+    }
   }
+
+  const getUserReducerStructure = (actionTypes) => {
+    switch (type) {
+      case actionTypes.request:
+        return {
+          ...state,
+          isCompaniesLoading: true
+        };
+      case actionTypes.success:
+        return initSuccessCompanyAction(payload, name)
+      case actionTypes.fail:
+        return {
+          ...state,
+          isCompaniesLoading: false,
+            companyNotification: {
+              message: payload.message,
+              type: payload.status
+            },
+        };
+      case RESET_COMPANY_NOTIFICATION:
+        return {
+          ...state,
+          companyNotification: null,
+        };
+      default:
+        return {
+          ...state
+        }
+    }
+  }
+
+  return getCombineActions(ctx, getUserReducerStructure)
 }

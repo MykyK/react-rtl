@@ -106,7 +106,7 @@ DashboardTable.propTypes = {
   visibleColumns: PropTypes.array.isRequired,
   headerGroups: PropTypes.array.isRequired,
   data: PropTypes.array.isRequired,
-  pagination: PropTypes.object.isRequired,
+  pagination: PropTypes.object,
   pageSize: PropTypes.number.isRequired,
   pageIndex: PropTypes.number.isRequired,
   currentPage: PropTypes.number.isRequired,

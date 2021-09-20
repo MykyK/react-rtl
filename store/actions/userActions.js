@@ -1,179 +1,56 @@
 import {
-  GET_USERS_REQUEST,
-  GET_USERS_SUCCESS,
-  GET_USERS_FAIL,
-  CREATE_USER_REQUEST,
-  CREATE_USER_SUCCESS,
-  CREATE_USER_FAIL,
-  UPDATE_USER_REQUEST,
-  UPDATE_USER_SUCCESS,
-  UPDATE_USER_IN_COMPANY_REQUEST,
-  UPDATE_USER_IN_COMPANY_SUCCESS,
-  UPDATE_USER_IN_COMPANY_FAIL,
-  DELETE_COMPANY_FROM_USER_REQUEST,
-  DELETE_COMPANY_FROM_USER_SUCCESS,
-  DELETE_COMPANY_FROM_USER_FAIL,
-  ADD_COMPANY_TO_USER_REQUEST,
-  ADD_COMPANY_TO_USER_SUCCESS,
-  ADD_COMPANY_TO_USER_FAIL,
+  GET_USERS,
+  CREATE_USER,
+  UPDATE_USER,
+  UPDATE_USER_IN_COMPANY,
+  DELETE_COMPANY_FROM_USER,
+  ADD_COMPANY_TO_USER,
   RESET_USER_NOTIFICATION,
-  UPDATE_USER_FAIL,
-  DELETE_USER_REQUEST,
-  DELETE_USER_SUCCESS,
-  DELETE_USER_FAIL,
+  DELETE_USER,
+  GET_EXPANDED_STATUS,
   HIDE_DIALOG,
   SHOW_DIALOG,
-  GET_USER_REQUEST,
-  GET_USER_SUCCESS,
-  GET_USER_FAIL,
+  GET_USER,
 } from "../actionTypes";
 
 import UserService from "../../pages/api/usersApi";
+import {
+  actionPromise
+} from "../../utils/reduxActions";
+
 
 export const getUsers = (params) => async (dispatch) => {
-  try {
-    const users = await UserService.getUsers(params)
-    await dispatch({
-      type: GET_USERS_REQUEST
-    })
-    await dispatch({
-      type: GET_USERS_SUCCESS,
-      payload: {
-        users
-      }
-    })
-  } catch (error) {
-    error.status ? error : error.status = 'error'
-    dispatch({
-      type: GET_USERS_FAIL,
-      payload: error
-    })
-    return console.error(error);
-  }
+  dispatch(actionPromise(await UserService.getUsers(params), 'users', GET_USERS))
 };
 
 
 export const updateUser = (data) => async (dispatch) => {
-  try {
-    const response = await UserService.updateUser(data)
-    dispatch({
-      type: UPDATE_USER_REQUEST
-    })
-    dispatch({
-      type: UPDATE_USER_SUCCESS,
-      payload: response
-    })
-
-  } catch (error) {
-    error.status ? error : error.status = 'error'
-    dispatch({
-      type: UPDATE_USER_FAIL,
-      payload: error
-    })
-    return console.error(error);
-  }
+  dispatch(actionPromise(await UserService.updateUser(data), 'updatedUser', UPDATE_USER))
 };
 
 export const updateUserInCompany = (data) => async (dispatch) => {
-  try {
-    const response = await UserService.updateUserInCompany(data)
-    dispatch({
-      type: UPDATE_USER_IN_COMPANY_REQUEST
-    })
-    dispatch({
-      type: UPDATE_USER_IN_COMPANY_SUCCESS,
-      payload: response
-    })
-
-  } catch (error) {
-    error.status ? error : error.status = 'error'
-    dispatch({
-      type: UPDATE_USER_IN_COMPANY_FAIL,
-      payload: error
-    })
-    return console.error(error);
-  }
+  dispatch(actionPromise(await UserService.updateUserInCompany(data), 'updateUserInCompany', UPDATE_USER_IN_COMPANY))
 };
 
 export const deleteCompanyFromUser = (data) => async (dispatch) => {
-  try {
-    const response = await UserService.deleteCompanyFromUser(data)
-    dispatch({
-      type: DELETE_COMPANY_FROM_USER_REQUEST
-    })
-    dispatch({
-      type: DELETE_COMPANY_FROM_USER_SUCCESS,
-      payload: response
-    })
-
-  } catch (error) {
-    error.status ? error : error.status = 'error'
-    dispatch({
-      type: DELETE_COMPANY_FROM_USER_FAIL,
-      payload: error
-    })
-    return console.error(error);
-  }
+  dispatch(actionPromise(await UserService.deleteCompanyFromUser(data), 'deleteCompanyFromUser', DELETE_COMPANY_FROM_USER))
 };
 
 export const createUser = (data) => async (dispatch) => {
-  try {
-    const response = await UserService.createUser(data)
-    dispatch({
-      type: CREATE_USER_REQUEST
-    })
-    dispatch({
-      type: CREATE_USER_SUCCESS,
-      payload: response
-    })
-  } catch (error) {
-    error.status ? error : error.status = 'error'
-    dispatch({
-      type: CREATE_USER_FAIL,
-      payload: error
-    })
-    return console.error(error);
-  }
+  dispatch(actionPromise(await UserService.createUser(data), 'createUser', CREATE_USER))
+
 };
 
 export const deleteUser = (userId) => async (dispatch) => {
-  try {
-    const response = await UserService.deleteUser(userId)
-    dispatch({
-      type: DELETE_USER_REQUEST
-    })
-    dispatch({
-      type: DELETE_USER_SUCCESS,
-      payload: response
-    })
+  dispatch(actionPromise(await UserService.deleteUser(userId), 'deletedUser', DELETE_USER))
+};
 
-  } catch (error) {
-    error.status ? error : error.status = 'error'
-    dispatch({
-      type: DELETE_USER_FAIL,
-      payload: error
-    })
-  }
+export const getUser = (userId) => async (dispatch) => {
+  dispatch(actionPromise(await UserService.getUser(userId), 'user', GET_USER))
 };
 
 export const addCompanyToUserAction = (data) => async (dispatch) => {
-  try {
-    const response = await UserService.addCompanyToUser(data)
-    dispatch({
-      type: ADD_COMPANY_TO_USER_REQUEST
-    })
-    dispatch({
-      type: ADD_COMPANY_TO_USER_SUCCESS,
-      payload: response
-    })
-
-  } catch (error) {
-    error.status ? error : error.status = 'error'
-    dispatch({
-      type: ADD_COMPANY_TO_USER_FAIL,
-      payload: error
-    })
-  }
+  dispatch(actionPromise(await UserService.addCompanyToUser(data), 'addCompanyToUser', ADD_COMPANY_TO_USER))
 };
 
 export const openDialog = (user, dialogType) => (dispatch) => {
@@ -186,34 +63,18 @@ export const openDialog = (user, dialogType) => (dispatch) => {
   })
 };
 
-export const getUser = (data) => async (dispatch) => {
-  try {
-    const response = await UserService.getUser(data.userId)
-    dispatch({
-      type: GET_USER_REQUEST
-    })
-    dispatch({
-      type: GET_USER_SUCCESS,
-      payload: {
-        ...response,
-        isExpanded: data.isExpanded
-      }
-    })
-
-  } catch (error) {
-    error.status ? error : error.status = 'error'
-    dispatch({
-      type: GET_USER_FAIL,
-      payload: error
-    })
-  }
-};
-
 export const closeDialog = () => (dispatch) => {
   dispatch({
     type: HIDE_DIALOG,
   })
 };
+
+export const getRowExpandedStatus = (isExpanded) => (dispatch) => {
+  dispatch({
+    type: GET_EXPANDED_STATUS,
+    payload: isExpanded
+  })
+}
 
 export const resetUserNotification = () => (dispatch) => {
   dispatch({
