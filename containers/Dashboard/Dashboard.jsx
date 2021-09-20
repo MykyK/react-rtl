@@ -6,7 +6,10 @@ import {
   getUser,
   resetUserNotification,
 } from '../../store/actions/userActions'
-import { getCompaniesAction } from '../../store/actions/companyActions'
+import {
+  getCompaniesAction,
+  resetCompanyNotification,
+} from '../../store/actions/companyActions'
 import PropTypes from 'prop-types'
 import { userTable, userCompaniesTable, companiesTable } from './tableStructure'
 import UsersDashboard from '../../components/UsersDashboard/index'
@@ -22,7 +25,6 @@ const Dashboard = (props) => {
     onGetUsers,
     isExpanded,
     onGetUser,
-    userCompanies,
     onResetUserNotification,
     userNotification,
     isUsersLoading,
@@ -36,7 +38,8 @@ const Dashboard = (props) => {
 
   const router = useRouter()
 
-  const isCompaniesExists = userCompanies && Boolean(userCompanies.length)
+  const isCompaniesExists =
+    user && user.companies && Boolean(user.companies.length)
 
   const isUserContent = router.asPath == '/dashboard'
 
@@ -48,11 +51,11 @@ const Dashboard = (props) => {
 
   const usersDashboardProps = {
     users,
+    userCompanies: user && user.companies,
     isUsersLoading,
     onGetUsers,
     userColumns,
     isCompaniesExists,
-    userCompanies,
     isExpanded,
     userCompaniesColumns,
   }
@@ -67,6 +70,7 @@ const Dashboard = (props) => {
 
   const onCloseNotification = () => {
     onResetUserNotification()
+    onResetCompanyNotification()
   }
 
   useEffect(() => {
@@ -76,14 +80,17 @@ const Dashboard = (props) => {
         onDialogClose()
         onCloseNotification()
         if (user) {
-          onGetUser({
-            userId: user.id,
-            isExpanded: isExpanded,
-          })
+          onGetUser(user.id)
         }
       }, 400)
+    } else if (companyNotification && companyNotification.type === 'success') {
+      setTimeout(() => {
+        onGetCompanies()
+        onDialogClose()
+        onCloseNotification()
+      }, 400)
     }
-  }, [userNotification])
+  }, [userNotification, companyNotification])
 
   return (
     <div data-testid="dashboard-container">
@@ -122,14 +129,8 @@ Dashboard.propsTypes = {
 }
 
 const mapStateToProps = (state) => {
-  const {
-    users,
-    isUsersLoading,
-    isExpanded,
-    user,
-    userCompanies,
-    userNotification,
-  } = state.user
+  const { users, isUsersLoading, isExpanded, user, userNotification } =
+    state.user
 
   const { companies, isCompaniesLoading, companyNotification } = state.company
   return {
@@ -141,7 +142,6 @@ const mapStateToProps = (state) => {
     user,
     userNotification,
     companyNotification,
-    userCompanies,
   }
 }
 

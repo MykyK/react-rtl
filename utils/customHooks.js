@@ -77,52 +77,53 @@ export const useDialogContext = (contextProps) => {
     dialogContext,
     dialogType
   } = contextProps
-  if (dialogType === 'Edit Company') {
-    return {
-      companyId: dialogContext.id,
-      companyName: dialogContext.companyName,
-      email: dialogContext.email,
-      corporateNumber: dialogContext.corporateNumber,
-      type: dialogContext.type,
-    }
-
-  } else if (dialogType === 'Edit role and status') {
-    return {
-      companyId: dialogContext.userInCompany.companyId,
-      userId: dialogContext.userId,
-      companyRole: dialogContext.userInCompany.companyRole ? dialogContext.userInCompany.companyRole : '',
-      status: dialogContext.userInCompany.status ? dialogContext.userInCompany.status : ''
-    }
-  } else if (dialogType === 'Edit User') {
-    return {
-      userId: dialogContext.id,
-      firstName: dialogContext.firstName,
-      lastName: dialogContext.lastName,
-      phoneNumber: dialogContext.phoneNumber,
-      emailAddress: dialogContext.emailAddress,
-    }
-  } else if (dialogType === 'Add User') {
-    return {
-      firstName: "",
-      lastName: "",
-      phoneNumber: "",
-      emailAddress: '',
-      password: ''
-    }
-  } else if (dialogType === 'Add Company' || dialogType === 'Add company to user') {
-    return {
-      companyName: "",
-      email: "",
-      corporateNumber: "",
-      type: '',
-    }
-  } else {
-    return {
-      firstName: "",
-      lastName: "",
-      phoneNumber: "",
-      emailAddress: '',
-      password: ''
-    }
+  switch (dialogType) {
+    case 'Edit Company':
+      return {
+        companyId: dialogContext.id,
+          companyName: dialogContext.companyName,
+          email: dialogContext.email,
+          corporateNumber: dialogContext.corporateNumber,
+          type: dialogContext.type,
+      }
+      case 'Edit role and status':
+        return {
+          companyId: dialogContext.userInCompany.companyId,
+            userId: dialogContext.userId,
+            companyRole: dialogContext.userInCompany.companyRole ? dialogContext.userInCompany.companyRole : '',
+            status: dialogContext.userInCompany.status ? dialogContext.userInCompany.status : ''
+        }
+        case 'Edit User':
+          return {
+            userId: dialogContext.id,
+              firstName: dialogContext.firstName,
+              lastName: dialogContext.lastName,
+              phoneNumber: dialogContext.phoneNumber,
+              emailAddress: dialogContext.emailAddress,
+          }
+          case 'Add User':
+            return {
+              firstName: "",
+                lastName: "",
+                phoneNumber: "",
+                emailAddress: '',
+                password: ''
+            }
+            case 'Add Company':
+            case 'Add company to user':
+              return {
+                companyName: "",
+                  email: "",
+                  corporateNumber: "",
+                  type: '',
+              }
+              default:
+                return {
+                  firstName: "",
+                    lastName: "",
+                    phoneNumber: "",
+                    emailAddress: '',
+                    password: ''
+                }
   }
 }

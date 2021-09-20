@@ -1,131 +1,38 @@
 import {
-  GET_COMPANIES_REQUEST,
-  GET_COMPANIES_SUCCESS,
-  GET_COMPANIES_FAIL,
-  GET_COMPANY_REQUEST,
-  GET_COMPANY_SUCCESS,
-  GET_COMPANY_FAIL,
-  UPDATE_COMPANY_REQUEST,
-  UPDATE_COMPANY_SUCCESS,
-  UPDATE_COMPANY_FAIL,
-  DELETE_COMPANY_REQUEST,
-  DELETE_COMPANY_SUCCESS,
-  DELETE_COMPANY_FAIL,
-  CREATE_COMPANY_REQUEST,
-  CREATE_COMPANY_SUCCESS,
-  CREATE_COMPANY_FAIL,
+  GET_COMPANIES,
+  GET_COMPANY,
+  UPDATE_COMPANY,
+  DELETE_COMPANY,
+  CREATE_COMPANY,
   RESET_COMPANY_NOTIFICATION,
 } from "../actionTypes";
 
 import CompanyService from "../../pages/api/companyApi";
 
+import {
+  actionPromise
+} from "../../utils/reduxActions";
 
 
 export const updateCompany = (data) => async (dispatch) => {
-  try {
-    const response = await CompanyService.updateCompany(data)
-    dispatch({
-      type: UPDATE_COMPANY_REQUEST
-    })
-    dispatch({
-      type: UPDATE_COMPANY_SUCCESS,
-      payload: response
-    })
-
-  } catch (error) {
-    dispatch({
-      type: UPDATE_COMPANY_FAIL,
-      payload: error
-    })
-    return console.error(error);
-  }
+  dispatch(actionPromise(await CompanyService.updateCompany(data), 'updateCompany', UPDATE_COMPANY))
 };
 
+
 export const deleteCompanyAction = (companyId) => async (dispatch) => {
-  try {
-    const response = await CompanyService.deleteCompany(companyId)
-    dispatch({
-      type: DELETE_COMPANY_REQUEST
-    })
-    dispatch({
-      type: DELETE_COMPANY_SUCCESS,
-      payload: response
-    })
-  } catch (error) {
-    dispatch({
-      type: DELETE_COMPANY_FAIL,
-      payload: error
-    })
-  }
+  dispatch(actionPromise(await CompanyService.deleteCompany(companyId), 'deleteCompany', DELETE_COMPANY))
 };
 
 export const createCompanyAction = (data) => async (dispatch) => {
-  try {
-    const response = await CompanyService.createCompany(data)
-    dispatch({
-      type: CREATE_COMPANY_REQUEST
-    })
-    dispatch({
-      type: CREATE_COMPANY_SUCCESS,
-      payload: response
-    })
-
-  } catch (error) {
-    error.status ? error : error.status = 'error'
-    dispatch({
-      type: CREATE_COMPANY_FAIL,
-      payload: error
-    })
-    return console.error(error);
-  }
+  dispatch(actionPromise(await CompanyService.createCompany(data), 'createCompany', CREATE_COMPANY))
 };
 
 export const getCompaniesAction = (params) => async (dispatch) => {
-  try {
-    const companies = await CompanyService.getCompanies(params)
-    dispatch({
-      type: GET_COMPANIES_REQUEST
-    })
-    dispatch({
-      type: GET_COMPANIES_SUCCESS,
-      payload: {
-        companies
-      }
-    })
-
-  } catch (error) {
-    dispatch({
-      type: GET_COMPANIES_FAIL,
-      payload: {
-        error
-      }
-    })
-    return console.error(error);
-  }
+  dispatch(actionPromise(await CompanyService.getCompanies(params), 'companies', GET_COMPANIES))
 };
 
 export const getCompanyAction = (companyId) => async (dispatch) => {
-  try {
-    const company = await CompanyService.getCompany(companyId)
-    dispatch({
-      type: GET_COMPANY_REQUEST
-    })
-    dispatch({
-      type: GET_COMPANY_SUCCESS,
-      payload: {
-        company
-      }
-    })
-
-  } catch (error) {
-    dispatch({
-      type: GET_COMPANY_FAIL,
-      payload: {
-        error
-      }
-    })
-    return console.error(error);
-  }
+  dispatch(actionPromise(await CompanyService.getCompany(companyId), 'company', GET_COMPANY))
 };
 
 
