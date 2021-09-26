@@ -20,7 +20,8 @@ export default function userReducer(state = initialState, action) {
     type,
     payload,
     ctx,
-    name
+    name,
+    error
   } = action;
 
 
@@ -58,7 +59,7 @@ export default function userReducer(state = initialState, action) {
     }
   }
 
-  const getUserReducerStructure = (actionTypes) => {
+  const getCompanyReducerStructure = (actionTypes) => {
     switch (type) {
       case actionTypes.request:
         return {
@@ -72,8 +73,8 @@ export default function userReducer(state = initialState, action) {
           ...state,
           isCompaniesLoading: false,
             companyNotification: {
-              message: payload.message,
-              type: payload.status
+              message: error.message,
+              type: error.status
             },
         };
       case RESET_COMPANY_NOTIFICATION:
@@ -88,5 +89,6 @@ export default function userReducer(state = initialState, action) {
     }
   }
 
-  return getCombineActions(ctx, getUserReducerStructure)
+  return getCombineActions(ctx, 'COMPANY_',
+    getCompanyReducerStructure)
 }

@@ -1,15 +1,15 @@
-export const getCombineActions = (ctx, callback) => {
+export const getCombineActions = (ctx, reducer, callback) => {
   const actionTypes = {
-    request: ctx + '_REQUEST',
-    success: ctx + '_SUCCESS',
-    fail: ctx + '_FAIL'
+    request: reducer + ctx + '_REQUEST',
+    success: reducer + ctx + '_SUCCESS',
+    fail: reducer + ctx + '_FAIL'
   }
   return callback(actionTypes)
 }
 
-export const actionPromise = (promise, name, ctx) => {
+export const actionPromise = (promise, name, ctx, reducer) => {
   const actionPending = (name) => ({
-    type: ctx + '_REQUEST',
+    type: reducer + ctx + '_REQUEST',
     name,
     status: 'PENDING',
     payload: null,
@@ -18,7 +18,7 @@ export const actionPromise = (promise, name, ctx) => {
   })
 
   const actionResolved = (name, payload) => ({
-    type: ctx + '_SUCCESS',
+    type: reducer + ctx + '_SUCCESS',
     name,
     status: 'RESOLVED',
     payload,
@@ -27,7 +27,7 @@ export const actionPromise = (promise, name, ctx) => {
   })
 
   const actionRejected = (name, error) => ({
-    type: ctx + '_ERROR',
+    type: reducer + ctx + '_FAIL',
     name,
     status: 'REJECTED',
     payload: null,
@@ -42,7 +42,8 @@ export const actionPromise = (promise, name, ctx) => {
       return result;
     } catch (error) {
       error.status ? error : error.status = 'error'
-      dispatch(actionRejected(name, error))
+      dispatch(actionRejected(name, error.response.data))
+      return error;
     }
   }
 }

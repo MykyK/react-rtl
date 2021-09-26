@@ -38,8 +38,9 @@ const Dashboard = (props) => {
 
   const router = useRouter()
 
-  const isCompaniesExists =
-    user && user.companies && Boolean(user.companies.length)
+  const isCompaniesExists = Boolean(
+    user && user.companies && user.companies.length
+  )
 
   const isUserContent = router.asPath == '/dashboard'
 
