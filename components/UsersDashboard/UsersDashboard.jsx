@@ -2,6 +2,8 @@ import React, { useEffect } from 'react'
 import styles from '../../containers/Dashboard/Dashboard.module.scss'
 import Loader from './../Loader/index'
 import DashboardTableContainer from './../../containers/DashboardTableContainer/DashboardTableContainer'
+import PropTypes from 'prop-types'
+
 export const UsersDashboard = (props) => {
   const {
     users,
@@ -51,4 +53,15 @@ export const UsersDashboard = (props) => {
       </div>
     )
   }
+}
+
+UsersDashboard.propTypes = {
+  users: PropTypes.object,
+  onGetUsers: PropTypes.func.isRequired,
+  userCompaniesColumns: PropTypes.array.isRequired,
+  userColumns: PropTypes.array.isRequired,
+  userCompanies: PropTypes.array,
+  isUsersLoading: PropTypes.bool.isRequired,
+  isCompaniesExists: PropTypes.bool.isRequired,
+  isExpanded: PropTypes.bool.isRequired,
 }

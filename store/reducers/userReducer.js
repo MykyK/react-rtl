@@ -26,7 +26,8 @@ export default function userReducer(state = initialState, action) {
     type,
     payload,
     ctx,
-    name
+    name,
+    error
   } = action;
 
 
@@ -78,8 +79,8 @@ export default function userReducer(state = initialState, action) {
           ...state,
           isUsersLoading: false,
             userNotification: {
-              message: payload.message,
-              type: payload.status
+              message: error.message,
+              type: error.status
             },
         };
       case RESET_USER_NOTIFICATION:
@@ -112,5 +113,6 @@ export default function userReducer(state = initialState, action) {
         }
     }
   }
-  return getCombineActions(ctx, getUserReducerStructure)
+  return getCombineActions(ctx, 'USER_',
+    getUserReducerStructure)
 }

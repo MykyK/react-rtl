@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import styles from '../../containers/Dashboard/Dashboard.module.scss'
 import DashboardTableContainer from './../../containers/DashboardTableContainer/DashboardTableContainer'
+import PropTypes from 'prop-types'
 import Loader from './../Loader/index'
 
 export const CompaniesDashboard = (props) => {
@@ -36,4 +37,11 @@ export const CompaniesDashboard = (props) => {
       </div>
     )
   }
+}
+
+CompaniesDashboard.propTypes = {
+  companies: PropTypes.object,
+  companiesColumns: PropTypes.array.isRequired,
+  onGetCompanies: PropTypes.func.isRequired,
+  isCompaniesLoading: PropTypes.bool.isRequired,
 }
