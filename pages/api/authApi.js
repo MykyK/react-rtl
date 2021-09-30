@@ -6,13 +6,14 @@ class AuthService {
     const response = await axios.post(API_AUTH_URL + "signin", data, {
       withCredentials: true
     });
-    if (response.data.emailAddress) {
-      localStorage.setItem("user", JSON.stringify(response.data));
-    }
+
+    localStorage.setItem("user", JSON.stringify(response.data));
+
     return response.data;
   }
 
   async logout() {
+    localStorage.removeItem("user");
     document.cookie.split(";").forEach((c) => {
       document.cookie = c
         .replace(/^ +/, "")

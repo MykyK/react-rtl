@@ -44,6 +44,7 @@ const DashboardTableContainer = (props) => {
   const {
     columns,
     data,
+    user,
     isSelected,
     toolBar,
     pagination,
@@ -142,6 +143,7 @@ const DashboardTableContainer = (props) => {
     onDialogOpen,
     onUserDelete,
     onCompanyDelete,
+    user,
     selectedRows,
   }
 
@@ -159,6 +161,7 @@ DashboardTableContainer.propTypes = {
   isSelected: PropTypes.bool,
   toolBar: PropTypes.bool,
   pagination: PropTypes.object,
+  user: PropTypes.object,
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -181,4 +184,14 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(null, mapDispatchToProps)(DashboardTableContainer)
+const mapStateToProps = (state) => {
+  const { user } = state.auth
+  return {
+    user,
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DashboardTableContainer)
