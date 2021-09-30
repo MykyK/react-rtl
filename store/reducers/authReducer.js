@@ -17,7 +17,7 @@ const user = JSON.parse(getLocalStorage('user'))
 
 export const initialState = user ? {
   isLoggedIn: true,
-  user,
+  user: user.data,
   isLoading: false,
   authNotification: null
 } : {

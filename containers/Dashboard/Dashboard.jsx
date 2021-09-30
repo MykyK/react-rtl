@@ -91,7 +91,7 @@ const Dashboard = (props) => {
         onCloseNotification()
       }, 400)
     }
-  }, [userNotification, companyNotification])
+  }, [userNotification, companyNotification, user])
 
   return (
     <div data-testid="dashboard-container">

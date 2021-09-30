@@ -11,19 +11,22 @@ import {
 import PropTypes from 'prop-types'
 
 const ActionCell = (props) => {
-  const { onDelete, onDialogOpen, row, userId } = props
+  const { onDelete, onDialogOpen, row, user, authUser } = props
   const [anchorEl, setAnchorEl] = useState(null)
+  const isAdmin = authUser.generalRole === 'admin'
+  const isOptionEnable =
+    isAdmin || authUser.id == row.original.userInCompany.userId
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget)
   }
 
   const handleDelete = () => {
-    onDelete({ companyId: row.original.id, userId: userId })
+    onDelete({ companyId: row.original.id, userId: user.id })
   }
 
   const handleEdit = () => {
-    onDialogOpen({ ...row.original, userId }, 'Edit role and status')
+    onDialogOpen({ ...row.original, userId: user.id }, 'Edit role and status')
   }
 
   const handleClose = () => {
@@ -37,6 +40,7 @@ const ActionCell = (props) => {
         aria-haspopup="true"
         data-testid="action-button"
         onClick={handleClick}
+        disabled={!isOptionEnable}
       >
         <EditIcon />
       </IconButton>
@@ -67,9 +71,11 @@ ActionCell.propsTypes = {
 }
 
 const mapStateToProps = (state) => {
-  const { user } = state.user
+  const user = state.user.user
+  const authUser = state.auth.user
   return {
-    userId: user.id,
+    authUser,
+    user,
   }
 }
 
