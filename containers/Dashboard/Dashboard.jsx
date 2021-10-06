@@ -68,7 +68,7 @@ const Dashboard = (props) => {
     companyNotification,
     onResetCompanyNotification,
   }
-
+  const errorNotification = userNotification || companyNotification
   const onCloseNotification = () => {
     onResetUserNotification()
     onResetCompanyNotification()
@@ -97,13 +97,13 @@ const Dashboard = (props) => {
     <div data-testid="dashboard-container">
       <React.Fragment>
         <DashboardDialogContainer />
-        {Boolean(userNotification) && (
+        {Boolean(errorNotification) && (
           <ErrorNotification
-            open={Boolean(userNotification)}
-            severity={userNotification.type}
+            open={Boolean(errorNotification)}
+            severity={errorNotification.type}
             onClose={onCloseNotification}
           >
-            {userNotification.message}
+            {errorNotification.message}
           </ErrorNotification>
         )}
       </React.Fragment>
@@ -117,8 +117,9 @@ const Dashboard = (props) => {
 }
 
 Dashboard.propsTypes = {
-  users: PropTypes.array.isRequired,
-  user: PropTypes.object.isRequired,
+  users: PropTypes.object,
+  companies: PropTypes.object,
+  user: PropTypes.object,
   userCompanies: PropTypes.array,
   onGetUsers: PropTypes.func.isRequired,
   onGetUser: PropTypes.func.isRequired,
