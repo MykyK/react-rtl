@@ -4,23 +4,29 @@ import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import { IconButton } from '@material-ui/core'
 import { connect } from 'react-redux'
-import { deleteUser, openDialog } from '../../store/actions/userActions'
+import {
+  deleteCompanyFromUser,
+  openDialog,
+} from '../../store/actions/userActions'
 import PropTypes from 'prop-types'
 
 const ActionCell = (props) => {
-  const { onDelete, onDialogOpen, row } = props
+  const { onDelete, onDialogOpen, row, user, authUser } = props
   const [anchorEl, setAnchorEl] = useState(null)
+  const isAdmin = authUser.generalRole === 'admin'
+  const isOptionEnable =
+    isAdmin || authUser.id == row.original.userInCompany.userId
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget)
   }
 
   const handleDelete = () => {
-    onDelete(row.original.id)
+    onDelete({ companyId: row.original.id, userId: user.id })
   }
 
   const handleEdit = () => {
-    onDialogOpen(row.original)
+    onDialogOpen({ ...row.original, userId: user.id }, 'Edit role and status')
   }
 
   const handleClose = () => {
@@ -34,6 +40,7 @@ const ActionCell = (props) => {
         aria-haspopup="true"
         data-testid="action-button"
         onClick={handleClick}
+        disabled={!isOptionEnable}
       >
         <EditIcon />
       </IconButton>
@@ -60,17 +67,27 @@ ActionCell.propsTypes = {
   row: PropTypes.object.isRequired,
   onDelete: PropTypes.func.isRequired,
   onDialogOpen: PropTypes.func.isRequired,
+  userId: PropTypes.number.isRequired,
+}
+
+const mapStateToProps = (state) => {
+  const user = state.user.user
+  const authUser = state.auth.user
+  return {
+    authUser,
+    user,
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onDelete: (userId) => {
-      dispatch(deleteUser(userId))
+    onDelete: (data) => {
+      dispatch(deleteCompanyFromUser(data))
     },
-    onDialogOpen: (user) => {
-      dispatch(openDialog(user))
+    onDialogOpen: (dialogContext, dialogType) => {
+      dispatch(openDialog(dialogContext, dialogType))
     },
   }
 }
 
-export default connect(null, mapDispatchToProps)(ActionCell)
+export default connect(mapStateToProps, mapDispatchToProps)(ActionCell)

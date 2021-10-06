@@ -102,7 +102,7 @@ describe('authReducer', () => {
     expect(userReducer(userInitialState, action)).toEqual({
       ...userInitialState,
       isDialogOpen: true,
-      contextUser: user
+      user: user
     })
   })
 
@@ -113,7 +113,7 @@ describe('authReducer', () => {
     expect(userReducer(userInitialState, action)).toEqual({
       ...userInitialState,
       isDialogOpen: true,
-      contextUser: null
+      user: null
     })
   })
 

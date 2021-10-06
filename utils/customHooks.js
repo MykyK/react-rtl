@@ -25,10 +25,17 @@ export const useSetForm = (formValues) => {
     setForm(form)
   }
 
+
+  const resetForm = () => {
+    for (const key in form) {
+      form[key] = ''
+    }
+  }
   return {
     form,
     setFormValue,
-    setNewForm
+    setNewForm,
+    resetForm
   };
 };
 
@@ -36,7 +43,7 @@ export const useSetForm = (formValues) => {
 export const useFieldValidation = (form) => {
   const formKeys = Object.keys(form)
   const errors = formKeys.map(name => {
-    if (name == 'email') {
+    if (name == 'emailAddress' || name == 'email') {
       const value = form[name]
       const emailInvalid = EMAIL_REGEXP.test(form[name])
       if (value.length < 1) {
@@ -47,12 +54,13 @@ export const useFieldValidation = (form) => {
         return null
       }
     }
-    if (name == 'username' || name == 'password') {
+    if (name !== 'emailAddress' || name !== 'email') {
       const value = form[name]
+      if (!value) return null
       if (value.length < 1) {
         return REQUIRE_ERROR
       } else if (value.length < 6) {
-        return MIN_LENGTH_ERROR;
+        return name + ' ' + MIN_LENGTH_ERROR;
       } else {
         return null
       }
@@ -60,4 +68,62 @@ export const useFieldValidation = (form) => {
   })
 
   return errors
+}
+
+
+export const useDialogContext = (contextProps) => {
+  // change to switch case
+  const {
+    dialogContext,
+    dialogType
+  } = contextProps
+  switch (dialogType) {
+    case 'Edit Company':
+      return {
+        companyId: dialogContext.id,
+          companyName: dialogContext.companyName,
+          email: dialogContext.email,
+          corporateNumber: dialogContext.corporateNumber,
+          type: dialogContext.type,
+      }
+      case 'Edit role and status':
+        return {
+          companyId: dialogContext.userInCompany.companyId,
+            userId: dialogContext.userId,
+            companyRole: dialogContext.userInCompany.companyRole ? dialogContext.userInCompany.companyRole : '',
+            status: dialogContext.userInCompany.status ? dialogContext.userInCompany.status : ''
+        }
+        case 'Edit User':
+          return {
+            userId: dialogContext.id,
+              firstName: dialogContext.firstName,
+              lastName: dialogContext.lastName,
+              phoneNumber: dialogContext.phoneNumber,
+              emailAddress: dialogContext.emailAddress,
+          }
+          case 'Add User':
+            return {
+              firstName: "",
+                lastName: "",
+                phoneNumber: "",
+                emailAddress: '',
+                password: ''
+            }
+            case 'Add Company':
+            case 'Add company to user':
+              return {
+                companyName: "",
+                  email: "",
+                  corporateNumber: "",
+                  type: '',
+              }
+              default:
+                return {
+                  firstName: "",
+                    lastName: "",
+                    phoneNumber: "",
+                    emailAddress: '',
+                    password: ''
+                }
+  }
 }

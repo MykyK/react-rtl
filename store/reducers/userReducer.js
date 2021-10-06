@@ -1,79 +1,118 @@
 import {
-  GET_USERS_REQUEST,
-  GET_USERS_SUCCESS,
-  GET_USERS_FAIL,
-  DELETE_USER_REQUEST,
-  DELETE_USER_SUCCESS,
-  DELETE_USER_FAIL,
+  RESET_USER_NOTIFICATION,
   SHOW_DIALOG,
-  HIDE_DIALOG
+  HIDE_DIALOG,
+  GET_EXPANDED_STATUS,
 } from "../actionTypes";
 
+import {
+  getCombineActions
+} from './../../utils/reduxActions';
+
 export const initialState = {
-  users: [],
-  contextUser: null,
+  users: null,
+  isExpanded: false,
+  user: null,
+  dialogContext: null,
+  dialogType: '',
   isDialogOpen: false,
-  isLoading: true
+  isUsersLoading: true,
+  userNotification: null
 }
+
 
 export default function userReducer(state = initialState, action) {
   const {
     type,
-    payload
+    payload,
+    ctx,
+    name,
+    error
   } = action;
 
-  switch (type) {
-    case GET_USERS_REQUEST:
+
+  const initSuccessUserAction = (payload, name) => {
+    if (payload.data && payload.message) {
       return {
         ...state,
-        isLoading: true
-      };
-    case GET_USERS_SUCCESS:
+        [name]: payload.data,
+        isUsersLoading: false,
+        userNotification: {
+          message: payload.message,
+          type: payload.status
+        },
+      }
+    } else if (!payload.data && payload.message) {
       return {
         ...state,
-        users: payload.users.data,
-          isLoading: false
-      };
-    case GET_USERS_FAIL:
+        isUsersLoading: false,
+        userNotification: {
+          message: payload.message,
+          type: payload.status
+        },
+      }
+    } else if (payload.data && !payload.message) {
       return {
         ...state,
-        isLoading: false
-      };
-    case DELETE_USER_REQUEST:
+        [name]: payload.data,
+        isUsersLoading: false,
+      }
+    } else {
       return {
         ...state,
-        isLoading: true
-      };
-    case DELETE_USER_SUCCESS:
-      return {
-        ...state,
-        users: [...state.users].filter(user => {
-            if (user.id !== payload.userId) {
-              return user
-            }
-          }),
-          isLoading: false
-      };
-    case DELETE_USER_FAIL:
-      return {
-        ...state,
-        users: null,
-          isLoading: false
-      };
-    case SHOW_DIALOG:
-      return {
-        ...state,
-        contextUser: payload ?
-          payload.user :
-          null,
-          isDialogOpen: true
-      };
-    case HIDE_DIALOG:
-      return {
-        ...state,
-        isDialogOpen: false
-      };
-    default:
-      return state;
+        isUsersLoading: false,
+      }
+    }
   }
+
+  const getUserReducerStructure = (actionTypes) => {
+    switch (type) {
+      case actionTypes.request:
+        return {
+          ...state,
+          isUsersLoading: true
+        };
+      case actionTypes.success:
+        return initSuccessUserAction(payload, name)
+      case actionTypes.fail:
+        return {
+          ...state,
+          isUsersLoading: false,
+            userNotification: {
+              message: error.message,
+              type: error.status
+            },
+        };
+      case RESET_USER_NOTIFICATION:
+        return {
+          ...state,
+          userNotification: null,
+        };
+      case SHOW_DIALOG:
+        return {
+          ...state,
+          dialogType: payload.dialogType,
+            dialogContext: payload ?
+            payload.user :
+            null,
+            isDialogOpen: true
+        };
+      case HIDE_DIALOG:
+        return {
+          ...state,
+          isDialogOpen: false
+        };
+      case GET_EXPANDED_STATUS:
+        return {
+          ...state,
+          isExpanded: payload.isExpanded
+        };
+      default:
+        return {
+          ...state
+        }
+    }
+  }
+  return getCombineActions(ctx, 'USER_',
+    getUserReducerStructure)
 }

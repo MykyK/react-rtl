@@ -1,56 +1,21 @@
 import {
-  REGISTER_SUCCESS,
-  REGISTER_FAIL,
-  LOGIN_REQUEST,
-  LOGIN_SUCCESS,
-  LOGIN_FAIL,
+  REGISTER,
+  LOGIN,
   LOGOUT,
-  REGISTER_REQUEST,
   RESET_AUTH_NOTIFICATION,
 } from "../actionTypes";
 
 import AuthService from "../../pages/api/authApi";
-
+import {
+  actionPromise
+} from "../../utils/reduxActions";
 
 export const register = (data) => async (dispatch) => {
-  try {
-    dispatch({
-      type: REGISTER_REQUEST
-    });
-    const response = await AuthService.register(data)
-    dispatch({
-      type: REGISTER_SUCCESS
-    });
-    return response
-  } catch (error) {
-    dispatch({
-      type: REGISTER_FAIL,
-      payload: error.response.data
-    });
-    return error.response.data
-  }
+  dispatch(actionPromise(await AuthService.register(data), 'register', REGISTER, 'AUTH_'))
 };
 
-export const login = (data) => async (dispatch) => {
-  try {
-    dispatch({
-      type: LOGIN_REQUEST
-    });
-    const response = await AuthService.login(data)
-    dispatch({
-      type: LOGIN_SUCCESS,
-      payload: {
-        user: data
-      }
-    });
-    return response
-  } catch (error) {
-    dispatch({
-      type: LOGIN_FAIL,
-      payload: error.response.data
-    });
-    return error
-  }
+export const login = (data) => (dispatch) => {
+  dispatch(actionPromise(AuthService.login(data), 'user', LOGIN, 'AUTH_'))
 };
 
 export const logout = () => (dispatch) => {

@@ -1,84 +1,64 @@
 import {
-  GET_USERS_REQUEST,
-  GET_USERS_SUCCESS,
-  GET_USERS_FAIL,
-  UPDATE_USER_REQUEST,
-  UPDATE_USER_SUCCESS,
-  UPDATE_USER_FAIL,
-  DELETE_USER_REQUEST,
-  DELETE_USER_SUCCESS,
-  DELETE_USER_FAIL,
+  GET_USERS,
+  CREATE_USER,
+  UPDATE_USER,
+  UPDATE_USER_IN_COMPANY,
+  DELETE_COMPANY_FROM_USER,
+  ADD_COMPANY_TO_USER,
+  RESET_USER_NOTIFICATION,
+  DELETE_USER,
+  GET_EXPANDED_STATUS,
   HIDE_DIALOG,
-  SHOW_DIALOG
+  SHOW_DIALOG,
+  GET_USER,
 } from "../actionTypes";
 
 import UserService from "../../pages/api/usersApi";
+import {
+  actionPromise
+} from "../../utils/reduxActions";
 
-export const getUsers = () => async (dispatch) => {
-  try {
-    const users = await UserService.getUsers()
-    await dispatch({
-      type: GET_USERS_REQUEST
-    })
-    await dispatch({
-      type: GET_USERS_SUCCESS,
-      payload: {
-        users
-      }
-    })
-  } catch (error) {
-    dispatch({
-      type: GET_USERS_FAIL
-    })
-    return console.error(error);
-  }
+
+export const getUsers = (params) => async (dispatch) => {
+  dispatch(actionPromise(await UserService.getUsers(params), 'users', GET_USERS, 'USER_'))
 };
 
 
-export const updateUser = (userId, data) => async (dispatch) => {
-  try {
-    await UserService.updateUser(userId, data)
-    dispatch({
-      type: UPDATE_USER_REQUEST
-    })
-    dispatch({
-      type: UPDATE_USER_SUCCESS
-    })
+export const updateUser = (data) => async (dispatch) => {
+  dispatch(actionPromise(await UserService.updateUser(data), 'updatedUser', UPDATE_USER, 'USER_'))
+};
 
-  } catch (error) {
-    dispatch({
-      type: UPDATE_USER_FAIL
-    })
-    return console.error(error);
-  }
+export const updateUserInCompany = (data) => async (dispatch) => {
+  dispatch(actionPromise(await UserService.updateUserInCompany(data), 'updateUserInCompany', UPDATE_USER_IN_COMPANY, 'USER_'))
+};
+
+export const deleteCompanyFromUser = (data) => async (dispatch) => {
+  dispatch(actionPromise(await UserService.deleteCompanyFromUser(data), 'deleteCompanyFromUser', DELETE_COMPANY_FROM_USER, 'USER_'))
+};
+
+export const createUser = (data) => async (dispatch) => {
+  dispatch(actionPromise(await UserService.createUser(data), 'createUser', CREATE_USER, 'USER_'))
+
 };
 
 export const deleteUser = (userId) => async (dispatch) => {
-  try {
-    await UserService.deleteUser(userId)
-    dispatch({
-      type: DELETE_USER_REQUEST
-    })
-    dispatch({
-      type: DELETE_USER_SUCCESS,
-      payload: {
-        userId
-      }
-    })
-
-  } catch (error) {
-    dispatch({
-      type: DELETE_USER_FAIL
-    })
-    return console.error(error);
-  }
+  dispatch(actionPromise(await UserService.deleteUser(userId), 'deletedUser', DELETE_USER, 'USER_'))
 };
 
-export const openDialog = (user) => (dispatch) => {
+export const getUser = (userId) => async (dispatch) => {
+  dispatch(actionPromise(await UserService.getUser(userId), 'user', GET_USER, 'USER_'))
+};
+
+export const addCompanyToUserAction = (data) => async (dispatch) => {
+  dispatch(actionPromise(await UserService.addCompanyToUser(data), 'addCompanyToUser', ADD_COMPANY_TO_USER, 'USER_'))
+};
+
+export const openDialog = (user, dialogType) => (dispatch) => {
   dispatch({
     type: SHOW_DIALOG,
     payload: {
-      user
+      user,
+      dialogType,
     }
   })
 };
@@ -87,4 +67,17 @@ export const closeDialog = () => (dispatch) => {
   dispatch({
     type: HIDE_DIALOG,
   })
+};
+
+export const getRowExpandedStatus = (isExpanded) => (dispatch) => {
+  dispatch({
+    type: GET_EXPANDED_STATUS,
+    payload: isExpanded
+  })
+}
+
+export const resetUserNotification = () => (dispatch) => {
+  dispatch({
+    type: RESET_USER_NOTIFICATION
+  });
 };

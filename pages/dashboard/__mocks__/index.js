@@ -1,19 +1,38 @@
 export const mockUserStore = {
-  users: [],
-  contextUser: null,
+  users: null,
+  isExpanded: false,
+  user: {
+    emailAddress: "test@test.com",
+    id: 12,
+    firstName: "firstName",
+    secondName: "secondName",
+    generalRole: 'admin'
+  },
+  dialogContext: null,
+  userCompanies: null,
+  dialogType: '',
   isDialogOpen: false,
-  isLoading: false
+  isLoading: false,
+  notification: null
 }
 
 export const mockAuthStore = {
   isLoggedIn: true,
   user: {
-    accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImlhdCI6MTYyMzA3ODk5MywiZXhwIjoxNjIzMTY1MzkzfQ.V-LIBQpSlFPAaoZsdAuceJrGFGuUzYTU61hg-rA6AgY",
-    email: "test@test.com",
+    emailAddress: "test@test.com",
     id: 12,
-    roles: [],
-    username: "test"
+    firstName: "firstName",
+    secondName: "secondName",
+    generalRole: 'admin'
   },
   notification: null,
+  isLoading: false
+}
+
+export const mockCompanyStore = {
+  companies: null,
+  notification: null,
+  contextCompany: null,
+  company: null,
   isLoading: false
 }
