@@ -23,7 +23,7 @@ export const initialState = user ? {
 } : {
   isLoggedIn: false,
   user: null,
-  isLoading: false,
+  isLoading: true,
   authNotification: null
 };
 

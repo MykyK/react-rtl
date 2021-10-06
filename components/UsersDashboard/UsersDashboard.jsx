@@ -26,7 +26,7 @@ export const UsersDashboard = (props) => {
     return <Loader />
   } else {
     return (
-      <div>
+      <div data-testid="user-dashboard-content">
         {users && Boolean(users.items.length) ? (
           <React.Fragment>
             <DashboardTableContainer

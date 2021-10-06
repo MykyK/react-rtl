@@ -18,7 +18,7 @@ export const CompaniesDashboard = (props) => {
     return <Loader />
   } else {
     return (
-      <div>
+      <div data-testid="company-dashboard-content">
         {companies && Boolean(companies.items.length) ? (
           <React.Fragment>
             <DashboardTableContainer

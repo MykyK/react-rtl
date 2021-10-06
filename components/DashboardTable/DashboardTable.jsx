@@ -81,7 +81,6 @@ export const DashboardTable = (props) => {
         <TableRow>
           <TablePagination
             rowsPerPageOptions={[2, 5, 10]}
-            colSpan={3}
             count={pagination ? pagination.totalItems : data.length}
             rowsPerPage={pageSize}
             page={pagination ? currentPage : pageIndex}
