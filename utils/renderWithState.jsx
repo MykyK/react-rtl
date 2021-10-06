@@ -3,7 +3,11 @@ import { render } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import { mockAuthStore, mockUserStore } from '../pages/dashboard/__mocks__'
+import {
+  mockAuthStore,
+  mockUserStore,
+  mockCompanyStore,
+} from '../containers/Dashboard/__mocks__'
 
 export const renderWithState = (
   ui,
@@ -11,6 +15,7 @@ export const renderWithState = (
 ) => {
   const defaultState = {
     user: mockUserStore,
+    companies: mockCompanyStore,
     auth: mockAuthStore,
   }
   const middlewares = [thunk]
