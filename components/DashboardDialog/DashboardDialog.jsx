@@ -18,15 +18,64 @@ export const DashboardDialog = (props) => {
     dialogType,
     companies,
     setFormValue,
-    handleAdd,
-    handleClose,
     submitText,
-    handleUpdate,
-    selectHandleChange,
+    setNewForm,
+    onDialogClose,
+    resetForm,
+    onAddNewUser,
+    onAddNewCompany,
+    onUserUpdate,
+    onCompanyUpdate,
+    onUserInCompanyUpdate,
+    onAddCompanyToUser,
     isError,
     form,
   } = props
 
+  const selectHandleChange = (event) => {
+    setNewForm({
+      companyName: companies[event.target.value].companyName,
+      email: companies[event.target.value].email,
+      corporateNumber: companies[event.target.value].corporateNumber,
+      type: companies[event.target.value].type,
+    })
+  }
+
+  const handleClose = () => {
+    onDialogClose()
+    resetForm()
+  }
+
+  const handleAdd = () => {
+    if (dialogType === 'Add User') {
+      onAddNewUser(form)
+    } else {
+      onAddNewCompany(form)
+    }
+  }
+
+  const handleUpdate = () => {
+    if (dialogType === 'Edit User') {
+      onUserUpdate(form)
+    }
+
+    if (dialogType === 'Edit Company') {
+      onCompanyUpdate(form)
+    }
+
+    if (dialogType === 'Edit role and status') {
+      onUserInCompanyUpdate(form)
+    }
+
+    if (dialogType === 'Add company to user') {
+      dialogContext.map(async (row) => {
+        await onAddCompanyToUser({
+          ...form,
+          emailAddress: row.original.emailAddress,
+        })
+      })
+    }
+  }
   return (
     <div data-testid="dialog-wrapper">
       <Dialog
@@ -39,6 +88,7 @@ export const DashboardDialog = (props) => {
         <DialogContent>
           {dialogType === 'Add company to user' && companies && (
             <CompanySelect
+              data-testid="company-select"
               companies={companies}
               form={form}
               selectHandleChange={selectHandleChange}
@@ -74,7 +124,12 @@ export const DashboardDialog = (props) => {
               Boolean(isError) ? (
                 <ul>
                   {errors.map(
-                    (error, index) => error && <li key={index}>{error}</li>
+                    (error, index) =>
+                      error && (
+                        <li data-testid="error-list-item" key={index}>
+                          {error}
+                        </li>
+                      )
                   )}
                 </ul>
               ) : (
@@ -103,15 +158,20 @@ DashboardDialog.propTypes = {
   isDialogOpen: PropTypes.bool.isRequired,
   isError: PropTypes.bool.isRequired,
   dialogContext: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
-  initialContext: PropTypes.object.isRequired,
-  form: PropTypes.object.isRequired,
+  initialContext: PropTypes.object,
+  form: PropTypes.object,
   companies: PropTypes.array,
   errors: PropTypes.array,
-  submitText: PropTypes.string.isRequired,
-  dialogType: PropTypes.string.isRequired,
-  setFormValue: PropTypes.func.isRequired,
-  handleAdd: PropTypes.func.isRequired,
-  handleClose: PropTypes.func.isRequired,
-  handleUpdate: PropTypes.func.isRequired,
-  selectHandleChange: PropTypes.func.isRequired,
+  submitText: PropTypes.string,
+  dialogType: PropTypes.string,
+  setFormValue: PropTypes.func,
+  setNewForm: PropTypes.func,
+  onDialogClose: PropTypes.func,
+  resetForm: PropTypes.func,
+  onAddNewUser: PropTypes.func,
+  onAddNewCompany: PropTypes.func,
+  onUserUpdate: PropTypes.func,
+  onCompanyUpdate: PropTypes.func,
+  onUserInCompanyUpdate: PropTypes.func,
+  onAddCompanyToUser: PropTypes.func,
 }

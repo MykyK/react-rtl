@@ -72,7 +72,6 @@ export const useFieldValidation = (form) => {
 
 
 export const useDialogContext = (contextProps) => {
-  // change to switch case
   const {
     dialogContext,
     dialogType

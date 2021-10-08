@@ -12,7 +12,7 @@ export const CompanySelect = (props) => {
     setSelectedOption(companies[event.target.value].companyName)
   }
   return (
-    <React.Fragment>
+    <div data-testid="company-select">
       <InputLabel htmlFor="age-native-simple">
         Choose Company From Lists
       </InputLabel>
@@ -33,7 +33,7 @@ export const CompanySelect = (props) => {
           )
         })}
       </Select>
-    </React.Fragment>
+    </div>
   )
 }
 
