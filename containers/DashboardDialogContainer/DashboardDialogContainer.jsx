@@ -40,15 +40,6 @@ const DashboardDialogContainer = (props) => {
 
   const errors = useFieldValidation(form)
 
-  const selectHandleChange = (event) => {
-    setNewForm({
-      companyName: companies[event.target.value].companyName,
-      email: companies[event.target.value].email,
-      corporateNumber: companies[event.target.value].corporateNumber,
-      type: companies[event.target.value].type,
-    })
-  }
-
   const submitText =
     dialogContext && dialogType && dialogType.toLowerCase().includes('edit')
       ? 'Save'
@@ -57,42 +48,6 @@ const DashboardDialogContainer = (props) => {
   const isError = initialContext
     ? Boolean(errors.filter((error) => error).length)
     : Boolean(errors.filter((error) => error).length)
-
-  const handleClose = () => {
-    onDialogClose()
-    resetForm()
-  }
-
-  const handleAdd = () => {
-    if (dialogType === 'Add User') {
-      onAddNewUser(form)
-    } else {
-      onAddNewCompany(form)
-    }
-  }
-
-  const handleUpdate = () => {
-    if (dialogType === 'Edit User') {
-      onUserUpdate(form)
-    }
-
-    if (dialogType === 'Edit Company') {
-      onCompanyUpdate(form)
-    }
-
-    if (dialogType === 'Edit role and status') {
-      onUserInCompanyUpdate(form)
-    }
-
-    if (dialogType === 'Add company to user') {
-      dialogContext.map(async (row) => {
-        await onAddCompanyToUser({
-          ...form,
-          emailAddress: row.original.emailAddress,
-        })
-      })
-    }
-  }
 
   useEffect(() => {
     if (dialogType === 'Add company to user') {
@@ -114,11 +69,16 @@ const DashboardDialogContainer = (props) => {
     dialogType,
     companies,
     setFormValue,
-    handleAdd,
-    handleClose,
+    setNewForm,
+    resetForm,
     submitText,
-    handleUpdate,
-    selectHandleChange,
+    onDialogClose,
+    onAddNewUser,
+    onAddNewCompany,
+    onUserUpdate,
+    onCompanyUpdate,
+    onUserInCompanyUpdate,
+    onAddCompanyToUser,
     isError,
     form,
   }

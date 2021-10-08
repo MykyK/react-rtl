@@ -15,7 +15,7 @@ export const renderWithState = (
 ) => {
   const defaultState = {
     user: mockUserStore,
-    companies: mockCompanyStore,
+    company: mockCompanyStore,
     auth: mockAuthStore,
   }
   const middlewares = [thunk]

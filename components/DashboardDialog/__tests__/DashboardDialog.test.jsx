@@ -87,6 +87,17 @@ describe('<UserDialog />', () => {
       expect(props.onAddNewCompany).toHaveBeenCalledTimes(1)
     })
 
+    it('when dialogType is equal "Add Company to user" and companies prop exist should render company-select', () => {
+      const props = {
+        ...defaultProps,
+        dialogType: 'Add company to user',
+        companies: [{}],
+        isDialogOpen: true,
+      }
+      const container = render(<DashboardDialog {...props} />)
+      expect(container.getByTestId('company-select')).toBeInTheDocument()
+    })
+
     it('should call onAddNewUser after onClick event called by action-type-button ', () => {
       const actionTypeButton = container.getByTestId('action-type-button')
       fireEvent.click(actionTypeButton)
@@ -101,137 +112,39 @@ describe('<UserDialog />', () => {
     })
   })
 
-  describe('when  dialogType and dialogContext props exist', () => {
-    describe.each([
-      ['Edit User', 'onUserUpdate'],
-      ['Edit Company', 'onCompanyUpdate'],
-      ['Edit role and status', 'onUserInCompanyUpdate'],
-      ['Add company to user', 'onAddCompanyToUser'],
-    ])('', (type, func) => {
-      let container
-      const props = {
-        ...defaultProps,
-        isDialogOpen: true,
-        dialogContext: [
-          {
-            original: {
-              emailAddress: 'nikita@test.com',
-              firstName: 'Nikita',
-              generalRole: 'admin',
-            },
+  describe.each([
+    ['Edit User', 'onUserUpdate'],
+    ['Edit Company', 'onCompanyUpdate'],
+    ['Edit role and status', 'onUserInCompanyUpdate'],
+    ['Add company to user', 'onAddCompanyToUser'],
+  ])('when  dialogType and dialogContext props exist', (type, func) => {
+    let container
+    const props = {
+      ...defaultProps,
+      isDialogOpen: true,
+      dialogContext: [
+        {
+          original: {
+            emailAddress: 'nikita@test.com',
+            firstName: 'Nikita',
+            generalRole: 'admin',
           },
-        ],
-        dialogType: type,
-      }
-      beforeEach(() => {
-        container = render(<DashboardDialog {...props} />)
-      })
+        },
+      ],
+      dialogType: type,
+    }
+    beforeEach(() => {
+      container = render(<DashboardDialog {...props} />)
+    })
 
-      afterEach(() => {
-        jest.clearAllMocks()
-        cleanup()
-      })
-      it(`should call ${func} after onClick event called by action-type-button`, () => {
-        const actionTypeButton = container.getByTestId('action-type-button')
-        fireEvent.click(actionTypeButton)
-        expect(props[func]).toHaveBeenCalledTimes(1)
-      })
+    afterEach(() => {
+      jest.clearAllMocks()
+      cleanup()
+    })
+    it(`should call ${func} after onClick event called by action-type-button`, () => {
+      const actionTypeButton = container.getByTestId('action-type-button')
+      fireEvent.click(actionTypeButton)
+      expect(props[func]).toHaveBeenCalledTimes(1)
     })
   })
-  // describe('when contextUser exists in props and dialog is open', () => {
-  //   const initialState = {
-  //     user: {
-  //       ...mockUserStore,
-  //       contextUser: {
-  //         username: 'test',
-  //         email: 'test@test.com',
-  //         password: 'test123',
-  //       },
-  //       isDialogOpen: true,
-  //     },
-  //     auth: mockAuthStore,
-  //   }
-  //   let container
-  //   beforeEach(() => {
-  //     container = render(<DashboardDialog />, { initialState })
-  //   })
-
-  //   afterEach(() => {
-  //     jest.clearAllMocks()
-  //     cleanup()
-  //   })
-
-  //   it('should render action-type-button with "Save" text content', () => {
-  //     const actionTypeButton =
-  //       container.render.getByTestId('action-type-button')
-  //     expect(actionTypeButton.textContent).toBe('Save')
-  //   })
-
-  //   it('should dispatch action after onClick event called by action-type-button ', () => {
-  //     const actionTypeButton =
-  //       container.render.getByTestId('action-type-button')
-  //     fireEvent.click(actionTypeButton)
-  //     expect(container.store.dispatch).toHaveBeenCalledWith({
-  //       type: UPDATE_USER_SUCCESS,
-  //     })
-  //   })
-
-  //   it('should not render password-input ', () => {
-  //     expect(() => container.getByTestId('password-input')).toThrow(
-  //       'Unable to find an element'
-  //     )
-  //   })
-  // })
-
-  // describe('if notification prop exists', () => {
-  //   let container
-
-  //   const initialState = {
-  //     auth: {
-  //       ...mockAuthStore,
-  //       notification: { message: 'test', type: 'success' },
-  //     },
-  //     user: {
-  //       ...mockUserStore,
-  //       contextUser: {
-  //         username: 'test',
-  //         email: 'test@test.com',
-  //         password: 'test123',
-  //       },
-  //       isDialogOpen: true,
-  //     },
-  //   }
-
-  //   beforeEach(() => {
-  //     jest.useFakeTimers()
-  //     container = renderWithState(<DashboardDialog />, { initialState })
-  //   })
-
-  //   afterEach(() => {
-  //     cleanup()
-  //     jest.useRealTimers()
-  //   })
-
-  //   it('should dispatch actions', () => {
-  //     jest.advanceTimersByTime(400)
-  //     expect(container.store.dispatch).toHaveBeenCalledTimes(3)
-  //     expect(container.store.dispatch).toHaveBeenNthCalledWith(1, {
-  //       type: GET_USERS_SUCCESS,
-  //       payload: [{ username: 'test' }],
-  //     })
-  //     expect(container.store.dispatch).toHaveBeenNthCalledWith(2, {
-  //       type: HIDE_DIALOG,
-  //     })
-
-  //     expect(container.store.dispatch).toHaveBeenNthCalledWith(3, {
-  //       type: RESET_AUTH_NOTIFICATION,
-  //     })
-  //   })
-
-  //   it('should show ErrorNotification component', () => {
-  //     const errorNotification =
-  //       container.render.getByTestId('error-notification')
-  //     expect(errorNotification).toBeInTheDocument()
-  //   })
-  // })
 })

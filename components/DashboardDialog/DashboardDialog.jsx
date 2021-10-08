@@ -76,7 +76,6 @@ export const DashboardDialog = (props) => {
       })
     }
   }
-  console.log('log')
   return (
     <div data-testid="dialog-wrapper">
       <Dialog
@@ -89,6 +88,7 @@ export const DashboardDialog = (props) => {
         <DialogContent>
           {dialogType === 'Add company to user' && companies && (
             <CompanySelect
+              data-testid="company-select"
               companies={companies}
               form={form}
               selectHandleChange={selectHandleChange}
@@ -124,7 +124,12 @@ export const DashboardDialog = (props) => {
               Boolean(isError) ? (
                 <ul>
                   {errors.map(
-                    (error, index) => error && <li key={index}>{error}</li>
+                    (error, index) =>
+                      error && (
+                        <li data-testid="error-list-item" key={index}>
+                          {error}
+                        </li>
+                      )
                   )}
                 </ul>
               ) : (
