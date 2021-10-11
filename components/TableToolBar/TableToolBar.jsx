@@ -45,7 +45,7 @@ export const TableToolBar = (props) => {
         })
   }
   return (
-    <div className={styles.toolbarContainer}>
+    <div className={styles.toolbarContainer} data-testid="table-toolbar">
       {isUserContent && (
         <IconButton
           data-testid="open-dialog-button"
