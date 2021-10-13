@@ -1,10 +1,9 @@
 import axios from 'axios'
-import AuthService, {
-  API_AUTH_URL
-} from '../authApi';
+import CompanyService, {
+  API_COMPANY_URL
+} from '../companyApi';
 
 jest.mock('axios');
-
 
 const error = {
   code: 'error',
@@ -14,74 +13,104 @@ const error = {
 
 
 const methods = [
-  ['register',
+  ['updateCompany',
     {
-      method: AuthService.register,
+      method: CompanyService.updateCompany,
       mockResolve: {},
       mockReject: error,
       response: {},
       apiArgs: Object.values({
-        url: API_AUTH_URL + 'signup',
+        url: API_COMPANY_URL + 'update/' + 1,
         data: {
-          username: 'test',
+          companyName: 'test',
           email: 'test@test.com',
-          password: 'test1234'
+          companyId: 1
         }
       }),
       callArgs: {
-        username: 'test',
+        companyName: 'test',
         email: 'test@test.com',
-        password: 'test1234'
+        companyId: 1
       },
-
-      apiMethod: 'post'
+      apiMethod: 'put'
     }
   ],
   [
-    'login',
+    'deleteCompany',
     {
-      method: AuthService.login,
-      mockResolve: {
-        accessToken: 'test123'
-      },
-      response: {
-        accessToken: 'test123'
-      },
+      method: CompanyService.deleteCompany,
+      mockResolve: {},
+      response: {},
+      mockReject: error,
+      apiArgs: [API_COMPANY_URL + 'delete/1'],
+      callArgs: 1,
+      apiMethod: 'delete'
+    }
+  ],
+  [
+    'getCompanies',
+    {
+      method: CompanyService.getCompanies,
+      mockResolve: {},
+      response: {},
       mockReject: error,
       apiArgs: Object.values({
-        url: API_AUTH_URL + 'signin',
+        url: API_COMPANY_URL,
         data: {
-          username: 'test',
-          password: 'test1234'
-        },
-        params: {
+          params: {
+            page: 0,
+            size: 5
+          },
           withCredentials: true
         }
       }),
+      apiMethod: 'get'
+    }
+  ],
+  [
+    'getCompany', {
+      method: CompanyService.getCompany,
+      mockResolve: {},
+      response: {},
+      mockReject: error,
+      apiArgs: [API_COMPANY_URL + 1],
+      callArgs: 1,
+      apiMethod: 'get'
+    }
+  ],
+  [
+    'createCompany', {
+      method: CompanyService.createCompany,
+      mockResolve: {},
+      response: {},
+      mockReject: error,
+      apiArgs: Object.values({
+        url: API_COMPANY_URL + 'add',
+        data: {
+          companyName: 'test',
+          email: 'test@test.com',
+          companyId: 1
+        }
+      }),
       callArgs: {
-        username: 'test',
-        password: 'test1234'
+        companyName: 'test',
+        email: 'test@test.com',
+        companyId: 1
       },
       apiMethod: 'post'
     }
-  ],
+  ]
 ]
 
 
 const mockAxios = axios;
 
-describe('UserService', () => {
+describe('CompanyService', () => {
   beforeEach(() => {
     mockAxios.get.mockClear()
     mockAxios.post.mockClear()
+    mockAxios.delete.mockClear()
     jest.clearAllMocks()
-  })
-
-  it('logout should call localStorage.removeItem', () => {
-    jest.spyOn(window.localStorage.__proto__, 'removeItem');
-    window.localStorage.__proto__.removeItem = jest.fn();
-    AuthService.logout()
-    expect(localStorage.removeItem).toHaveBeenCalled();
   })
 
   describe.each(methods)('%s', (methodName, methodArgs) => {
