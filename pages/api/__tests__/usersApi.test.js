@@ -54,8 +54,120 @@ const methods = [
       mockResolve: {},
       response: {},
       mockReject: error,
-      apiArgs: [API_USERS_URL + 'users'],
+      apiArgs: Object.values({
+        url: API_USERS_URL,
+        data: {
+          params: {
+            page: 0,
+            size: 5
+          },
+          withCredentials: true
+        }
+      }),
       apiMethod: 'get'
+    }
+  ],
+  [
+    'getUser',
+    {
+      method: UserService.getUser,
+      mockResolve: {},
+      response: {},
+      mockReject: error,
+      apiArgs: Object.values({
+        url: API_USERS_URL + 1,
+        data: {
+          withCredentials: true
+        }
+      }),
+      callArgs: 1,
+      apiMethod: 'get'
+    }
+  ],
+  [
+    'createUser',
+    {
+      method: UserService.createUser,
+      mockResolve: {},
+      response: {},
+      mockReject: error,
+      apiArgs: Object.values({
+        url: API_USERS_URL + 'create',
+        data: {
+          username: 'test',
+          email: 'test@test.com',
+          userId: 1
+        }
+      }),
+      callArgs: {
+        username: 'test',
+        email: 'test@test.com',
+        userId: 1
+      },
+      apiMethod: 'post'
+    }
+  ],
+  [
+    'updateUserInCompany',
+    {
+      method: UserService.updateUserInCompany,
+      mockResolve: {},
+      response: {},
+      mockReject: error,
+      apiArgs: Object.values({
+        url: API_USERS_URL + 'update/1/1',
+        data: {
+          companyId: 1,
+          userId: 1
+        }
+      }),
+      callArgs: {
+        companyId: 1,
+        userId: 1
+      },
+      apiMethod: 'put'
+    }
+  ],
+  [
+    'deleteCompanyFromUser',
+    {
+      method: UserService.deleteCompanyFromUser,
+      mockResolve: {},
+      response: {},
+      mockReject: error,
+      apiArgs: Object.values({
+        url: API_USERS_URL + '1/delete/1',
+        data: {
+          companyId: 1,
+          userId: 1
+        }
+      }),
+      callArgs: {
+        companyId: 1,
+        userId: 1
+      },
+      apiMethod: 'delete'
+    }
+  ],
+  [
+    'addCompanyToUser',
+    {
+      method: UserService.addCompanyToUser,
+      mockResolve: {},
+      response: {},
+      mockReject: error,
+      apiArgs: Object.values({
+        url: API_USERS_URL + 'add-company',
+        data: {
+          companyId: 1,
+          userId: 1
+        }
+      }),
+      callArgs: {
+        companyId: 1,
+        userId: 1
+      },
+      apiMethod: 'post'
     }
   ]
 ]
