@@ -14,8 +14,8 @@ export const register = (data) => async (dispatch) => {
   dispatch(actionPromise(await AuthService.register(data), 'register', REGISTER, 'AUTH_'))
 };
 
-export const login = (data) => (dispatch) => {
-  dispatch(actionPromise(AuthService.login(data), 'user', LOGIN, 'AUTH_'))
+export const login = (data) => async (dispatch) => {
+  dispatch(actionPromise(await AuthService.login(data), 'user', LOGIN, 'AUTH_'))
 };
 
 export const logout = () => (dispatch) => {

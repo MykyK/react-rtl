@@ -11,7 +11,6 @@ export const actionPromise = (promise, name, ctx, reducer) => {
   const actionPending = (name) => ({
     type: reducer + ctx + '_REQUEST',
     name,
-    status: 'PENDING',
     payload: null,
     ctx,
     error: null
@@ -20,7 +19,6 @@ export const actionPromise = (promise, name, ctx, reducer) => {
   const actionResolved = (name, payload) => ({
     type: reducer + ctx + '_SUCCESS',
     name,
-    status: 'RESOLVED',
     payload,
     ctx,
     error: null
@@ -29,7 +27,6 @@ export const actionPromise = (promise, name, ctx, reducer) => {
   const actionRejected = (name, error) => ({
     type: reducer + ctx + '_FAIL',
     name,
-    status: 'REJECTED',
     payload: null,
     ctx,
     error
@@ -41,6 +38,7 @@ export const actionPromise = (promise, name, ctx, reducer) => {
       dispatch(actionResolved(name, result))
       return result;
     } catch (error) {
+      console.log('error', error)
       error.status ? error : error.status = 'error'
       dispatch(actionRejected(name, error.response.data))
       return error;
