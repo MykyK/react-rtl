@@ -23,7 +23,7 @@ class AuthService {
 
   async register(data) {
     const response = await axios.post(API_AUTH_URL + "signup", data);
-    return response
+    return response.data
   }
 }
 
