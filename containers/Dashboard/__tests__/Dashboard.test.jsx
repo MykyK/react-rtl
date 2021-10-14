@@ -57,6 +57,7 @@ describe('<Dashboard/>', () => {
 
     afterEach(() => {
       cleanup()
+      jest.clearAllMocks()
     })
 
     it('should render element with data-testid "dashboard-container"', () => {
