@@ -3,117 +3,135 @@ import userReducer, {
 } from '../userReducer';
 import * as constants from '../../actionTypes'
 
-describe('authReducer', () => {
-  it('should return authInitialState with no state passed in', () => {
+describe('userReducer', () => {
+  const reducerSign = 'USER_'
+
+  describe.each([
+    ['payload.data && payload.message', {
+        data: [],
+        message: 'test',
+        status: 'test'
+      },
+      {
+        ...userInitialState,
+        users: [],
+        isUsersLoading: false,
+        userNotification: {
+          message: 'test',
+          type: 'test'
+        }
+      }
+    ],
+    ['!payload.data && payload.message', {
+        message: 'test',
+        status: 'test'
+      },
+      {
+        ...userInitialState,
+        isUsersLoading: false,
+        userNotification: {
+          message: 'test',
+          type: 'test'
+        },
+      }
+    ],
+    ['payload.data && !payload.message', {
+        data: [],
+      },
+      {
+        ...userInitialState,
+        users: [],
+        isUsersLoading: false,
+      }
+    ],
+    ['!payload.data && !payload.message', {}, {
+      ...userInitialState,
+      isUsersLoading: false
+    }]
+  ])('When  %s', (condition, payload, state) => {
+    it('should return the correct structure for ACTION_TYPE_SUCCESS', () => {
+      const action = {
+        type: reducerSign + 'ACTION_TYPE' + '_SUCCESS',
+        ctx: 'ACTION_TYPE',
+        payload,
+        error: null,
+        name: 'users'
+      };
+      expect(userReducer(userInitialState, action)).toEqual(state)
+    })
+  })
+
+
+  it('should return userInitialState with no state passed in', () => {
     const action = {};
     expect(userReducer(undefined, action)).toEqual(userInitialState)
   })
 
-  it('should return the correct structure for GET_USERS_REQUEST', () => {
+  it('should return the correct structure for USER_ACTION_TYPE_REQUEST', () => {
     const action = {
-      type: constants.GET_USERS_REQUEST
+      type: reducerSign + 'ACTION_TYPE' + '_REQUEST',
+      ctx: 'ACTION_TYPE',
+      payload: null,
+      error: null,
+      name: 'users'
     };
     expect(userReducer(userInitialState, action)).toEqual({
       ...userInitialState,
-      isLoading: true
+      isUsersLoading: true
     })
   })
 
-  it('should return the correct structure for GET_USERS_SUCCESS', () => {
-    const users = {
-      data: []
-    }
+  it('should return the correct structure for USER_ACTION_TYPE_FAIL', () => {
     const action = {
-      type: constants.GET_USERS_SUCCESS,
-      payload: {
-        users
+      type: reducerSign + 'ACTION_TYPE' + '_FAIL',
+      ctx: 'ACTION_TYPE',
+      payload: null,
+      name: 'users',
+      error: {
+        message: 'error',
+        status: 'error'
       }
     };
     expect(userReducer(userInitialState, action)).toEqual({
       ...userInitialState,
-      isLoading: false,
-      users: users.data
-    })
-  })
-
-  it('should return the correct structure for GET_USERS_FAIL', () => {
-    const action = {
-      type: constants.GET_USERS_FAIL,
-    };
-    expect(userReducer(userInitialState, action)).toEqual({
-      ...userInitialState,
-      isLoading: false,
-    })
-  })
-
-  it('should return the correct structure for DELETE_USER_REQUEST', () => {
-    const action = {
-      type: constants.DELETE_USER_REQUEST,
-    };
-    expect(userReducer(userInitialState, action)).toEqual({
-      ...userInitialState,
-      isLoading: true,
-    })
-  })
-
-  it('should return the correct structure for DELETE_USER_SUCCESS', () => {
-    const state = {
-      ...userInitialState,
-      users: [{
-        id: 1
-      }, {
-        id: 2
-      }]
-    }
-    const action = {
-      type: constants.DELETE_USER_SUCCESS,
-      payload: {
-        userId: 1
+      isUsersLoading: false,
+      userNotification: {
+        message: 'error',
+        type: 'error'
       }
-    };
-    expect(userReducer(state, action)).toEqual({
-      ...state,
-      users: [{
-        id: 2
-      }],
-      isLoading: false,
-    })
-  })
-
-  it('should return the correct structure for DELETE_USER_FAIL', () => {
-    const action = {
-      type: constants.DELETE_USER_FAIL,
-    };
-    expect(userReducer(userInitialState, action)).toEqual({
-      ...userInitialState,
-      isLoading: false,
-      users: null
     })
   })
 
   it('should return the correct structure for SHOW_DIALOG with payload', () => {
-    const user = {}
     const action = {
       type: constants.SHOW_DIALOG,
       payload: {
-        user
+        dialogType: 'Add User',
+        user: {}
+      },
+
+    };
+    expect(userReducer(userInitialState, action)).toEqual({
+      ...userInitialState,
+      isDialogOpen: true,
+      dialogType: 'Add User',
+      dialogContext: {}
+    })
+  })
+
+  it('should return the correct structure for SHOW_DIALOG without dialogContext', () => {
+    const action = {
+      type: constants.SHOW_DIALOG,
+      payload: {
+        dialogType: 'Add User',
+        user: null
       }
     };
     expect(userReducer(userInitialState, action)).toEqual({
       ...userInitialState,
       isDialogOpen: true,
-      user: user
-    })
-  })
-
-  it('should return the correct structure for SHOW_DIALOG without payload', () => {
-    const action = {
-      type: constants.SHOW_DIALOG,
-    };
-    expect(userReducer(userInitialState, action)).toEqual({
-      ...userInitialState,
-      isDialogOpen: true,
-      user: null
+      dialogContext: null,
+      dialogType: 'Add User'
     })
   })
 
@@ -124,6 +142,28 @@ describe('authReducer', () => {
     expect(userReducer(userInitialState, action)).toEqual({
       ...userInitialState,
       isDialogOpen: false,
+    })
+  })
+
+  it('should return the correct structure for GET_EXPANDED_STATUS', () => {
+    const action = {
+      type: constants.GET_EXPANDED_STATUS,
+      payload: {
+        isExpanded: false
+      }
+    };
+    expect(userReducer(userInitialState, action)).toEqual({
+      ...userInitialState,
+      isExpanded: false
+    })
+  })
+  it('should return the correct structure for RESET_USER_NOTIFICATION', () => {
+    const action = {
+      type: constants.RESET_USER_NOTIFICATION,
+    };
+    expect(userReducer(userInitialState, action)).toEqual({
+      ...userInitialState,
+      userNotification: null
     })
   })
 })

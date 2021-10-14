@@ -50,6 +50,7 @@ export default function authReducer(state = initialState, action) {
           ...state,
           [name]: payload.data,
             isLoading: false,
+            isLoggedIn: true,
             authNotification: {
               message: payload.message,
               type: payload.status
