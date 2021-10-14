@@ -15,7 +15,7 @@ const Company = (props) => {
   }, [companyId])
 
   return (
-    <div className={styles.companyContainer}>
+    <div className={styles.companyContainer} data-testid="company-page">
       {company ? (
         <div className={styles.contentWrapper}>
           <span>
