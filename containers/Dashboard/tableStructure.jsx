@@ -29,7 +29,7 @@ export const userTable = [
       },
       {
         Header: 'Phone',
-        accessor: 'phone',
+        accessor: 'phoneNumber',
       },
       {
         Header: 'Role',

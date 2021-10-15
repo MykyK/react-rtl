@@ -15,16 +15,17 @@ export const TableToolBar = (props) => {
 
   const router = useRouter()
   const isUserContent = router.asPath == '/dashboard'
-  const [isOptionEnable, setIsOptionEnable] = useState(false)
   const isAdmin = user.generalRole === 'admin'
+
+  const [isOptionEnable, setIsOptionEnable] = useState(false)
 
   useEffect(() => {
     if (selectedRows[0]) {
-      setIsOptionEnable(isAdmin || user.id == selectedRows[0].original.id)
+      setIsOptionEnable(user.id == selectedRows[0].original.id)
     }
   }, [selectedRows])
 
-  const handleOpen = () => {
+  const handleAdd = () => {
     const dialogType = isUserContent ? 'Add User' : 'Add Company'
     onDialogOpen(null, dialogType)
   }
@@ -48,7 +49,7 @@ export const TableToolBar = (props) => {
     <div className={styles.toolbarContainer} data-testid="table-toolbar">
       {isUserContent && (
         <IconButton
-          data-testid="open-dialog-button"
+          data-testid="add-company-button"
           aria-label="add-company"
           onClick={handleAddCompanyToUser}
           disabled={!selectedRows.length || !isOptionEnable}
@@ -58,22 +59,23 @@ export const TableToolBar = (props) => {
         </IconButton>
       )}
       <IconButton
-        data-testid="open-dialog-button"
+        data-testid="add-button"
         aria-label="add-user"
-        onClick={handleOpen}
+        onClick={handleAdd}
         disabled={!isAdmin}
       >
         {isUserContent ? (
-          <PersonAddIcon />
+          <PersonAddIcon data-testid="person-icon" />
         ) : (
           <React.Fragment>
             <AddIcon fontSize="small" />
-            <BusinessIcon fontSize="small" />
+            <BusinessIcon fontSize="small" data-testid="business-icon" />
           </React.Fragment>
         )}
       </IconButton>
       <IconButton
         aria-label="edit"
+        data-testid="edit-button"
         disabled={
           selectedRows.length > 1 || !selectedRows.length || !isOptionEnable
         }
@@ -84,6 +86,7 @@ export const TableToolBar = (props) => {
       <IconButton
         disabled={!selectedRows.length || !isOptionEnable}
         aria-label="delete"
+        data-testid="delete-button"
         onClick={handleDelete}
       >
         <DeleteIcon />
