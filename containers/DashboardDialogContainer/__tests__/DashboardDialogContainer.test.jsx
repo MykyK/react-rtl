@@ -70,14 +70,14 @@ describe('<DashboardDialogContainer/>', () => {
   it('should render component', () => {
     expect(container.render.getByTestId('dialog-wrapper')).toBeInTheDocument()
   })
+  const initialContext = {
+    firstName: '',
+    lastName: '',
+    phoneNumber: '',
+    emailAddress: '',
+    password: '',
+  }
   describe('When dialogType and initialContext props exist', () => {
-    const initialContext = {
-      firstName: '',
-      lastName: '',
-      phoneNumber: '',
-      emailAddress: '',
-      password: '',
-    }
     const initialState = {
       user: {
         ...mockUserStore,
