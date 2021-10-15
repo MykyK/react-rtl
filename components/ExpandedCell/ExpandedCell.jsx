@@ -1,6 +1,7 @@
 import React from 'react'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import ExpandLessIcon from '@material-ui/icons/ExpandLess'
+import { IconButton } from '@material-ui/core'
 import { connect } from 'react-redux'
 import {
   getRowExpandedStatus,
@@ -28,14 +29,15 @@ const ExpandedCell = (props) => {
     }
     row.toggleRowExpanded()
   }
+
   return (
-    <span
-      {...row.getToggleRowExpandedProps({
-        onClick: () => onExpanded(),
-      })}
-    >
-      {row.isExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-    </span>
+    <IconButton data-testid="expanded-cell" onClick={onExpanded}>
+      {row.isExpanded ? (
+        <ExpandLessIcon data-testid="expand-less" />
+      ) : (
+        <ExpandMoreIcon data-testid="expand-more" />
+      )}
+    </IconButton>
   )
 }
 
@@ -55,6 +57,7 @@ ExpandedCell.propTypes = {
   rows: PropTypes.array.isRequired,
   toggleRowExpanded: PropTypes.func.isRequired,
   onGetUser: PropTypes.func.isRequired,
+  onGetRowExpandedStatus: PropTypes.func.isRequired,
 }
 
 export default connect(null, mapDispatchToProps)(ExpandedCell)
