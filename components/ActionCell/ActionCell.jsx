@@ -34,7 +34,7 @@ const ActionCell = (props) => {
   }
 
   return (
-    <React.Fragment>
+    <div data-testid="action-cell">
       <IconButton
         aria-controls="simple-menu"
         aria-haspopup="true"
@@ -59,7 +59,7 @@ const ActionCell = (props) => {
           Delete
         </MenuItem>
       </Menu>
-    </React.Fragment>
+    </div>
   )
 }
 
