@@ -148,7 +148,7 @@ const DashboardTableContainer = (props) => {
   }
 
   return (
-    <TableContainer data-testid="dashboard-table">
+    <TableContainer data-testid="dashboard-table-container">
       {toolBar && <TableToolBar {...toolBarProps} />}
       <DashboardTable {...tableDashboardProps} />
     </TableContainer>

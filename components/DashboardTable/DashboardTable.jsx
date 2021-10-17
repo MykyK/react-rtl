@@ -27,7 +27,7 @@ export const DashboardTable = (props) => {
     handleChangeRowsPerPage,
   } = props
   return (
-    <MaUTable {...getTableProps()}>
+    <MaUTable {...getTableProps()} data-testid="dashboard-table">
       <TableHead>
         {headerGroups.map((headerGroup) => {
           return (
@@ -40,6 +40,7 @@ export const DashboardTable = (props) => {
                     {column.render('Header')}
                     {column.id !== 'action' ? (
                       <TableSortLabel
+                        data-testid="sort-label"
                         active={column.isSorted}
                         direction={column.isSortedDesc ? 'desc' : 'asc'}
                       />
@@ -67,7 +68,7 @@ export const DashboardTable = (props) => {
                 })}
               </TableRow>
               {row.isExpanded ? (
-                <TableRow>
+                <TableRow data-testid="expanded-row">
                   <TableCell colSpan={visibleColumns.length}>
                     <ExpandedContent {...row.values} />
                   </TableCell>
