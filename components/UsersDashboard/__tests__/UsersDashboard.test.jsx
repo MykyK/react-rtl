@@ -1,5 +1,5 @@
 import React from 'react'
-import CompaniesDashboard from './../index'
+import UsersDashboard from './../index'
 import { renderWithState } from './../../../utils/renderWithState'
 import { useRouter } from 'next/router'
 import {
@@ -11,9 +11,9 @@ import {
 jest.mock('next/router')
 const mockRouter = useRouter
 
-describe('<CompaniesDashboard/>', () => {
+describe('<UsersDashboard/>', () => {
   mockRouter.mockImplementation(() => ({
-    asPath: '/dashboard/companies',
+    asPath: '/dashboard',
   }))
 
   const initialState = {
@@ -25,24 +25,31 @@ describe('<CompaniesDashboard/>', () => {
     auth: { ...mockAuthStore, user: { id: 2, generalRole: 'admin' } },
   }
   const defaultProps = {
-    companies: {
+    users: {
       totalItems: 2,
       currentPage: 0,
       lastPage: 1,
       items: [
-        { id: 1, email: 'test@company1.com' },
-        { id: 2, email: 'test@company2.com' },
+        { id: 1, email: 'test@user1.com' },
+        { id: 2, email: 'test@user.com' },
       ],
     },
-    companiesColumns: [],
-    onGetCompanies: jest.fn(),
-    isCompaniesLoading: false,
+    userCompanies: [
+      { id: 1, email: 'test@company1.com' },
+      { id: 2, email: 'test@company2.com' },
+    ],
+    userColumns: [],
+    onGetUsers: jest.fn(),
+    userCompaniesColumns: [],
+    isExpanded: false,
+    isCompaniesExists: false,
+    isUsersLoading: false,
   }
   let container
 
   describe('When default props are passed', () => {
     beforeEach(() => {
-      container = renderWithState(<CompaniesDashboard {...defaultProps} />, {
+      container = renderWithState(<UsersDashboard {...defaultProps} />, {
         initialState,
       })
     })
@@ -53,7 +60,7 @@ describe('<CompaniesDashboard/>', () => {
 
     it('should render component', () => {
       expect(
-        container.render.getByTestId('company-dashboard-content')
+        container.render.getByTestId('user-dashboard-content')
       ).toBeInTheDocument()
     })
     it('should render component with data-testid:"dashboard-table-container"', () => {
@@ -74,13 +81,35 @@ describe('<CompaniesDashboard/>', () => {
       )
     })
   })
-  describe('When prop  companies prop is "null" ', () => {
+  describe('When isCompaniesExists and isExpanded are equal true', () => {
     const props = {
       ...defaultProps,
-      companies: null,
+      isCompaniesExists: true,
+      isExpanded: true,
     }
     beforeEach(() => {
-      container = renderWithState(<CompaniesDashboard {...props} />, {
+      container = renderWithState(<UsersDashboard {...props} />, {
+        initialState,
+      })
+    })
+
+    afterEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it('should render component with data-testid:"dashboard-table-container"', () => {
+      expect(
+        container.render.getAllByTestId('dashboard-table-container').length
+      ).toBe(2)
+    })
+  })
+  describe('When prop  users prop is "null" ', () => {
+    const props = {
+      ...defaultProps,
+      users: null,
+    }
+    beforeEach(() => {
+      container = renderWithState(<UsersDashboard {...props} />, {
         initialState,
       })
     })
@@ -97,14 +126,14 @@ describe('<CompaniesDashboard/>', () => {
       ).toThrow('Unable to find an element')
     })
   })
-  describe('When prop isCompaniesLoading is "true" and companies prop is "null" ', () => {
+  describe('When prop isUsersLoading is "true" and users prop is "null" ', () => {
     const props = {
       ...defaultProps,
-      companies: null,
-      isCompaniesLoading: true,
+      users: null,
+      isUsersLoading: true,
     }
     beforeEach(() => {
-      container = renderWithState(<CompaniesDashboard {...props} />, {
+      container = renderWithState(<UsersDashboard {...props} />, {
         initialState,
       })
     })
@@ -115,14 +144,14 @@ describe('<CompaniesDashboard/>', () => {
     it('should render loader', () => {
       expect(container.render.getByTestId('loader')).toBeInTheDocument()
     })
-    it('should not render component with data-testid:"company-dashboard-content"', () => {
+    it('should not render component with data-testid:"user-dashboard-content"', () => {
       expect(() =>
-        container.render.getByTestId('company-dashboard-content')
+        container.render.getByTestId('user-dashboard-content')
       ).toThrow('Unable to find an element')
     })
 
     it('should dispatch action after mount', () => {
-      expect(defaultProps.onGetCompanies).toHaveBeenCalledTimes(1)
+      expect(defaultProps.onGetUsers).toHaveBeenCalledTimes(1)
     })
   })
 })
