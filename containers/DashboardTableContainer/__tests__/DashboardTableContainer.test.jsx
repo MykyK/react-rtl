@@ -79,6 +79,7 @@ describe('<DashboardTableContainer/>', () => {
 
     afterEach(() => {
       cleanup()
+      jest.clearAllMocks()
     })
 
     it('should render component', () => {
@@ -116,6 +117,7 @@ describe('<DashboardTableContainer/>', () => {
 
     afterEach(() => {
       cleanup()
+      jest.clearAllMocks()
     })
 
     it('should not render element with data-testid "table-toolbar"', () => {
