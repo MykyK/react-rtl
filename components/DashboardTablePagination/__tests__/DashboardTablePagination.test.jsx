@@ -38,7 +38,7 @@ describe('<UserTablePagination />', () => {
       (component, wrapper) => {
         const props = {
           count: 15,
-          onChangePage: jest.fn(),
+          onPageChange: jest.fn(),
           page: 1,
           rowsPerPage: 5,
         }
@@ -47,7 +47,7 @@ describe('<UserTablePagination />', () => {
           mockUseTheme.mockReturnValueOnce({
             direction: 'ltl',
           })
-          container = renderWithState(<UserTablePagination {...props} />)
+          container = renderWithState(<DashboardTablePagination {...props} />)
         })
 
         afterAll(() => {
@@ -64,7 +64,7 @@ describe('<UserTablePagination />', () => {
         it(`should call event ${wrapper}`, () => {
           const componentWrapper = container.render.getByTestId(wrapper)
           fireEvent.click(componentWrapper)
-          expect(props.onChangePage).toHaveBeenCalled()
+          expect(props.onPageChange).toHaveBeenCalled()
         })
       }
     )
@@ -74,7 +74,7 @@ describe('<UserTablePagination />', () => {
       (component, wrapper) => {
         const props = {
           count: 15,
-          onChangePage: jest.fn(),
+          onPageChange: jest.fn(),
           page: 1,
           rowsPerPage: 5,
         }
@@ -84,7 +84,7 @@ describe('<UserTablePagination />', () => {
           mockUseTheme.mockReturnValueOnce({
             direction: 'rtl',
           })
-          container = renderWithState(<UserTablePagination {...props} />)
+          container = renderWithState(<DashboardTablePagination {...props} />)
         })
 
         afterAll(() => {
