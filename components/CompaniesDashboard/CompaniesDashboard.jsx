@@ -20,15 +20,13 @@ export const CompaniesDashboard = (props) => {
     return (
       <div data-testid="company-dashboard-content">
         {companies && Boolean(companies.items.length) ? (
-          <React.Fragment>
-            <DashboardTableContainer
-              columns={companiesColumns}
-              data={companies.items}
-              pagination={companies}
-              isSelected
-              toolBar
-            />
-          </React.Fragment>
+          <DashboardTableContainer
+            columns={companiesColumns}
+            data={companies.items}
+            pagination={companies}
+            isSelected
+            toolBar
+          />
         ) : (
           <div className={styles.centered} data-testid="no-data">
             <span>no data available</span>
