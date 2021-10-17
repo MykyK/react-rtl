@@ -47,7 +47,7 @@ export const useFieldValidation = (form) => {
       const value = form[name]
       const emailInvalid = EMAIL_REGEXP.test(form[name])
       if (value.length < 1) {
-        return REQUIRE_ERROR
+        return name + ' ' + REQUIRE_ERROR
       } else if (!emailInvalid) {
         return EMAIL_ERROR;
       } else {
@@ -56,9 +56,8 @@ export const useFieldValidation = (form) => {
     }
     if (name !== 'emailAddress' || name !== 'email') {
       const value = form[name]
-      if (!value) return null
       if (value.length < 1) {
-        return REQUIRE_ERROR
+        return name + ' ' + REQUIRE_ERROR
       } else if (value.length < 6) {
         return name + ' ' + MIN_LENGTH_ERROR;
       } else {

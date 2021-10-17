@@ -13,7 +13,7 @@ export const InputField = (props) => {
         {...props}
         helperText={touched && props.error}
         error={touched && Boolean(props.error)}
-        onFocus={handleTouched}
+        onClick={handleTouched}
       />
     </React.Fragment>
   )

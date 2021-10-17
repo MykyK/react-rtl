@@ -8,20 +8,43 @@ import Container from '@material-ui/core/Container'
 import InputField from './../InputField/index'
 import ErrorNotification from './../ErrorNotification/index'
 import PropTypes from 'prop-types'
+import { makeStyles } from '@material-ui/core/styles'
+
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    marginTop: theme.spacing(8),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: '100%',
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+}))
 
 export const Login = (props) => {
   const {
-    classes,
     handleChangeAuthType,
     onCloseNotification,
     authNotification,
     onSubmit,
     isError,
     form,
-    authType,
+    isSingUp,
     setFormValue,
     errors,
   } = props
+
+  const classes = useStyles()
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -30,7 +53,7 @@ export const Login = (props) => {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          {authType ? 'Sing up' : 'Sing in'}
+          {isSingUp ? 'Sing up' : 'Sing in'}
         </Typography>
         <form
           data-testid="login-form"
@@ -38,13 +61,14 @@ export const Login = (props) => {
           noValidate
           onSubmit={(e) => onSubmit(e)}
         >
-          {authType && (
+          {isSingUp && (
             <React.Fragment>
               <InputField
                 margin="dense"
                 error={errors.firstNameError}
                 name="firstName"
                 label="firstName"
+                data-testid="firstName-input"
                 type="text"
                 fullWidth
                 value={form.firstName}
@@ -56,6 +80,7 @@ export const Login = (props) => {
                 error={errors.lastNameError}
                 name="lastName"
                 label="lastName"
+                data-testid="lastName-input"
                 type="text"
                 fullWidth
                 value={form.lastName}
@@ -93,7 +118,7 @@ export const Login = (props) => {
             data-testid="login-button"
             className={classes.submit}
           >
-            {authType ? 'Sing up' : 'Login'}
+            {isSingUp ? 'Sing up' : 'Login'}
           </Button>
           <Button
             type="button"
@@ -104,7 +129,7 @@ export const Login = (props) => {
             onClick={handleChangeAuthType}
             className={classes.submit}
           >
-            {authType ? 'Login' : 'Sing up'}
+            {isSingUp ? 'Login' : 'Sing up'}
           </Button>
         </form>
       </div>
@@ -122,7 +147,6 @@ export const Login = (props) => {
 }
 
 Login.propTypes = {
-  classes: PropTypes.object.isRequired,
   authNotification: PropTypes.object,
   form: PropTypes.object,
   errors: PropTypes.object,
@@ -131,5 +155,5 @@ Login.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   setFormValue: PropTypes.func.isRequired,
   isError: PropTypes.bool.isRequired,
-  authType: PropTypes.bool.isRequired,
+  isSingUp: PropTypes.bool.isRequired,
 }

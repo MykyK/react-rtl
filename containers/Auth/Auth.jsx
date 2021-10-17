@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { makeStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
 import {
   login,
@@ -10,26 +9,6 @@ import { useFieldValidation, useSetForm } from '../../utils/customHooks'
 import { useRouter } from 'next/router'
 import PropTypes from 'prop-types'
 import Login from './../../components/Login/index'
-
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: '100%',
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-}))
 
 const initialUser = {
   firstName: '',
@@ -42,24 +21,23 @@ const Auth = (props) => {
   const { onLogin, onSingUp, authNotification, onResetAuthStatus } = props
 
   const router = useRouter()
-  const classes = useStyles()
 
   const { form, setFormValue } = useSetForm(initialUser)
 
-  const [authType, setAuthType] = useState(false)
+  const [isSingUp, setIsSingUp] = useState(false)
 
   const [firstNameError, lastNameError, emailError, passwordError] =
     useFieldValidation(form)
 
   const isError = Boolean(
-    authType
+    isSingUp
       ? firstNameError || lastNameError || emailError || passwordError
       : emailError || passwordError
   )
 
   const onSubmit = async (e) => {
     e.preventDefault(e)
-    if (!authType) {
+    if (!isSingUp) {
       await onLogin({
         emailAddress: form.emailAddress,
         password: form.password,
@@ -73,7 +51,7 @@ const Auth = (props) => {
     }
   }
   const handleChangeAuthType = () => {
-    authType ? setAuthType(false) : setAuthType(true)
+    isSingUp ? setIsSingUp(false) : setIsSingUp(true)
   }
 
   const onCloseNotification = () => {
@@ -81,13 +59,12 @@ const Auth = (props) => {
   }
 
   const loginProps = {
-    classes,
     handleChangeAuthType,
     onCloseNotification,
     authNotification,
     onSubmit,
     setFormValue,
-    authType,
+    isSingUp,
     isError,
     form,
     errors: { firstNameError, lastNameError, emailError, passwordError },
