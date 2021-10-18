@@ -24,16 +24,6 @@ describe('<TableToolBar />', () => {
 
   const setState = jest.fn()
   mockUseState.mockImplementation((init) => [init, setState])
-  // mockRouter.mockImplementation(() => ({
-  //   asPath: '/dashboard/companies',
-  // }))
-  // beforeEach(() => {
-  //   container = render(<TableToolBar {...defaultProps} />)
-  // })
-  // afterEach(() => {
-  //   jest.clearAllMocks()
-  // })
-
   describe('When user is admin and asPath equal "/dashboard/companies"', () => {
     mockRouter.mockImplementation(() => ({
       asPath: '/dashboard/companies',
