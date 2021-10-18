@@ -32,21 +32,42 @@ const useStyles = makeStyles((theme) => ({
 
 export const Login = (props) => {
   const {
-    handleChangeAuthType,
     onCloseNotification,
     authNotification,
-    onSubmit,
+    setIsSingUp,
     isError,
     form,
     isSingUp,
     setFormValue,
     errors,
+    onLogin,
+    onSingUp,
   } = props
 
   const classes = useStyles()
 
+  const handleChangeAuthType = () => {
+    isSingUp ? setIsSingUp(false) : setIsSingUp(true)
+  }
+
+  const onSubmit = async (e) => {
+    e.preventDefault(e)
+    if (!isSingUp) {
+      await onLogin({
+        emailAddress: form.emailAddress,
+        password: form.password,
+      })
+    } else {
+      await onSingUp(form)
+      await onLogin({
+        emailAddress: form.emailAddress,
+        password: form.password,
+      })
+    }
+  }
+
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="xs" data-testid="auth-component">
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
@@ -150,9 +171,10 @@ Login.propTypes = {
   authNotification: PropTypes.object,
   form: PropTypes.object,
   errors: PropTypes.object,
-  handleChangeAuthType: PropTypes.func.isRequired,
   onCloseNotification: PropTypes.func.isRequired,
-  onSubmit: PropTypes.func.isRequired,
+  setIsSingUp: PropTypes.func.isRequired,
+  onLogin: PropTypes.func.isRequired,
+  onSingUp: PropTypes.func.isRequired,
   setFormValue: PropTypes.func.isRequired,
   isError: PropTypes.bool.isRequired,
   isSingUp: PropTypes.bool.isRequired,
