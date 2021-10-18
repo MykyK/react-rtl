@@ -13,20 +13,28 @@ export const ListApp = () => {
   const router = useRouter()
 
   return (
-    <List>
+    <List data-testid="list-app">
       {[
-        { name: 'Users', route: '/dashboard', icon: <PeopleIcon /> },
+        {
+          name: 'Users',
+          route: '/dashboard',
+          icon: <PeopleIcon data-testid="people-icon" />,
+        },
         {
           name: 'Companies',
           route: '/dashboard/companies',
-          icon: <BusinessIcon />,
+          icon: <BusinessIcon data-testid="business-icon" />,
         },
-        { name: 'Setting', route: '/settings', icon: <SettingsIcon /> },
+        {
+          name: 'Setting',
+          route: '/settings',
+          icon: <SettingsIcon data-testid="settings-icon" />,
+        },
       ].map((link, index) => {
         if (link.name === 'Companies') {
           return (
             <Link key={index} href="/dashboard/companies">
-              <ListItem button>
+              <ListItem data-testid="link-item" button>
                 <ListItemIcon>{link.icon}</ListItemIcon>
                 <ListItemText primary={link.name} />
               </ListItem>
@@ -34,7 +42,12 @@ export const ListApp = () => {
           )
         }
         return (
-          <ListItem button key={index} onClick={() => router.push(link.route)}>
+          <ListItem
+            data-testid="link-item"
+            button
+            key={index}
+            onClick={() => router.push(link.route)}
+          >
             <ListItemIcon>{link.icon}</ListItemIcon>
             <ListItemText primary={link.name} />
           </ListItem>
