@@ -12,7 +12,7 @@ export const CompanySelect = (props) => {
     setSelectedOption(companies[event.target.value].companyName)
   }
   return (
-    <div data-testid="company-select">
+    <div data-testid="company-select-wrapper">
       <InputLabel htmlFor="age-native-simple">
         Choose Company From Lists
       </InputLabel>
@@ -22,12 +22,15 @@ export const CompanySelect = (props) => {
         value={selectedOption}
         onChange={onSelectChange}
         fullWidth
-        inputProps={{ 'aria-label': 'companyName' }}
+        inputProps={{
+          'aria-label': 'companyName',
+          'data-testid': 'company-select',
+        }}
       >
         <option value="">{selectedOption}</option>
         {companies.map((company, index) => {
           return (
-            <option value={index} key={index}>
+            <option data-testid="select-option" value={index} key={index}>
               {company.companyName}
             </option>
           )
