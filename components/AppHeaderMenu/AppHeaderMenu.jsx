@@ -23,10 +23,11 @@ export const AppHeaderMenu = (props) => {
   }
 
   return (
-    <div>
+    <div data-testid="app-header">
       <Button
         aria-controls="simple-menu"
         aria-haspopup="true"
+        data-testid="menu-button"
         onClick={handleClick}
       >
         <span suppressHydrationWarning>{user && user.firstName}</span>
@@ -38,7 +39,9 @@ export const AppHeaderMenu = (props) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleLogout}>Logout</MenuItem>
+        <MenuItem data-testid="logout-button" onClick={handleLogout}>
+          Logout
+        </MenuItem>
       </Menu>
     </div>
   )
