@@ -35,34 +35,16 @@ const Auth = (props) => {
       : emailError || passwordError
   )
 
-  const onSubmit = async (e) => {
-    e.preventDefault(e)
-    if (!isSingUp) {
-      await onLogin({
-        emailAddress: form.emailAddress,
-        password: form.password,
-      })
-    } else {
-      await onSingUp(form)
-      await onLogin({
-        emailAddress: form.emailAddress,
-        password: form.password,
-      })
-    }
-  }
-  const handleChangeAuthType = () => {
-    isSingUp ? setIsSingUp(false) : setIsSingUp(true)
-  }
-
   const onCloseNotification = () => {
     onResetAuthStatus()
   }
 
   const loginProps = {
-    handleChangeAuthType,
     onCloseNotification,
     authNotification,
-    onSubmit,
+    onSingUp,
+    onLogin,
+    setIsSingUp,
     setFormValue,
     isSingUp,
     isError,
@@ -74,6 +56,7 @@ const Auth = (props) => {
     if (authNotification && authNotification.type === 'success') {
       setTimeout(() => {
         router.push('/dashboard')
+        onCloseNotification()
       }, 400)
     }
   }, [authNotification])
