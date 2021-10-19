@@ -14,6 +14,7 @@ export const DrawerApp = (props) => {
   }
   return (
     <Drawer
+      data-testid="drawer-app"
       variant="permanent"
       className={clsx(classes.drawer, {
         [classes.drawerOpen]: open,
@@ -27,11 +28,11 @@ export const DrawerApp = (props) => {
       }}
     >
       <div className={classes.toolbar}>
-        <IconButton onClick={handleDrawerClose}>
+        <IconButton data-testid="drawer-button" onClick={handleDrawerClose}>
           {theme.direction === 'rtl' ? (
-            <ChevronRightIcon />
+            <ChevronRightIcon data-testid="chevron-right" />
           ) : (
-            <ChevronLeftIcon />
+            <ChevronLeftIcon data-testid="chevron-left" />
           )}
         </IconButton>
       </div>
