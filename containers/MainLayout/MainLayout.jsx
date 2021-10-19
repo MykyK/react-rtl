@@ -118,7 +118,6 @@ const MainLayout = (props) => {
       <DrawerApp
         classes={classes}
         onSetOpen={setOpen}
-        data-testid="drawer-app"
         open={open}
         theme={theme}
       />
