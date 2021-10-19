@@ -88,12 +88,8 @@ const MainLayout = (props) => {
     setOpen(true)
   }
 
-  const handleDrawerClose = () => {
-    setOpen(false)
-  }
-
   return (
-    <div className={classes.root}>
+    <div className={classes.root} data-testid="main-layout">
       <CssBaseline />
       <AppBar
         position="fixed"
@@ -105,6 +101,7 @@ const MainLayout = (props) => {
           <IconButton
             color="inherit"
             aria-label="open drawer"
+            data-testid="open-drawer"
             onClick={handleDrawerOpen}
             edge="start"
             className={clsx(classes.menuButton, {
@@ -120,7 +117,8 @@ const MainLayout = (props) => {
       </AppBar>
       <DrawerApp
         classes={classes}
-        handleDrawerClose={handleDrawerClose}
+        onSetOpen={setOpen}
+        data-testid="drawer-app"
         open={open}
         theme={theme}
       />

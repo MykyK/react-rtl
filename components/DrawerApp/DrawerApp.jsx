@@ -8,7 +8,10 @@ import ListApp from '../ListApp/index'
 import clsx from 'clsx'
 
 export const DrawerApp = (props) => {
-  const { classes, handleDrawerClose, theme, open } = props
+  const { classes, theme, open, onSetOpen } = props
+  const handleDrawerClose = () => {
+    onSetOpen(false)
+  }
   return (
     <Drawer
       variant="permanent"
