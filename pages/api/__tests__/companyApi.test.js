@@ -18,7 +18,9 @@ const methods = [
       method: CompanyService.updateCompany,
       mockResolve: {},
       mockReject: error,
-      response: {},
+      response: {
+        data: {}
+      },
       apiArgs: Object.values({
         url: API_COMPANY_URL + 'update/' + 1,
         data: {
@@ -40,7 +42,9 @@ const methods = [
     {
       method: CompanyService.deleteCompany,
       mockResolve: {},
-      response: {},
+      response: {
+        data: {}
+      },
       mockReject: error,
       apiArgs: [API_COMPANY_URL + 'delete/1'],
       callArgs: 1,
@@ -52,7 +56,9 @@ const methods = [
     {
       method: CompanyService.getCompanies,
       mockResolve: {},
-      response: {},
+      response: {
+        data: {}
+      },
       mockReject: error,
       apiArgs: Object.values({
         url: API_COMPANY_URL,
@@ -71,7 +77,9 @@ const methods = [
     'getCompany', {
       method: CompanyService.getCompany,
       mockResolve: {},
-      response: {},
+      response: {
+        data: {}
+      },
       mockReject: error,
       apiArgs: [API_COMPANY_URL + 1],
       callArgs: 1,
@@ -82,7 +90,9 @@ const methods = [
     'createCompany', {
       method: CompanyService.createCompany,
       mockResolve: {},
-      response: {},
+      response: {
+        data: {}
+      },
       mockReject: error,
       apiArgs: Object.values({
         url: API_COMPANY_URL + 'add',

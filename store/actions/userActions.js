@@ -20,37 +20,37 @@ import {
 
 
 export const getUsers = (params) => async (dispatch) => {
-  dispatch(actionPromise(await UserService.getUsers(params), 'users', GET_USERS, 'USER_'))
+  await dispatch(actionPromise(UserService.getUsers(params), 'users', GET_USERS, 'USER_'))
 };
 
 
 export const updateUser = (data) => async (dispatch) => {
-  dispatch(actionPromise(await UserService.updateUser(data), 'updatedUser', UPDATE_USER, 'USER_'))
+  await dispatch(actionPromise(UserService.updateUser(data), 'updatedUser', UPDATE_USER, 'USER_'))
 };
 
 export const updateUserInCompany = (data) => async (dispatch) => {
-  dispatch(actionPromise(await UserService.updateUserInCompany(data), 'updateUserInCompany', UPDATE_USER_IN_COMPANY, 'USER_'))
+  await dispatch(actionPromise(UserService.updateUserInCompany(data), 'updateUserInCompany', UPDATE_USER_IN_COMPANY, 'USER_'))
 };
 
 export const deleteCompanyFromUser = (data) => async (dispatch) => {
-  dispatch(actionPromise(await UserService.deleteCompanyFromUser(data), 'deleteCompanyFromUser', DELETE_COMPANY_FROM_USER, 'USER_'))
+  await dispatch(actionPromise(UserService.deleteCompanyFromUser(data), 'deleteCompanyFromUser', DELETE_COMPANY_FROM_USER, 'USER_'))
 };
 
 export const createUser = (data) => async (dispatch) => {
-  dispatch(actionPromise(await UserService.createUser(data), 'createUser', CREATE_USER, 'USER_'))
+  await dispatch(actionPromise(UserService.createUser(data), 'createUser', CREATE_USER, 'USER_'))
 
 };
 
 export const deleteUser = (userId) => async (dispatch) => {
-  dispatch(actionPromise(await UserService.deleteUser(userId), 'deletedUser', DELETE_USER, 'USER_'))
+  await dispatch(actionPromise(UserService.deleteUser(userId), 'deletedUser', DELETE_USER, 'USER_'))
 };
 
 export const getUser = (userId) => async (dispatch) => {
-  dispatch(actionPromise(await UserService.getUser(userId), 'user', GET_USER, 'USER_'))
+  await dispatch(actionPromise(UserService.getUser(userId), 'user', GET_USER, 'USER_'))
 };
 
 export const addCompanyToUserAction = (data) => async (dispatch) => {
-  dispatch(actionPromise(await UserService.addCompanyToUser(data), 'addCompanyToUser', ADD_COMPANY_TO_USER, 'USER_'))
+  await dispatch(actionPromise(UserService.addCompanyToUser(data), 'addCompanyToUser', ADD_COMPANY_TO_USER, 'USER_'))
 };
 
 export const openDialog = (user, dialogType) => (dispatch) => {

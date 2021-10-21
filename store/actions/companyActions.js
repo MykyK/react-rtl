@@ -15,24 +15,24 @@ import {
 
 
 export const updateCompany = (data) => async (dispatch) => {
-  dispatch(actionPromise(await CompanyService.updateCompany(data), 'updateCompany', UPDATE_COMPANY, 'COMPANY_'))
+  await dispatch(actionPromise(CompanyService.updateCompany(data), 'updateCompany', UPDATE_COMPANY, 'COMPANY_'))
 };
 
 
 export const deleteCompanyAction = (companyId) => async (dispatch) => {
-  dispatch(actionPromise(await CompanyService.deleteCompany(companyId), 'deleteCompany', DELETE_COMPANY, 'COMPANY_'))
+  await dispatch(actionPromise(CompanyService.deleteCompany(companyId), 'deleteCompany', DELETE_COMPANY, 'COMPANY_'))
 };
 
 export const createCompanyAction = (data) => async (dispatch) => {
-  dispatch(actionPromise(await CompanyService.createCompany(data), 'createCompany', CREATE_COMPANY, 'COMPANY_'))
+  await dispatch(actionPromise(CompanyService.createCompany(data), 'createCompany', CREATE_COMPANY, 'COMPANY_'))
 };
 
 export const getCompaniesAction = (params) => async (dispatch) => {
-  dispatch(actionPromise(await CompanyService.getCompanies(params), 'companies', GET_COMPANIES, 'COMPANY_'))
+  await dispatch(actionPromise(CompanyService.getCompanies(params), 'companies', GET_COMPANIES, 'COMPANY_'))
 };
 
 export const getCompanyAction = (companyId) => async (dispatch) => {
-  dispatch(actionPromise(await CompanyService.getCompany(companyId), 'company', GET_COMPANY, 'COMPANY_'))
+  await dispatch(actionPromise(CompanyService.getCompany(companyId), 'company', GET_COMPANY, 'COMPANY_'))
 };
 
 

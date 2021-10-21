@@ -19,7 +19,9 @@ const methods = [
       method: AuthService.register,
       mockResolve: {},
       mockReject: error,
-      response: {},
+      response: {
+        data: {}
+      },
       apiArgs: Object.values({
         url: API_AUTH_URL + 'signup',
         data: {
@@ -45,7 +47,9 @@ const methods = [
         accessToken: 'test123'
       },
       response: {
-        accessToken: 'test123'
+        data: {
+          accessToken: 'test123'
+        }
       },
       mockReject: error,
       apiArgs: Object.values({

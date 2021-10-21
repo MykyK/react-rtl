@@ -18,7 +18,9 @@ const methods = [
       method: UserService.updateUser,
       mockResolve: {},
       mockReject: error,
-      response: {},
+      response: {
+        data: {}
+      },
       apiArgs: Object.values({
         url: API_USERS_URL + 'update/' + 1,
         data: {
@@ -40,7 +42,9 @@ const methods = [
     {
       method: UserService.deleteUser,
       mockResolve: {},
-      response: {},
+      response: {
+        data: {}
+      },
       mockReject: error,
       apiArgs: [API_USERS_URL + 'delete/1'],
       callArgs: 1,
@@ -52,7 +56,9 @@ const methods = [
     {
       method: UserService.getUsers,
       mockResolve: {},
-      response: {},
+      response: {
+        data: {}
+      },
       mockReject: error,
       apiArgs: Object.values({
         url: API_USERS_URL,
@@ -72,7 +78,9 @@ const methods = [
     {
       method: UserService.getUser,
       mockResolve: {},
-      response: {},
+      response: {
+        data: {}
+      },
       mockReject: error,
       apiArgs: Object.values({
         url: API_USERS_URL + 1,
@@ -89,7 +97,9 @@ const methods = [
     {
       method: UserService.createUser,
       mockResolve: {},
-      response: {},
+      response: {
+        data: {}
+      },
       mockReject: error,
       apiArgs: Object.values({
         url: API_USERS_URL + 'create',
@@ -112,7 +122,9 @@ const methods = [
     {
       method: UserService.updateUserInCompany,
       mockResolve: {},
-      response: {},
+      response: {
+        data: {}
+      },
       mockReject: error,
       apiArgs: Object.values({
         url: API_USERS_URL + 'update/1/1',
@@ -133,7 +145,9 @@ const methods = [
     {
       method: UserService.deleteCompanyFromUser,
       mockResolve: {},
-      response: {},
+      response: {
+        data: {}
+      },
       mockReject: error,
       apiArgs: Object.values({
         url: API_USERS_URL + '1/delete/1',
@@ -154,7 +168,9 @@ const methods = [
     {
       method: UserService.addCompanyToUser,
       mockResolve: {},
-      response: {},
+      response: {
+        data: {}
+      },
       mockReject: error,
       apiArgs: Object.values({
         url: API_USERS_URL + 'add-company',

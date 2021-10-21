@@ -35,12 +35,12 @@ export const actionPromise = (promise, name, ctx, reducer) => {
     dispatch(actionPending(name))
     try {
       let result = await promise
-      dispatch(actionResolved(name, result))
+      name === 'user' && reducer === 'AUTH_' && localStorage.setItem("user", JSON.stringify(result.data));
+      dispatch(actionResolved(name, result.data))
       return result;
     } catch (error) {
-      console.log('error', error)
-      error.status ? error : error.status = 'error'
-      dispatch(actionRejected(name, error.response.data))
+      error.status = 'error'
+      dispatch(actionRejected(name, error.response && error.response.data.message ? error.response.data : error))
       return error;
     }
   }

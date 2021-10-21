@@ -43,7 +43,6 @@ export const Login = (props) => {
     onLogin,
     onSingUp,
   } = props
-
   const classes = useStyles()
 
   const handleChangeAuthType = () => {
