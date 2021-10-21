@@ -11,11 +11,11 @@ import {
 } from "../../utils/reduxActions";
 
 export const register = (data) => async (dispatch) => {
-  dispatch(actionPromise(await AuthService.register(data), 'register', REGISTER, 'AUTH_'))
+  await dispatch(actionPromise(AuthService.register(data), 'register', REGISTER, 'AUTH_'))
 };
 
 export const login = (data) => async (dispatch) => {
-  dispatch(actionPromise(await AuthService.login(data), 'user', LOGIN, 'AUTH_'))
+  await dispatch(actionPromise(AuthService.login(data), 'user', LOGIN, 'AUTH_'))
 };
 
 export const logout = () => (dispatch) => {

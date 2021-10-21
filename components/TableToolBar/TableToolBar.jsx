@@ -21,7 +21,7 @@ export const TableToolBar = (props) => {
 
   useEffect(() => {
     if (selectedRows[0]) {
-      setIsOptionEnable(user.id == selectedRows[0].original.id)
+      setIsOptionEnable(isAdmin || user.id == selectedRows[0].original.id)
     }
   }, [selectedRows])
 

@@ -2,38 +2,33 @@ import axios from "axios";
 export const API_COMPANY_URL = "http://localhost:8080/api/company/";
 
 class CompanyService {
-  async updateCompany(data) {
+  updateCompany(data) {
     const {
       companyId
     } = data
-    const response = await axios.put(API_COMPANY_URL + 'update/' + companyId, data)
-    return response.data
+    return axios.put(API_COMPANY_URL + 'update/' + companyId, data)
   }
 
-  async getCompanies(params = {
+  getCompanies(params = {
     page: 0,
     size: 5
   }) {
-    const response = await axios.get(API_COMPANY_URL, {
+    return axios.get(API_COMPANY_URL, {
       params,
       withCredentials: true
     })
-    return response.data
   }
 
-  async getCompany(companyId) {
-    const response = await axios.get(API_COMPANY_URL + companyId)
-    return response.data
+  getCompany(companyId) {
+    return axios.get(API_COMPANY_URL + companyId)
   }
 
-  async createCompany(data) {
-    const response = await axios.post(API_COMPANY_URL + 'add', data)
-    return response.data
+  createCompany(data) {
+    return axios.post(API_COMPANY_URL + 'add', data)
   }
 
-  async deleteCompany(companyId) {
-    const response = await axios.delete(API_COMPANY_URL + "delete/" + companyId);
-    return response.data;
+  deleteCompany(companyId) {
+    return axios.delete(API_COMPANY_URL + "delete/" + companyId);;
   }
 }
 
