@@ -43,7 +43,9 @@ export const DashboardDialog = (props) => {
 
   const handleClose = () => {
     onDialogClose()
-    resetForm()
+    if (!dialogType.toLocaleLowerCase().includes('edit')) {
+      resetForm()
+    }
   }
 
   const handleAdd = () => {
@@ -52,6 +54,7 @@ export const DashboardDialog = (props) => {
     } else {
       onAddNewCompany(form)
     }
+    resetForm()
   }
 
   const handleUpdate = () => {
